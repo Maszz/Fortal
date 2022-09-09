@@ -17,6 +17,7 @@ target 'Sf341MobileApp' do
     # we make it explicit here to aid in the React Native upgrade process.
     :hermes_enabled => true,
     :fabric_enabled => flags[:fabric_enabled],
+    # :flipper_configuration => FlipperConfiguration.enabled(["Debug"], { 'Flipper' => '0.163.0' }),
     # Enables Flipper.
     #
     # Note that if you have use_frameworks! enabled, Flipper will not work and
