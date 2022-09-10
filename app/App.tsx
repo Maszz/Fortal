@@ -7,6 +7,7 @@
  *
  * @format
  */
+/*eslint eslint-comments/no-unlimited-disable: error */
 import React from 'react';
 import {SafeAreaView} from 'react-native';
 import {useTranslation} from 'react-i18next';
@@ -16,7 +17,7 @@ import {useSelector, useDispatch} from 'react-redux';
 import {countAction, persistor} from './redux';
 import {NativeBaseProvider, Box, Text} from 'native-base';
 import {PersistGate} from 'redux-persist/integration/react';
-//@ts-ignore
+// @ts-ignore: no declaration files
 import FlipperAsyncStorage from 'rn-flipper-async-storage-advanced';
 import {
   NavigationContainer,
@@ -49,10 +50,8 @@ const Wrapper = () => {
   const navigationRef = useNavigationContainerRef();
 
   if (__DEV__) {
-    //eslint-disable-next-line
-    useFlipper(navigationRef);
-    //eslint-disable-next-line
-    useReduxDevToolsExtension(navigationRef);
+    useFlipper(navigationRef); //eslint-disable-line react-hooks/rules-of-hooks
+    useReduxDevToolsExtension(navigationRef); //eslint-disable-line react-hooks/rules-of-hooks
   }
   return (
     <Provider store={store}>
