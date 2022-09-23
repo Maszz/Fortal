@@ -1,12 +1,16 @@
 import {configureStore} from '@reduxjs/toolkit';
 import {rootReducer} from './reducers';
 import {persistStore} from 'redux-persist';
+import {storage} from './mmkv';
 const middlewares = [] as any;
 
 if (__DEV__) {
   console.log('Running in Dev Mode.');
   const createDebugger = require('redux-flipper').default;
   middlewares.push(createDebugger());
+  const {initializeMMKVFlipper} = require('react-native-mmkv-flipper-plugin');
+
+  initializeMMKVFlipper({default: storage});
 }
 
 export const store = configureStore({
