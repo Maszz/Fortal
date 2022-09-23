@@ -3,7 +3,7 @@ schema: 'http://localhost:3333/graphql'
 documents:
   - app/graphql/queries/*.ts
 generates:
-  app/graphql/generated.ts:
+  app/graphql/graphql.ts:
     plugins:
       - typescript
       - typescript-operations
@@ -18,12 +18,12 @@ generates:
       withComponent: false
       namingConvention:
         enumValues: change-case#upperCase
-  src/graphql/introspection.json:
+  app/graphql/introspection.json:
     plugins:
       - introspection
     config:
       minify: true
-  src/graphql/introspection-result.json:
+  app/graphql/introspection-result.json:
     plugins:
       - fragment-matcher
     config:

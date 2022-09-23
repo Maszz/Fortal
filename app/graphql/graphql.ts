@@ -1,14 +1,10 @@
-import {gql} from '@apollo/client';
+import { gql } from '@apollo/client';
 import * as Apollo from '@apollo/client';
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
-export type Exact<T extends {[key: string]: unknown}> = {[K in keyof T]: T[K]};
-export type MakeOptional<T, K extends keyof T> = Omit<T, K> & {
-  [SubKey in K]?: Maybe<T[SubKey]>;
-};
-export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & {
-  [SubKey in K]: Maybe<T[SubKey]>;
-};
+export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
+export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
+export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
 const defaultOptions = {} as const;
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
@@ -21,6 +17,7 @@ export type Scalars = {
 };
 
 export type GetMessageInput = {
+  eventChatId?: InputMaybe<Scalars['String']>;
   limit?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
 };
@@ -39,6 +36,7 @@ export type Mutation = {
   saveMessage: Message;
 };
 
+
 export type MutationSaveMessageArgs = {
   saveMessageData: SaveMessageInput;
 };
@@ -48,11 +46,13 @@ export type Query = {
   getMessage: Array<Message>;
 };
 
+
 export type QueryGetMessageArgs = {
   getMessageInput: GetMessageInput;
 };
 
 export type SaveMessageInput = {
+  eventChatId?: InputMaybe<Scalars['String']>;
   message: Scalars['String'];
   senderName: Scalars['String'];
 };
@@ -66,51 +66,31 @@ export type MessagesQueryVariables = Exact<{
   input: GetMessageInput;
 }>;
 
-export type MessagesQuery = {
-  __typename?: 'Query';
-  getMessage: Array<{
-    __typename?: 'Message';
-    senderName?: string | null;
-    message?: string | null;
-    date: any;
-  }>;
-};
+
+export type MessagesQuery = { __typename?: 'Query', getMessage: Array<{ __typename?: 'Message', senderName?: string | null, message?: string | null, date: any }> };
 
 export type SaveMessageMutationVariables = Exact<{
   input: SaveMessageInput;
 }>;
 
-export type SaveMessageMutation = {
-  __typename?: 'Mutation';
-  saveMessage: {
-    __typename?: 'Message';
-    senderName?: string | null;
-    message?: string | null;
-    date: any;
-  };
-};
 
-export type MessageSubscriptionVariables = Exact<{[key: string]: never}>;
+export type SaveMessageMutation = { __typename?: 'Mutation', saveMessage: { __typename?: 'Message', senderName?: string | null, message?: string | null, date: any } };
 
-export type MessageSubscription = {
-  __typename?: 'Subscription';
-  messageAdded: {
-    __typename?: 'Message';
-    senderName?: string | null;
-    message?: string | null;
-    date: any;
-  };
-};
+export type MessageSubscriptionVariables = Exact<{ [key: string]: never; }>;
+
+
+export type MessageSubscription = { __typename?: 'Subscription', messageAdded: { __typename?: 'Message', senderName?: string | null, message?: string | null, date: any } };
+
 
 export const MessagesDocument = gql`
-  query Messages($input: GetMessageInput!) {
-    getMessage(getMessageInput: $input) {
-      senderName
-      message
-      date
-    }
+    query Messages($input: GetMessageInput!) {
+  getMessage(getMessageInput: $input) {
+    senderName
+    message
+    date
   }
-`;
+}
+    `;
 
 /**
  * __useMessagesQuery__
@@ -128,48 +108,27 @@ export const MessagesDocument = gql`
  *   },
  * });
  */
-export function useMessagesQuery(
-  baseOptions: Apollo.QueryHookOptions<MessagesQuery, MessagesQueryVariables>,
-) {
-  const options = {...defaultOptions, ...baseOptions};
-  return Apollo.useQuery<MessagesQuery, MessagesQueryVariables>(
-    MessagesDocument,
-    options,
-  );
-}
-export function useMessagesLazyQuery(
-  baseOptions?: Apollo.LazyQueryHookOptions<
-    MessagesQuery,
-    MessagesQueryVariables
-  >,
-) {
-  const options = {...defaultOptions, ...baseOptions};
-  return Apollo.useLazyQuery<MessagesQuery, MessagesQueryVariables>(
-    MessagesDocument,
-    options,
-  );
-}
+export function useMessagesQuery(baseOptions: Apollo.QueryHookOptions<MessagesQuery, MessagesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<MessagesQuery, MessagesQueryVariables>(MessagesDocument, options);
+      }
+export function useMessagesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<MessagesQuery, MessagesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<MessagesQuery, MessagesQueryVariables>(MessagesDocument, options);
+        }
 export type MessagesQueryHookResult = ReturnType<typeof useMessagesQuery>;
-export type MessagesLazyQueryHookResult = ReturnType<
-  typeof useMessagesLazyQuery
->;
-export type MessagesQueryResult = Apollo.QueryResult<
-  MessagesQuery,
-  MessagesQueryVariables
->;
+export type MessagesLazyQueryHookResult = ReturnType<typeof useMessagesLazyQuery>;
+export type MessagesQueryResult = Apollo.QueryResult<MessagesQuery, MessagesQueryVariables>;
 export const SaveMessageDocument = gql`
-  mutation saveMessage($input: SaveMessageInput!) {
-    saveMessage(saveMessageData: $input) {
-      senderName
-      message
-      date
-    }
+    mutation saveMessage($input: SaveMessageInput!) {
+  saveMessage(saveMessageData: $input) {
+    senderName
+    message
+    date
   }
-`;
-export type SaveMessageMutationFn = Apollo.MutationFunction<
-  SaveMessageMutation,
-  SaveMessageMutationVariables
->;
+}
+    `;
+export type SaveMessageMutationFn = Apollo.MutationFunction<SaveMessageMutation, SaveMessageMutationVariables>;
 
 /**
  * __useSaveMessageMutation__
@@ -188,36 +147,22 @@ export type SaveMessageMutationFn = Apollo.MutationFunction<
  *   },
  * });
  */
-export function useSaveMessageMutation(
-  baseOptions?: Apollo.MutationHookOptions<
-    SaveMessageMutation,
-    SaveMessageMutationVariables
-  >,
-) {
-  const options = {...defaultOptions, ...baseOptions};
-  return Apollo.useMutation<SaveMessageMutation, SaveMessageMutationVariables>(
-    SaveMessageDocument,
-    options,
-  );
-}
-export type SaveMessageMutationHookResult = ReturnType<
-  typeof useSaveMessageMutation
->;
-export type SaveMessageMutationResult =
-  Apollo.MutationResult<SaveMessageMutation>;
-export type SaveMessageMutationOptions = Apollo.BaseMutationOptions<
-  SaveMessageMutation,
-  SaveMessageMutationVariables
->;
+export function useSaveMessageMutation(baseOptions?: Apollo.MutationHookOptions<SaveMessageMutation, SaveMessageMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<SaveMessageMutation, SaveMessageMutationVariables>(SaveMessageDocument, options);
+      }
+export type SaveMessageMutationHookResult = ReturnType<typeof useSaveMessageMutation>;
+export type SaveMessageMutationResult = Apollo.MutationResult<SaveMessageMutation>;
+export type SaveMessageMutationOptions = Apollo.BaseMutationOptions<SaveMessageMutation, SaveMessageMutationVariables>;
 export const MessageDocument = gql`
-  subscription Message {
-    messageAdded {
-      senderName
-      message
-      date
-    }
+    subscription Message {
+  messageAdded {
+    senderName
+    message
+    date
   }
-`;
+}
+    `;
 
 /**
  * __useMessageSubscription__
@@ -234,20 +179,9 @@ export const MessageDocument = gql`
  *   },
  * });
  */
-export function useMessageSubscription(
-  baseOptions?: Apollo.SubscriptionHookOptions<
-    MessageSubscription,
-    MessageSubscriptionVariables
-  >,
-) {
-  const options = {...defaultOptions, ...baseOptions};
-  return Apollo.useSubscription<
-    MessageSubscription,
-    MessageSubscriptionVariables
-  >(MessageDocument, options);
-}
-export type MessageSubscriptionHookResult = ReturnType<
-  typeof useMessageSubscription
->;
-export type MessageSubscriptionResult =
-  Apollo.SubscriptionResult<MessageSubscription>;
+export function useMessageSubscription(baseOptions?: Apollo.SubscriptionHookOptions<MessageSubscription, MessageSubscriptionVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useSubscription<MessageSubscription, MessageSubscriptionVariables>(MessageDocument, options);
+      }
+export type MessageSubscriptionHookResult = ReturnType<typeof useMessageSubscription>;
+export type MessageSubscriptionResult = Apollo.SubscriptionResult<MessageSubscription>;

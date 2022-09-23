@@ -25,6 +25,7 @@
     "graphql-ws": "^5.10.2",
     "i18next": "^21.9.1",
     "native-base": "^3.4.15",
+    "nth-check": "^2.1.1",
     "react": "18.1.0",
     "react-i18next": "^11.18.5",
     "react-native": "0.70.1",

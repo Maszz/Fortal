@@ -10,7 +10,7 @@ import {
   GetMessageInput,
   MessageSubscription as MessageSubscriptionType,
   QueryGetMessageArgs,
-} from '../generated';
+} from '../graphql';
 
 export const useMessages = ({senderName}: {senderName: string}) => {
   const [isStopFetchMore, setStopFetchMore] = React.useState(false);

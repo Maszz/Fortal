@@ -7,7 +7,6 @@
  *
  * @format
  */
-/*eslint eslint-comments/no-unlimited-disable: error */
 import React, {useState, useEffect, useCallback} from 'react';
 import {SafeAreaView, Alert, View} from 'react-native';
 import {useTranslation} from 'react-i18next';
