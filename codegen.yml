@@ -1,0 +1,30 @@
+overwrite: true
+schema: 'http://localhost:3333/graphql'
+documents:
+  - app/graphql/queries/*.ts
+generates:
+  app/graphql/generated.ts:
+    plugins:
+      - typescript
+      - typescript-operations
+      - typescript-react-apollo
+    config:
+      scalars:
+        NEString: string
+        Timestamp: number
+      reactApolloVersion: 3
+      withHooks: true
+      withHOC: false
+      withComponent: false
+      namingConvention:
+        enumValues: change-case#upperCase
+  src/graphql/introspection.json:
+    plugins:
+      - introspection
+    config:
+      minify: true
+  src/graphql/introspection-result.json:
+    plugins:
+      - fragment-matcher
+    config:
+      apolloClientVersion: 3
