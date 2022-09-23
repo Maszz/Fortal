@@ -11,7 +11,9 @@
     "codegen": "graphql-codegen --config codegen.yml",
     "android-debug-apk": "cd android && ./gradlew assembleDebug",
     "android-release-apk": "cd android && ./gradlew assembleRelease",
-    "android-install-debug-apk": "adb install -r ./android/app/build/outputs/apk/debug/app-debug.apk"
+    "android-install-debug-apk": "adb install -r ./android/app/build/outputs/apk/debug/app-debug.apk",
+    "np": "np --no-publish",
+    "postversion": "react-native-version"
   },
   "dependencies": {
     "@apollo/client": "^3.6.9",
@@ -25,6 +27,7 @@
     "graphql-ws": "^5.10.2",
     "i18next": "^21.9.1",
     "native-base": "^3.4.15",
+    "np": "^7.6.2",
     "nth-check": "^2.1.1",
     "react": "18.1.0",
     "react-i18next": "^11.18.5",
@@ -37,6 +40,7 @@
     "react-native-screens": "^3.17.0",
     "react-native-svg": "12.1.1",
     "react-native-vector-icons": "^9.2.0",
+    "react-native-version": "^4.0.0",
     "react-redux": "^8.0.4",
     "redux-persist": "^6.0.0",
     "rn-flipper-async-storage-advanced": "^1.0.4",
@@ -82,5 +86,9 @@
       "json",
       "node"
     ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Maszz/sf341MobileApp"
   }
 }
