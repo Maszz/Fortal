@@ -8,8 +8,8 @@
  * @format
  */
 /*eslint eslint-comments/no-unlimited-disable: error */
-import React from 'react';
-import {SafeAreaView} from 'react-native';
+import React, {useState, useEffect, useCallback} from 'react';
+import {SafeAreaView, Alert, View} from 'react-native';
 import {useTranslation} from 'react-i18next';
 import {Provider} from 'react-redux';
 import {store, RootState} from './redux';
@@ -17,6 +17,9 @@ import {useSelector, useDispatch} from 'react-redux';
 import {countAction, persistor} from './redux';
 import {NativeBaseProvider, Box, Text} from 'native-base';
 import {PersistGate} from 'redux-persist/integration/react';
+import {client} from './graphql/client';
+import {ApolloClient, InMemoryCache, ApolloProvider} from '@apollo/client';
+
 // @ts-ignore: no declaration files
 import FlipperAsyncStorage from 'rn-flipper-async-storage-advanced';
 import {
@@ -27,22 +30,24 @@ import {
   useFlipper,
   useReduxDevToolsExtension,
 } from '@react-navigation/devtools';
+import Chat from './components/ChatComponent';
 const App = () => {
   const {t} = useTranslation();
   const count = useSelector<RootState, RootState['count']>(
     state => state.count,
   );
+
   const dispatch = useDispatch();
+
   return (
-    <Provider store={store}>
-      <SafeAreaView>
-        <Text>{t('common:ok')}</Text>
-        <Text>Test</Text>
-        <Text>{count.value}</Text>
-        <Text onPress={() => dispatch(countAction.increment())}>+</Text>
-        <Box>Boxxxx</Box>
-      </SafeAreaView>
-    </Provider>
+    <View style={{flex: 1, backgroundColor: '#222B45'}}>
+      <Text>{t('common:ok')}</Text>
+      <Text>Test</Text>
+      <Text>{count.value}</Text>
+      <Text onPress={() => dispatch(countAction.increment())}>+</Text>
+      <Box>Boxxxx</Box>
+      <Chat />
+    </View>
   );
 };
 
@@ -57,11 +62,13 @@ const Wrapper = () => {
     <Provider store={store}>
       <FlipperAsyncStorage />
       <PersistGate loading={null} persistor={persistor}>
-        <NativeBaseProvider>
-          <NavigationContainer ref={navigationRef}>
-            <App />
-          </NavigationContainer>
-        </NativeBaseProvider>
+        <ApolloProvider client={client}>
+          <NativeBaseProvider>
+            <NavigationContainer ref={navigationRef}>
+              <App />
+            </NavigationContainer>
+          </NativeBaseProvider>
+        </ApolloProvider>
       </PersistGate>
     </Provider>
   );
