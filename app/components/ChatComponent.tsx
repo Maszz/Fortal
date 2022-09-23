@@ -12,7 +12,6 @@ import React, {useState, useEffect, useCallback} from 'react';
 import {Alert} from 'react-native';
 import AccessoryBar from './AccessoryBar';
 import {Text} from 'native-base';
-// @ts-ignore: no declaration files
 
 import {
   GiftedChat,
@@ -146,7 +145,6 @@ const ChatComponent = () => {
       //   onPress={() => {
       //     Alert.alert('Bubble pressed');
       //   }}
-
       wrapInSafeArea={true}
       onPressAvatar={_ => Alert.alert('Bubble pressed')}
       onQuickReply={onQuickReply}
