@@ -85,9 +85,6 @@
       "jsx",
       "json",
       "node"
-    ],
-    "setupFiles": [
-      "./jestSetupFile.js"
     ]
   },
   "repository": {
