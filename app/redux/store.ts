@@ -6,7 +6,7 @@ const middlewares = [] as any;
 
 if (__DEV__) {
   console.log('Running in Dev Mode.');
-  const createDebugger = require('redux-flipper');
+  const createDebugger = require('redux-flipper').default;
   middlewares.push(createDebugger());
   const {initializeMMKVFlipper} = require('react-native-mmkv-flipper-plugin');
 
