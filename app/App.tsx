@@ -38,7 +38,11 @@ const StackNavigation = () => {
    */
   return (
     <Stack.Navigator>
-      <Stack.Screen name="Home" component={App} />
+      <Stack.Screen
+        name="Home"
+        component={App}
+        options={{headerShown: false}}
+      />
       <Stack.Screen name="Login" component={LoginScreen} />
     </Stack.Navigator>
   );
