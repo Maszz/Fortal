@@ -21,8 +21,8 @@ export const SendMessageMutation = gql`
 `;
 
 export const MessageSubscription = gql`
-  subscription Message {
-    messageAdded {
+  subscription Message($input: SubscripionInput!) {
+    messageAdded(subsciptionInput: $input) {
       senderName
       message
       date

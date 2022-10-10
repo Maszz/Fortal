@@ -15,12 +15,14 @@ import {createClient} from 'graphql-ws';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 const wsLink = new GraphQLWsLink(
   createClient({
-    url: 'wss://sf341.herokuapp.com/graphql',
+    // url: 'wss://sf341.herokuapp.com/graphql',
+    url: 'ws://localhost:3333/graphql',
   }),
 );
 
 const httpLink = new HttpLink({
-  uri: 'https://sf341.herokuapp.com/graphql',
+  // uri: 'https://sf341.herokuapp.com/graphql',
+  uri: 'http://localhost:3333/graphql',
 });
 
 const authMiddleware = new ApolloLink((operation, forward) => {

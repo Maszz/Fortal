@@ -17,7 +17,7 @@ export type Scalars = {
 };
 
 export type GetMessageInput = {
-  eventChatId?: InputMaybe<Scalars['String']>;
+  eventChatId: Scalars['String'];
   limit?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
 };
@@ -57,9 +57,18 @@ export type SaveMessageInput = {
   senderName: Scalars['String'];
 };
 
+export type SubscripionInput = {
+  eventChatId: Scalars['String'];
+};
+
 export type Subscription = {
   __typename?: 'Subscription';
   messageAdded: Message;
+};
+
+
+export type SubscriptionMessageAddedArgs = {
+  subsciptionInput: SubscripionInput;
 };
 
 export type MessagesQueryVariables = Exact<{
@@ -76,7 +85,9 @@ export type SaveMessageMutationVariables = Exact<{
 
 export type SaveMessageMutation = { __typename?: 'Mutation', saveMessage: { __typename?: 'Message', senderName?: string | null, message?: string | null, date: any } };
 
-export type MessageSubscriptionVariables = Exact<{ [key: string]: never; }>;
+export type MessageSubscriptionVariables = Exact<{
+  input: SubscripionInput;
+}>;
 
 
 export type MessageSubscription = { __typename?: 'Subscription', messageAdded: { __typename?: 'Message', senderName?: string | null, message?: string | null, date: any } };
@@ -155,8 +166,8 @@ export type SaveMessageMutationHookResult = ReturnType<typeof useSaveMessageMuta
 export type SaveMessageMutationResult = Apollo.MutationResult<SaveMessageMutation>;
 export type SaveMessageMutationOptions = Apollo.BaseMutationOptions<SaveMessageMutation, SaveMessageMutationVariables>;
 export const MessageDocument = gql`
-    subscription Message {
-  messageAdded {
+    subscription Message($input: SubscripionInput!) {
+  messageAdded(subsciptionInput: $input) {
     senderName
     message
     date
@@ -176,10 +187,11 @@ export const MessageDocument = gql`
  * @example
  * const { data, loading, error } = useMessageSubscription({
  *   variables: {
+ *      input: // value for 'input'
  *   },
  * });
  */
-export function useMessageSubscription(baseOptions?: Apollo.SubscriptionHookOptions<MessageSubscription, MessageSubscriptionVariables>) {
+export function useMessageSubscription(baseOptions: Apollo.SubscriptionHookOptions<MessageSubscription, MessageSubscriptionVariables>) {
         const options = {...defaultOptions, ...baseOptions}
         return Apollo.useSubscription<MessageSubscription, MessageSubscriptionVariables>(MessageDocument, options);
       }

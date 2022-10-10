@@ -10,9 +10,16 @@ import {
   GetMessageInput,
   MessageSubscription as MessageSubscriptionType,
   QueryGetMessageArgs,
+  SubscripionInput,
 } from '../graphql';
 
-export const useMessages = ({senderName}: {senderName: string}) => {
+export const useMessages = ({
+  senderName,
+  eventChatId,
+}: {
+  senderName: string;
+  eventChatId: string;
+}) => {
   const [isStopFetchMore, setStopFetchMore] = React.useState(false);
   const {
     data,
@@ -22,13 +29,14 @@ export const useMessages = ({senderName}: {senderName: string}) => {
     ...other
   } = useMessagesQuery({
     fetchPolicy: 'cache-and-network',
-    variables: {input: {offset: 0, limit: 20}},
+    variables: {input: {offset: 0, limit: 20, eventChatId: eventChatId}},
   });
 
   React.useEffect(() => {
     if (!data) {
-      subscribeToMore<MessageSubscriptionType>({
+      subscribeToMore<MessageSubscriptionType, {input: SubscripionInput}>({
         document: MessageSubscription,
+        variables: {input: {eventChatId: eventChatId}},
         updateQuery: (prev, {subscriptionData}) => {
           if (!subscriptionData) {
             return prev;
@@ -39,7 +47,15 @@ export const useMessages = ({senderName}: {senderName: string}) => {
           }
 
           return {
-            getMessage: [newMessage, ...prev.getMessage],
+            getMessage: [
+              newMessage,
+              ...(prev.getMessage as {
+                __typename?: 'Message';
+                senderName?: string | null;
+                message?: string | null;
+                date: any;
+              }[]),
+            ],
           };
         },
       });
@@ -50,7 +66,7 @@ export const useMessages = ({senderName}: {senderName: string}) => {
     return async (offset: number) => {
       console.log('offsrt in fetchmore' + offset);
       await fetchMoreMessages({
-        variables: {input: {offset, limit: 20}},
+        variables: {input: {offset, limit: 20, eventChatId: eventChatId}},
         updateQuery: (prev, {fetchMoreResult}) => {
           if (!fetchMoreResult) {
             return prev;
@@ -61,7 +77,22 @@ export const useMessages = ({senderName}: {senderName: string}) => {
             setStopFetchMore(true);
           }
 
-          return {getMessage: [...prev.getMessage, ...moreItems]};
+          return {
+            getMessage: [
+              ...(prev.getMessage as {
+                __typename?: 'Message';
+                senderName?: string | null;
+                message?: string | null;
+                date: any;
+              }[]),
+              ...(moreItems as {
+                __typename?: 'Message';
+                senderName?: string | null;
+                message?: string | null;
+                date: any;
+              }[]),
+            ],
+          };
         },
       });
     };
@@ -82,7 +113,7 @@ export const useMessages = ({senderName}: {senderName: string}) => {
   return {...other, data, fetchMore, loading};
 };
 
-export const useSendMessage = () => {
+export const useSendMessage = ({eventChatId}: {eventChatId: string}) => {
   const [mutate] = useSaveMessageMutation();
 
   const sendMessage = React.useCallback(
@@ -104,42 +135,45 @@ export const useSendMessage = () => {
             // sender_id,
             senderName,
             message,
+            eventChatId,
           },
         },
         optimisticResponse,
-        update(client, {data}) {
-          try {
-            const q = client.readQuery<
-              MessagesQuery,
-              {input: {offset: number; limit: number}}
-            >({
-              query: GetMessagesQuery,
-              variables: {input: {offset: 0, limit: 20}},
-            });
-            console.log('in mutate' + q?.getMessage);
+        //   update(client, {data}) {
+        //     try {
+        //       const q = client.readQuery<
+        //         MessagesQuery,
+        //         {input: {offset: number; limit: number; eventChatId: string}}
+        //       >({
+        //         query: GetMessagesQuery,
+        //         variables: {input: {offset: 0, limit: 20, eventChatId}},
+        //       });
+        //       console.log('in mutate' + q?.getMessage);
 
-            if (!q?.getMessage) {
-              return;
-            }
+        //       if (!q?.getMessage) {
+        //         console.log('in mutate if');
+        //         return;
+        //       }
 
-            const _message = data?.saveMessage;
-            if (!_message) {
-              return;
-            }
-            client.writeQuery<MessagesQuery>({
-              query: GetMessagesQuery,
-              // variables: { input: { offset: 0, limit: 20 } },
-              data: {
-                getMessage: [...q?.getMessage, _message],
-              },
-            });
-          } catch (err) {
-            console.log('thisiserr' + err);
-          }
-        },
-      }).catch(err => {
-        // UNauthorized should get new
-        console.log('thisiserr' + err);
+        //       const _message = data?.saveMessage;
+        //       console.log('in mutate' + _message);
+        //       if (!_message) {
+        //         return;
+        //       }
+        //       client.writeQuery<MessagesQuery>({
+        //         query: GetMessagesQuery,
+        //         variables: {input: {offset: 0, limit: 20, eventChatId}},
+        //         data: {
+        //           getMessage: [...q?.getMessage, _message],
+        //         },
+        //       });
+        //     } catch (err) {
+        //       console.log('thisiserr' + err);
+        //     }
+        //   },
+        // }).catch(err => {
+        //   // UNauthorized should get new
+        //   console.log('thisiserr' + err);
       });
     },
     [],
