@@ -388,9 +388,9 @@ PODS:
     - React-Core
   - RNGestureHandler (2.7.0):
     - React-Core
-  - RNLocalize (2.2.3):
+  - RNLocalize (2.2.4):
     - React-Core
-  - RNScreens (3.17.0):
+  - RNScreens (3.18.0):
     - React-Core
     - React-RCTImage
   - RNSVG (12.1.1):
@@ -633,8 +633,8 @@ SPEC CHECKSUMS:
   RNCAsyncStorage: 0c357f3156fcb16c8589ede67cc036330b6698ca
   RNCMaskedView: bc0170f389056201c82a55e242e5d90070e18e5a
   RNGestureHandler: 7673697e7c0e9391adefae4faa087442bc04af33
-  RNLocalize: a64514b46a01375fdfae9349036b4dc7130333b5
-  RNScreens: 0df01424e9e0ed7827200d6ed1087ddd06c493f9
+  RNLocalize: 0df7970cfc60389f00eb62fd7c097dc75af3fb4f
+  RNScreens: f3230dd008a7d0ce5c0a8bc78ff12cf2315bda24
   RNSVG: 551acb6562324b1d52a4e0758f7ca0ec234e278f
   SocketRocket: fccef3f9c5cedea1353a9ef6ada904fde10d6608
   Yoga: 6c8252e38d65aa387daee699eacf027e055e0b31
