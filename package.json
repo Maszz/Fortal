@@ -34,7 +34,7 @@
     "nth-check": "^2.1.1",
     "react": "18.1.0",
     "react-i18next": "^11.18.5",
-    "react-native": "0.70.1",
+    "react-native": "0.70.2",
     "react-native-gesture-handler": "^2.7.0",
     "react-native-gifted-chat": "^1.0.4",
     "react-native-localize": "^2.2.3",
