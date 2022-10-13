@@ -9,27 +9,27 @@
  */
 import React from 'react';
 import {Provider} from 'react-redux';
-import {store, RootState} from './redux';
-import {countAction, persistor} from './redux';
-import {NativeBaseProvider, Box, Text, ScrollView, Button} from 'native-base';
 import {PersistGate} from 'redux-persist/integration/react';
-import {client} from './graphql/client';
-import {ApolloClient, InMemoryCache, ApolloProvider} from '@apollo/client';
-import App from './screens/App';
 // @ts-ignore: no declaration files
 import FlipperAsyncStorage from 'rn-flipper-async-storage-advanced';
-import {
-  NavigationContainer,
-  useNavigationContainerRef,
-} from '@react-navigation/native';
+import {Box, Button, NativeBaseProvider, ScrollView, Text} from 'native-base';
+import {ApolloClient, ApolloProvider, InMemoryCache} from '@apollo/client';
 import {
   useFlipper,
   useReduxDevToolsExtension,
 } from '@react-navigation/devtools';
+import {
+  NavigationContainer,
+  useNavigationContainerRef,
+} from '@react-navigation/native';
 import {createStackNavigator, StackScreenProps} from '@react-navigation/stack';
-import type {StackScreenParams, HomeScreenProps} from './types';
+
+import {client} from './graphql/client';
+import {countAction, persistor, RootState, store} from './redux';
+import App from './screens/App';
 import LoginScreen from './screens/loginScreen';
 
+import type {StackScreenParams, HomeScreenProps} from './types';
 const Stack = createStackNavigator<StackScreenParams>();
 
 const StackNavigation = () => {
