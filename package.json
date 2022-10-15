@@ -37,6 +37,7 @@
     "react-native": "0.70.1",
     "react-native-gesture-handler": "^2.7.0",
     "react-native-gifted-chat": "^1.0.4",
+    "react-native-linear-gradient": "^2.6.2",
     "react-native-localize": "^2.2.3",
     "react-native-mmkv": "^2.4.3",
     "react-native-mmkv-flipper-plugin": "^1.0.0",
