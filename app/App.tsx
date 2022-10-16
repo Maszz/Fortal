@@ -30,6 +30,10 @@ import App from './screens/App';
 import LoginScreen from './screens/loginScreen';
 
 import type {StackScreenParams, HomeScreenProps} from './types';
+
+import {SheetProvider} from 'react-native-actions-sheet';
+import './utils/SheetManager';
+
 const Stack = createStackNavigator<StackScreenParams>();
 
 const StackNavigation = () => {
@@ -39,13 +43,13 @@ const StackNavigation = () => {
   return (
     <Stack.Navigator>
       <Stack.Screen
-        name="Home"
-        component={App}
+        name="Login"
+        component={LoginScreen}
         options={{headerShown: false}}
       />
       <Stack.Screen
-        name="Login"
-        component={LoginScreen}
+        name="Home"
+        component={App}
         options={{headerShown: false}}
       />
     </Stack.Navigator>
@@ -65,9 +69,11 @@ const Wrapper = () => {
       <PersistGate loading={null} persistor={persistor}>
         <ApolloProvider client={client}>
           <NativeBaseProvider>
-            <NavigationContainer ref={navigationRef}>
-              <StackNavigation />
-            </NavigationContainer>
+            <SheetProvider>
+              <NavigationContainer ref={navigationRef}>
+                <StackNavigation />
+              </NavigationContainer>
+            </SheetProvider>
           </NativeBaseProvider>
         </ApolloProvider>
       </PersistGate>

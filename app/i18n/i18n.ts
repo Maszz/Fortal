@@ -1,6 +1,7 @@
 import i18n, {ModuleType} from 'i18next';
 import {initReactI18next} from 'react-i18next';
 import en from './en.json';
+import th from './th.json';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as RNLocalize from 'react-native-localize';
 
@@ -9,6 +10,7 @@ import * as RNLocalize from 'react-native-localize';
 // or even better, manage them separated from your code: https://react.i18next.com/guides/multiple-translation-files)
 const LANGUAGES = {
   en,
+  th,
 };
 
 const LANG_CODES = Object.keys(LANGUAGES);
@@ -27,13 +29,13 @@ const LANGUAGE_DETECTOR = {
         }
         const findBestAvailableLanguage =
           RNLocalize.findBestAvailableLanguage(LANG_CODES);
-
+        // callback('th');
         callback(findBestAvailableLanguage?.languageTag || 'en');
         // callback('en');
         return;
       }
-
-      callback(language);
+      callback('th');
+      // callback(language);
     });
   },
   init: () => {},
@@ -52,7 +54,6 @@ i18n
     react: {
       useSuspense: false,
     },
-
     interpolation: {
       escapeValue: false, // react already safes from xss
     },

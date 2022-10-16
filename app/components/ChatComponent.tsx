@@ -35,6 +35,13 @@ import {
   renderSend,
 } from './InputToolBar';
 
+/**
+ * Non ready prebuild components `from react-native-gifted-chat`
+ * @CONTRIBUTIONS if have time enough, please help to build these components and make a PR
+ *                we will build them anyway, but if not, we will use this as default
+ * @TODO build full functionality of these components with native-base
+ * @PROPS messages from useChat hooks or any other sources.
+ */
 const ChatComponent = () => {
   const [messages, setMessages] = useState<IMessage[]>([]);
   const [textInput, setTextInput] = useState<string>('');

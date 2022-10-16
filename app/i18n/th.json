@@ -1,0 +1,39 @@
+{
+  "common": {
+    "ok": "OK!",
+    "cancel": "ยกเลิก",
+    "back": "กลับ"
+  },
+  "errors": {
+    "invalidEmail": "อีเมลไม่ถูกต้อง"
+  },
+  "loginScreen": {
+    "welcome": "ยินดีต้อนรับสู่",
+    "signin": "เข้าสู่ระบบ",
+    "signup": "สมัครสมาชิก",
+    "fortal": "Fortal"
+  },
+  "loginActionsSheet": {
+    "title_1": "ยินดีต้อนรับ",
+    "title_2": "กลับ",
+    "username": "ชื่อผู้ใช้",
+    "usernamePlaceholder": "กรอกชื่อผู้ใช้",
+    "password": "รหัสผ่าน",
+    "passwordPlaceholder": "กรอกรหัสผ่าน",
+    "forgetPassword": "ลืมรหัสผ่าน"
+  },
+  "registerActionsSheet": {
+    "title_1": "สมัค",
+    "title_2": "สมาชิก",
+    "name": "ชื่อ-นามสกุล",
+    "namePlaceholder": "กรอกชื่อ-นามสกุล",
+    "username": "ชื่อผู้ใช้",
+    "usernamePlaceholder": "กรอกชื่อผู้ใช้",
+    "email": "อีเมล",
+    "emailPlaceholder": "กรอกอีเมล",
+    "password": "รหัสผ่าน",
+    "passwordPlaceholder": "กรอกรหัสผ่าน",
+    "confirmPassword": "ยืนยันรหัสผ่าน",
+    "confirmPasswordPlaceholder": "กรอกรหัสผ่านอีกครั้ง"
+  }
+}
