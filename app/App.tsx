@@ -7,7 +7,7 @@
  *
  * @format
  */
-import React, {FunctionComponent} from 'react';
+import React, {FunctionComponent, useEffect, useState} from 'react';
 import {Provider} from 'react-redux';
 import {PersistGate} from 'redux-persist/integration/react';
 // @ts-ignore: no declaration files
@@ -43,6 +43,9 @@ import {SheetProvider} from 'react-native-actions-sheet';
 import './utils/SheetManager';
 import RegisterOnboardGender from './screens/registerOnboardGender';
 import RegisterOnboardActivity from './screens/registerOnboardActivity';
+import Home from './screens/home';
+import {AuthProvider} from './contexts/authContext';
+import {useAuth} from './hooks/useAuth';
 const Stack = createStackNavigator<StackScreenParams>();
 const defaultScreenOption: StackNavigationOptions = {
   headerShown: false,
@@ -52,28 +55,43 @@ const StackNavigation = () => {
   /**
    * when Defined new Screen you should declare type of it in folder type.
    */
+  // const user = useState(false);
+  const {user} = useAuth();
+  useEffect(() => {
+    console.log('user', user);
+  });
   return (
     <Stack.Navigator>
-      <Stack.Screen
-        name="Login"
-        component={LoginScreen}
-        options={{...defaultScreenOption}}
-      />
-      <Stack.Screen
-        name="Home"
-        component={App}
-        options={{headerShown: false, gestureEnabled: false}}
-      />
-      <Stack.Screen
-        name="Onboard1"
-        component={RegisterOnboardGender}
-        options={{...defaultScreenOption}}
-      />
-      <Stack.Screen
-        name="Onboard2"
-        component={RegisterOnboardActivity}
-        options={{...defaultScreenOption}}
-      />
+      {!user || !user.username ? (
+        <>
+          <Stack.Screen
+            name="Login"
+            component={LoginScreen}
+            options={{...defaultScreenOption}}
+          />
+          {/* <Stack.Screen
+            name="Home"
+            component={App}
+            options={{headerShown: false, gestureEnabled: false}}
+          /> */}
+          <Stack.Screen
+            name="Onboard1"
+            component={RegisterOnboardGender}
+            options={{...defaultScreenOption}}
+          />
+          <Stack.Screen
+            name="Onboard2"
+            component={RegisterOnboardActivity}
+            options={{...defaultScreenOption}}
+          />
+        </>
+      ) : (
+        <Stack.Screen
+          name="Home"
+          component={Home}
+          options={{...defaultScreenOption}}
+        />
+      )}
     </Stack.Navigator>
   );
 };
@@ -91,11 +109,13 @@ const Wrapper = () => {
       <PersistGate loading={null} persistor={persistor}>
         <ApolloProvider client={client}>
           <NativeBaseProvider>
-            <SheetProvider>
-              <NavigationContainer ref={navigationRef}>
-                <StackNavigation />
-              </NavigationContainer>
-            </SheetProvider>
+            <AuthProvider>
+              <SheetProvider>
+                <NavigationContainer ref={navigationRef}>
+                  <StackNavigation />
+                </NavigationContainer>
+              </SheetProvider>
+            </AuthProvider>
           </NativeBaseProvider>
         </ApolloProvider>
       </PersistGate>

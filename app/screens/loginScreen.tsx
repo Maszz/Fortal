@@ -21,14 +21,13 @@ import {StyleSheet, TouchableOpacity} from 'react-native';
 import {SheetManager} from 'react-native-actions-sheet';
 import {useTranslation} from 'react-i18next';
 import {Dimensions} from 'react-native';
-
+import GradientButton from '../components/GradientButton';
 const LoginScreen: FunctionComponent<LoginScreenProps> = ({
   navigation,
   route,
 }) => {
   const {t} = useTranslation();
   const windowHeight = Dimensions.get('window').height;
-
   return (
     <View style={{flex: 1}}>
       <ZStack>
@@ -59,10 +58,7 @@ const LoginScreen: FunctionComponent<LoginScreenProps> = ({
       <Box style={{flex: 2}} />
       <Box style={{flex: 1}}>
         <Box alignItems="center" justifyContent={'space-between'} flex={1}>
-          <TouchableOpacity
-            style={{width: 250, height: 40}}
-            // width={'250px'}
-            // height={'40px'}>
+          <GradientButton
             onPress={() => {
               SheetManager.show('login-sheet', {
                 payload: {
@@ -70,27 +66,18 @@ const LoginScreen: FunctionComponent<LoginScreenProps> = ({
                   navigation: navigation,
                 },
               });
-            }}>
-            <LinearGradient
-              colors={['#3275F3', '#BD97FB', '#FFDFD8']}
-              useAngle={true}
-              angle={90}
-              angleCenter={{x: 0.5, y: 0.5}}
-              style={{
-                flex: 1,
-                paddingLeft: 15,
-                paddingRight: 15,
-                borderRadius: 25,
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}>
-              <Text color={'white'} bold fontSize={16}>
-                {t('loginScreen:signin')}
-              </Text>
-            </LinearGradient>
-          </TouchableOpacity>
+            }}
+            text={t('loginScreen:signin')}
+          />
           <TouchableOpacity
-            onPress={() => SheetManager.show('register-sheet')}
+            onPress={() =>
+              SheetManager.show('register-sheet', {
+                payload: {
+                  id: 'login-sheet',
+                  navigation: navigation,
+                },
+              })
+            }
             style={{
               width: 250,
               height: 40,

@@ -19,14 +19,21 @@ import ImageIcon from '../utils/ImageIcon';
 import ImageButton from './ImageButton';
 import {LoginActionsSheetProps} from '../types';
 import {useTranslation} from 'react-i18next';
-
+import {useAuth} from '../hooks/useAuth';
+import GradientButton from './GradientButton';
+export interface UserInput {
+  username: string;
+  password: string;
+}
 const LoginActionsSheet: FunctionComponent<LoginActionsSheetProps> = ({
   sheetId,
   payload,
 }) => {
   const actionSheetRef = useRef<ActionSheetRef>(null);
   const {t} = useTranslation();
-
+  const {login} = useAuth();
+  const [userInput, setUserInput] = useState<UserInput>({} as UserInput);
+  const [isInvalid, setIsInvalid] = useState(false);
   const [isKeyboardVisible, setKeyboardVisible] = useState(false);
   useEffect(() => {
     const keyboardDidShowListener = Keyboard.addListener(
@@ -85,11 +92,24 @@ const LoginActionsSheet: FunctionComponent<LoginActionsSheetProps> = ({
             title={t('loginActionsSheet:username')}
             icon={ImageIcon.loginScreen.user}
             placeholder={t('loginActionsSheet:usernamePlaceholder')}
+            value={userInput.username}
+            onChangeText={text => {
+              setUserInput({...userInput, username: text});
+            }}
+            isInvalid={isInvalid}
+            invalidMessage={''}
           />
           <FormInput
             title={t('loginActionSheet:password')}
             icon={ImageIcon.loginScreen.user}
             placeholder={t('loginActionsSheet:passwordPlaceholder')}
+            value={userInput.password}
+            onChangeText={text => {
+              setUserInput({...userInput, password: text});
+            }}
+            isInvalid={isInvalid}
+            invalidMessage={'Invalid password'}
+            type={'password'}
           />
           <Button
             size="sm"
@@ -105,33 +125,24 @@ const LoginActionsSheet: FunctionComponent<LoginActionsSheetProps> = ({
         </View>
         <View style={{flex: 0.5, paddingTop: 25}}>
           <Center>
-            <TouchableOpacity
-              style={{width: 250, height: 40}}
-              // width={'250px'}
-              // height={'40px'}>
+            <GradientButton
               onPress={() => {
                 console.log('pressed');
-                SheetManager.hide('login-sheet');
-                payload?.navigation.navigate('Onboard1');
-              }}>
-              <LinearGradient
-                colors={['#3275F3', '#BD97FB', '#FFDFD8']}
-                useAngle={true}
-                angle={90}
-                angleCenter={{x: 0.5, y: 0.5}}
-                style={{
-                  flex: 1,
-                  paddingLeft: 15,
-                  paddingRight: 15,
-                  borderRadius: 25,
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }}>
-                <Text color={'white'} bold fontSize={16}>
-                  {t('loginScreen:signin')}
-                </Text>
-              </LinearGradient>
-            </TouchableOpacity>
+                login(userInput.username, userInput.password).then(res => {
+                  console.log(res);
+                  if (res) {
+                    actionSheetRef.current?.hide();
+                  } else {
+                    // alert('Login failed');
+                    setUserInput({...userInput, password: ''});
+                    setIsInvalid(true);
+                  }
+                });
+                // SheetManager.hide('login-sheet');
+                // payload?.navigation.navigate('Onboard1');
+              }}
+              text={t('loginScreen:signin')}
+            />
           </Center>
         </View>
         <View style={{flex: 1, marginTop: 25}}>

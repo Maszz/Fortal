@@ -16,6 +16,11 @@ export interface FormInputProps {
   title: string;
   placeholder: string;
   icon: any;
+  onChangeText: (text: string) => void;
+  value: string;
+  isInvalid: boolean;
+  invalidMessage: string;
+  type?: 'text' | 'password';
 }
 
 interface LoginActionsSheetPayload {
@@ -28,6 +33,7 @@ export interface LoginActionsSheetProps
 
 interface RegisterActionsSheetPayload {
   id: string;
+  navigation: any;
 }
 
 export interface RegisterActionsSheetProps
