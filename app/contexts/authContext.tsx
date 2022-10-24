@@ -40,6 +40,8 @@ const useAuth = () => {
         username,
         password,
         deviceId: deviceInfo.deviceId,
+        platform: deviceInfo.Platform,
+        manufacturer: deviceInfo.manufacturer,
       }),
     });
     const body = (await response.json()) as LoginResponseDto;
@@ -89,6 +91,7 @@ const useAuth = () => {
   const getDeviceInfo = async () => {
     const uid = await getUniqueId();
     const platform = Platform.OS;
+    // console.log('Platform: ' + platform);
     const manufacturer = await getManufacturer();
     setDeviceInfo({
       deviceId: uid,
