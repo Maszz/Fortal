@@ -2,6 +2,7 @@ import ActionSheet, {
   useScrollHandlers,
   ActionSheetRef,
   SheetProps,
+  SheetManager,
 } from 'react-native-actions-sheet';
 import {FunctionComponent, useState, useEffect, useRef} from 'react';
 import {View, Text, Input, Image, Button, Center} from 'native-base';
@@ -110,6 +111,8 @@ const LoginActionsSheet: FunctionComponent<LoginActionsSheetProps> = ({
               // height={'40px'}>
               onPress={() => {
                 console.log('pressed');
+                SheetManager.hide('login-sheet');
+                payload?.navigation.navigate('Onboard1');
               }}>
               <LinearGradient
                 colors={['#3275F3', '#BD97FB', '#FFDFD8']}

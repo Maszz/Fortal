@@ -20,17 +20,23 @@ import LinearGradient from 'react-native-linear-gradient';
 import {StyleSheet, TouchableOpacity} from 'react-native';
 import {SheetManager} from 'react-native-actions-sheet';
 import {useTranslation} from 'react-i18next';
+import {Dimensions} from 'react-native';
 
 const LoginScreen: FunctionComponent<LoginScreenProps> = ({
   navigation,
   route,
 }) => {
   const {t} = useTranslation();
+  const windowHeight = Dimensions.get('window').height;
 
   return (
     <View style={{flex: 1}}>
       <ZStack>
-        <Image source={require('../assets/fortal_bg.png')} alt={'bg'}></Image>
+        <Image
+          source={require('../assets/fortal_bg.png')}
+          alt={'bg'}
+          width={'100%'}
+          height={windowHeight}></Image>
       </ZStack>
       <Box style={{flex: 1}}></Box>
       <Box style={{flex: 2, flexDirection: 'row'}}>
@@ -58,7 +64,12 @@ const LoginScreen: FunctionComponent<LoginScreenProps> = ({
             // width={'250px'}
             // height={'40px'}>
             onPress={() => {
-              SheetManager.show('login-sheet');
+              SheetManager.show('login-sheet', {
+                payload: {
+                  id: 'login-sheet',
+                  navigation: navigation,
+                },
+              });
             }}>
             <LinearGradient
               colors={['#3275F3', '#BD97FB', '#FFDFD8']}

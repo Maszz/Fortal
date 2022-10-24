@@ -7,7 +7,7 @@
  *
  * @format
  */
-import React from 'react';
+import React, {FunctionComponent} from 'react';
 import {Provider} from 'react-redux';
 import {PersistGate} from 'redux-persist/integration/react';
 // @ts-ignore: no declaration files
@@ -22,8 +22,16 @@ import {
   NavigationContainer,
   useNavigationContainerRef,
 } from '@react-navigation/native';
-import {createStackNavigator, StackScreenProps} from '@react-navigation/stack';
-
+import {
+  createStackNavigator,
+  StackScreenProps,
+  StackCardStyleInterpolator,
+  StackCardInterpolationProps,
+  CardStyleInterpolators,
+  TransitionPresets,
+  StackNavigationOptions,
+} from '@react-navigation/stack';
+import {Animated} from 'react-native';
 import {client} from './graphql/client';
 import {countAction, persistor, RootState, store} from './redux';
 import App from './screens/App';
@@ -33,9 +41,13 @@ import type {StackScreenParams, HomeScreenProps} from './types';
 
 import {SheetProvider} from 'react-native-actions-sheet';
 import './utils/SheetManager';
-
+import RegisterOnboardGender from './screens/registerOnboardGender';
+import RegisterOnboardActivity from './screens/registerOnboardActivity';
 const Stack = createStackNavigator<StackScreenParams>();
-
+const defaultScreenOption: StackNavigationOptions = {
+  headerShown: false,
+  gestureEnabled: true,
+};
 const StackNavigation = () => {
   /**
    * when Defined new Screen you should declare type of it in folder type.
@@ -45,12 +57,22 @@ const StackNavigation = () => {
       <Stack.Screen
         name="Login"
         component={LoginScreen}
-        options={{headerShown: false}}
+        options={{...defaultScreenOption}}
       />
       <Stack.Screen
         name="Home"
         component={App}
-        options={{headerShown: false}}
+        options={{headerShown: false, gestureEnabled: false}}
+      />
+      <Stack.Screen
+        name="Onboard1"
+        component={RegisterOnboardGender}
+        options={{...defaultScreenOption}}
+      />
+      <Stack.Screen
+        name="Onboard2"
+        component={RegisterOnboardActivity}
+        options={{...defaultScreenOption}}
       />
     </Stack.Navigator>
   );

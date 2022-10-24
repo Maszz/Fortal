@@ -20,6 +20,7 @@ export interface FormInputProps {
 
 interface LoginActionsSheetPayload {
   id: string;
+  navigation: any;
 }
 
 export interface LoginActionsSheetProps
