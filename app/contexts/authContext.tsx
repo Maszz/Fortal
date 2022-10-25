@@ -11,7 +11,13 @@ import {store, RootState, userAction} from '../redux';
 import {getUniqueId, getManufacturer} from 'react-native-device-info';
 import {Platform} from 'react-native';
 import {Message} from '../graphql/graphql';
-import {AuthContextData, DeviceInfo, User, LoginResponseDto} from '../types';
+import {
+  AuthContextData,
+  DeviceInfo,
+  User,
+  LoginResponseDto,
+  RegisterFormInput,
+} from '../types';
 export const AuthContext = createContext<AuthContextData>(
   {} as AuthContextData,
 );
@@ -21,6 +27,7 @@ export const AuthProvider: FunctionComponent<{children?: JSX.Element}> = ({
   const auth = useAuth();
   return <AuthContext.Provider value={auth}>{children}</AuthContext.Provider>;
 };
+
 const useAuth = () => {
   // user state send the pure state to the component , not include persist state
   const [deviceInfo, setDeviceInfo] = useState<DeviceInfo>({} as DeviceInfo);
@@ -29,6 +36,63 @@ const useAuth = () => {
   const [loading, setLoading] = useState(true);
   const [isMount, setIsMount] = useState(false);
   const dispatch = useDispatch();
+  const register = async ({
+    name,
+    email,
+    password,
+    username,
+  }: RegisterFormInput) => {
+    try {
+      const response = await fetch('http://localhost:3333/auth/signup', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          username,
+          password,
+          name,
+          email,
+          deviceId: deviceInfo.deviceId,
+          platform: deviceInfo.Platform,
+          manufacturer: deviceInfo.manufacturer,
+        }),
+      });
+      const body = (await response.json()) as LoginResponseDto;
+      console.log('body', body);
+      if (body.error === 'Bad Request') {
+        // if error is bad request messgae will be only array of string
+        const b = body.message as string[];
+        if (b.find((m: string) => m === 'email must be an email')) {
+          return {
+            msg: false,
+            error: 'Email must be an email',
+          };
+        }
+      }
+      if (
+        body.error === 'Forbidden' &&
+        body.message === 'Credentials incorrect'
+      ) {
+        console.log('Credentials incorrect');
+        return {msg: false, error: 'Credentials incorrect'};
+      }
+      if (body.access_token) {
+        setUser({
+          // handle bad typing from backend , will fix in the future :)
+          username: body.userId as string,
+          at: body.access_token as string,
+          rt: body.refresh_token as string,
+        });
+        console.log('Register success w/ username: ' + body.userId);
+        return {msg: true};
+      }
+      return {msg: false};
+    } catch (e) {
+      console.log(e);
+      return {msg: false, error: 'Something went wrong'};
+    }
+  };
   const login = async (username: string, password: string) => {
     setLoading(true);
     const response = await fetch('http://localhost:3333/auth/signin', {
@@ -129,5 +193,6 @@ const useAuth = () => {
     login,
     logout,
     loading,
+    register,
   };
 };

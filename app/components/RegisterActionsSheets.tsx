@@ -26,12 +26,20 @@ import ActionSheet, {
 } from 'react-native-actions-sheet';
 import FormInput from './FormInput';
 import GradientButton from './GradientButton';
+import {useAuth} from '../hooks/useAuth';
 export interface RegisterUserInput {
   name: string;
   email: string;
   password: string;
   confirmPassword: string;
   username: string;
+}
+export interface InvalidRegisterInput {
+  name: boolean;
+  email: boolean;
+  password: boolean;
+  confirmPassword: boolean;
+  username: boolean;
 }
 const RegisterActionsSheet: FunctionComponent<RegisterActionsSheetProps> = ({
   sheetId,
@@ -42,7 +50,11 @@ const RegisterActionsSheet: FunctionComponent<RegisterActionsSheetProps> = ({
   const [userInput, setUserInput] = useState<RegisterUserInput>(
     {} as RegisterUserInput,
   );
+  const {register} = useAuth();
   const [isKeyboardVisible, setKeyboardVisible] = useState(false);
+  const [invalidInput, setInvalidInput] = useState<InvalidRegisterInput>(
+    {} as InvalidRegisterInput,
+  );
   useEffect(() => {
     const keyboardDidShowListener = Keyboard.addListener(
       'keyboardDidShow',
@@ -133,8 +145,8 @@ const RegisterActionsSheet: FunctionComponent<RegisterActionsSheetProps> = ({
               setUserInput({...userInput, name: text});
             }}
             value={userInput.name}
-            isInvalid={false}
-            invalidMessage={''}
+            isInvalid={invalidInput.name}
+            invalidMessage={'Invalid name'}
           />
           <FormInput
             title={t('registerActionsSheet:username')}
@@ -144,8 +156,8 @@ const RegisterActionsSheet: FunctionComponent<RegisterActionsSheetProps> = ({
               setUserInput({...userInput, username: text});
             }}
             value={userInput.username}
-            isInvalid={false}
-            invalidMessage={''}
+            isInvalid={invalidInput.username}
+            invalidMessage={'username is required'}
           />
           <FormInput
             title={t('registerActionsSheet:password')}
@@ -155,7 +167,7 @@ const RegisterActionsSheet: FunctionComponent<RegisterActionsSheetProps> = ({
               setUserInput({...userInput, password: text});
             }}
             value={userInput.password}
-            isInvalid={false}
+            isInvalid={invalidInput.confirmPassword || invalidInput.password}
             invalidMessage={''}
             type={'password'}
           />
@@ -167,8 +179,14 @@ const RegisterActionsSheet: FunctionComponent<RegisterActionsSheetProps> = ({
               setUserInput({...userInput, confirmPassword: text});
             }}
             value={userInput.confirmPassword}
-            isInvalid={false}
-            invalidMessage={''}
+            isInvalid={invalidInput.confirmPassword || invalidInput.password}
+            invalidMessage={
+              invalidInput.confirmPassword && invalidInput.password
+                ? 'password is required'
+                : invalidInput.confirmPassword
+                ? 'passwords do not match'
+                : 'password is required'
+            }
             type={'password'}
           />
           <FormInput
@@ -179,20 +197,72 @@ const RegisterActionsSheet: FunctionComponent<RegisterActionsSheetProps> = ({
               setUserInput({...userInput, email: text});
             }}
             value={userInput.email}
-            isInvalid={false}
-            invalidMessage={''}
+            isInvalid={invalidInput.email}
+            invalidMessage={'email must be email'}
           />
         </View>
         <View style={{flex: 1, marginTop: 20}}>
           <Center>
             <GradientButton
-              onPress={() => {
-                console.log('pressed');
-                if (userInput.password === userInput.confirmPassword) {
-                  // register stuff if success navigate to next screen
-                  SheetManager.hide('register-sheet');
-                  payload?.navigation.navigate('Onboard1');
+              onPress={async () => {
+                let errCount = 0;
+                const error = {
+                  name: false,
+                  email: false,
+                  password: false,
+                  confirmPassword: false,
+                  username: false,
+                };
+                if (!userInput.email) {
+                  //
+                  // setInvalidInput({...invalidInput, email: true});
+                  error.email = true;
+                  errCount++;
                 }
+                if (!userInput.name) {
+                  //
+                  // setInvalidInput({...invalidInput, name: true});
+                  error.name = true;
+                  errCount++;
+                }
+                if (!userInput.password || !userInput.confirmPassword) {
+                  //
+                  // setInvalidInput({...invalidInput, password: true});
+                  error.password = true;
+                  errCount++;
+                }
+                if (!userInput.username) {
+                  //
+                  // setInvalidInput({...invalidInput, username: true});
+                  error.username = true;
+                  errCount++;
+                }
+                if (userInput.password !== userInput.confirmPassword) {
+                  //
+                  // setInvalidInput({...invalidInput, confirmPassword: true});
+                  error.confirmPassword = true;
+                  errCount++;
+                }
+                console.log(errCount);
+                if (errCount === 0) {
+                  // register stuff if success navigate to next screen
+                  const {username, password, email, name} = userInput;
+                  const res = await register({username, password, email, name});
+                  if (res.msg) {
+                    actionSheetRef.current?.hide();
+                    payload?.navigation.navigate('Onboard1');
+                  }
+                  if (res.error) {
+                    if (res.error === 'Email must be an email') {
+                      console.log(res.error);
+                      error.email = true;
+
+                      // alert('Email must be an email');
+                    }
+                  }
+                }
+
+                setInvalidInput(error);
               }}
               text={t('loginScreen:signup')}
             />
