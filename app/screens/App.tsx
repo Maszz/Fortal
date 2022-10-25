@@ -18,10 +18,10 @@ const App: FunctionComponent<HomeScreenProps> = ({route, navigation}) => {
     state => state.count,
   );
   const dispatch = useDispatch();
-  const {chatMessages, sendMessage, fetchMore} = useChat({
-    senderName: 'testName2',
-    eventChatId: '6321e46d8abaf1746d118374',
-  });
+  // const {chatMessages, sendMessage, fetchMore} = useChat({
+  //   senderName: 'testName2',
+  //   eventChatId: '6321e46d8abaf1746d118374',
+  // });
 
   return (
     <ScrollView style={{flex: 1, backgroundColor: '#222B45'}}>
@@ -29,13 +29,13 @@ const App: FunctionComponent<HomeScreenProps> = ({route, navigation}) => {
       <Text>Test</Text>
       <Text>{count.value}</Text>
       <Text onPress={() => dispatch(countAction.increment())}>+</Text>
-      <Text onPress={() => fetchMore()}>Fetchmore</Text>
+      {/* <Text onPress={() => fetchMore()}>Fetchmore</Text>
       <Text
         onPress={() =>
           sendMessage({message: 'teslkjlkjt', senderName: 'testname'})
         }>
         Send
-      </Text>
+      </Text> */}
       <Button
         onPress={() =>
           navigation.navigate('Login', {eventId: '6321e46d8abaf1746d118374'})
@@ -44,7 +44,7 @@ const App: FunctionComponent<HomeScreenProps> = ({route, navigation}) => {
       </Button>
 
       <Box>Boxxxx</Box>
-      {chatMessages?.map(message => {
+      {/* {chatMessages?.map(message => {
         return (
           <Box key={message.date}>
             <Text>
@@ -52,7 +52,7 @@ const App: FunctionComponent<HomeScreenProps> = ({route, navigation}) => {
             </Text>
           </Box>
         );
-      })}
+      })} */}
       {/* <Chat /> */}
     </ScrollView>
   );

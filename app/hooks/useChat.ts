@@ -36,10 +36,6 @@ export const useChat = ({
     }
   }, [data]);
 
-  //   useEffect(() => {
-  //     prepareMessages();
-  //   }, [prepareMessages]);
-
   useEffect(() => {
     prepareMessagesCallback();
   }, [data]);
