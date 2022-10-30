@@ -22,12 +22,14 @@ import {SheetManager} from 'react-native-actions-sheet';
 import {useTranslation} from 'react-i18next';
 import {Dimensions} from 'react-native';
 import GradientButton from '../components/GradientButton';
+import {Config} from '../env';
 const LoginScreen: FunctionComponent<LoginScreenProps> = ({
   navigation,
   route,
 }) => {
   const {t} = useTranslation();
   const windowHeight = Dimensions.get('window').height;
+
   return (
     <View style={{flex: 1}}>
       <ZStack>

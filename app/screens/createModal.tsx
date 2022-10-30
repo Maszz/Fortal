@@ -1,11 +1,11 @@
 import {View, Text, Button} from 'native-base';
-import {useAuth} from '../hooks/useAuth';
-const Home = () => {
-  const {logout} = useAuth();
+
+import {FunctionComponent} from 'react';
+import {CreateModalProps} from '../types';
+const Home: FunctionComponent<CreateModalProps> = () => {
   return (
     <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
       <Text>Home Screen</Text>
-      <Button onPress={() => logout()}>btn</Button>
     </View>
   );
 };

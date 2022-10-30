@@ -2,6 +2,7 @@ import React, {createContext, FunctionComponent} from 'react';
 
 export interface User {
   username: string;
+  onboarding: boolean;
   at: string;
   rt: string;
 }
@@ -14,6 +15,7 @@ export interface LoginResponseDto {
   access_token?: string;
   refresh_token?: string;
   userId?: string;
+  onboarding?: boolean;
   error?: string;
   message?: string | string[];
   statusCode?: number;
@@ -33,4 +35,7 @@ export interface AuthContextData {
     msg: boolean;
     error?: string | undefined;
   }>;
+  updateOnboarding: (onboard: boolean) => Promise<void>;
+  updateOnboardingGender: (gender: string) => Promise<void>;
+  isMount: boolean;
 }

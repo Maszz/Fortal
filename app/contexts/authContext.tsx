@@ -35,6 +35,7 @@ const useAuth = () => {
   const userR = useSelector<RootState, RootState['user']>(state => state.user);
   const [loading, setLoading] = useState(true);
   const [isMount, setIsMount] = useState(false);
+
   const dispatch = useDispatch();
   const register = async ({
     name,
@@ -43,6 +44,7 @@ const useAuth = () => {
     username,
   }: RegisterFormInput) => {
     try {
+      setLoading(true);
       const response = await fetch('http://localhost:3333/auth/signup', {
         method: 'POST',
         headers: {
@@ -59,7 +61,9 @@ const useAuth = () => {
         }),
       });
       const body = (await response.json()) as LoginResponseDto;
-      console.log('body', body);
+      // console.log('body', body);
+      setLoading(false);
+
       if (body.error === 'Bad Request') {
         // if error is bad request messgae will be only array of string
         const b = body.message as string[];
@@ -83,6 +87,7 @@ const useAuth = () => {
           username: body.userId as string,
           at: body.access_token as string,
           rt: body.refresh_token as string,
+          onboarding: false,
         });
         console.log('Register success w/ username: ' + body.userId);
         return {msg: true};
@@ -111,6 +116,8 @@ const useAuth = () => {
     const body = (await response.json()) as LoginResponseDto;
     // console.log(body);
     // TODO : handle authentication login stuff.
+    setLoading(false);
+
     if (body.error) {
       console.log('Invalid ID');
       // setUser({} as User);
@@ -122,6 +129,7 @@ const useAuth = () => {
         username: body.userId as string,
         at: body.access_token as string,
         rt: body.refresh_token as string,
+        onboarding: body.onboarding as boolean,
       });
       console.log('Login success w/ username: ' + body.userId);
       return true;
@@ -130,6 +138,8 @@ const useAuth = () => {
   };
 
   const logout = async () => {
+    setLoading(true);
+
     const response = await fetch('http://localhost:3333/auth/logout', {
       method: 'POST',
       headers: {
@@ -150,7 +160,9 @@ const useAuth = () => {
       console.log('Logout success');
       return;
     }
+
     setUser({} as User);
+    setLoading(false);
   };
   const getDeviceInfo = async () => {
     const uid = await getUniqueId();
@@ -166,25 +178,82 @@ const useAuth = () => {
 
   const userUpdateCallback = useCallback(() => {
     console.log('userUpdateCallback');
-    const {username, at, rt} = user;
-    dispatch(userAction.mutate({username, at, rt}));
+    const {username, at, rt, onboarding} = user;
+    dispatch(userAction.mutate({username, at, rt, onboarding}));
   }, [user]);
+
+  const updateOnboarding = async (onboarding: boolean) => {
+    setLoading(true);
+
+    const response = await fetch(
+      'http://localhost:3333/user/update/onboarding',
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${user.at}`,
+        },
+        body: JSON.stringify({
+          userId: user.username,
+          onboarding: onboarding,
+        }),
+      },
+    );
+    const body = (await response.json()) as {result: boolean};
+    if (body) {
+      setUser({
+        ...user,
+        onboarding: body.result,
+      });
+    }
+
+    console.log('updateOnboarding', body);
+    setLoading(false);
+  };
+  const updateOnboardingGender = async (gender: string) => {
+    const response = await fetch(
+      'http://localhost:3333/user/update/onboarding/gender',
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${user.at}`,
+        },
+        body: JSON.stringify({
+          userId: user.username,
+          gender: gender,
+        }),
+      },
+    );
+    const body = (await response.json()) as {result: boolean};
+    // if (body) {
+    //   setUser({
+    //     ...user,
+    //     gender: body.result,
+    //   });
+    // }
+
+    // console.log('updateOnboarding', body);
+  };
 
   useEffect(() => {
     userUpdateCallback();
     if (!isMount) {
-      setIsMount(true);
-      console.log('onLoad Effect');
+      // console.log('onLoad Effect');
+      // setLoading(true);
 
       if (userR.username) {
         const o = userR;
-        const {username, at, rt} = o;
-        setUser({username, at, rt} as User);
+        const {username, at, rt, onboarding} = o;
+        setUser({username, at, rt, onboarding} as User);
         console.log('Load user from redux');
       }
       getDeviceInfo().then(() => {
         setLoading(false);
       });
+      // setLoading(false);
+      setLoading(false);
+      setIsMount(true);
     }
   }, [userUpdateCallback]);
 
@@ -194,5 +263,8 @@ const useAuth = () => {
     logout,
     loading,
     register,
+    updateOnboarding,
+    updateOnboardingGender,
+    isMount,
   };
 };

@@ -5,14 +5,14 @@ import {useSelector, useDispatch} from 'react-redux';
 import {countAction, persistor} from '../redux';
 import {Box, Text, ScrollView, Button} from 'native-base';
 import {useChat} from '../hooks/useChat';
-import type {HomeScreenProps} from '../types';
+// import type {HomeScreenProps} from '../types';
 
 /**
  * Dummy Components for testing code
  * @param param0
  * @returns
  */
-const App: FunctionComponent<HomeScreenProps> = ({route, navigation}) => {
+const App: FunctionComponent = () => {
   const {t} = useTranslation();
   const count = useSelector<RootState, RootState['count']>(
     state => state.count,
@@ -37,8 +37,9 @@ const App: FunctionComponent<HomeScreenProps> = ({route, navigation}) => {
         Send
       </Text> */}
       <Button
-        onPress={() =>
-          navigation.navigate('Login', {eventId: '6321e46d8abaf1746d118374'})
+        onPress={
+          () => {}
+          // navigation.navigate('Login', {eventId: '6321e46d8abaf1746d118374'})
         }>
         Send
       </Button>

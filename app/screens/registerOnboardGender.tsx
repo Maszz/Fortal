@@ -1,14 +1,16 @@
 import {Box, View, Center, Text, Image} from 'native-base';
-import {FunctionComponent} from 'react';
+import {FunctionComponent, useState} from 'react';
 import {RegisterOnboardGenderProps} from '../types';
 import {StyleSheet, TouchableOpacity} from 'react-native';
 import {SheetManager} from 'react-native-actions-sheet';
 import LinearGradient from 'react-native-linear-gradient';
-
+import {useAuth} from '../hooks/useAuth';
 const RegisterOnBoardGender: FunctionComponent<RegisterOnboardGenderProps> = ({
   navigation,
   route,
 }) => {
+  const {updateOnboardingGender} = useAuth();
+  const [selectedGender, setSelectedGender] = useState({selectedGender: ''});
   return (
     <View style={{flex: 1}}>
       <Box style={{flex: 0.2}} />
@@ -37,10 +39,17 @@ const RegisterOnBoardGender: FunctionComponent<RegisterOnboardGenderProps> = ({
             shadowOpacity: 0.25,
             shadowRadius: 1,
             elevation: 0.5,
+            borderWidth: 7,
+            borderRadius: 20,
+            borderColor:
+              selectedGender.selectedGender === 'Male'
+                ? '#BD97FB'
+                : 'transparent',
           }}
           // width={'250px'}
           // height={'40px'}>
           onPress={() => {
+            setSelectedGender({selectedGender: 'Male'});
             console.log('Pressable');
           }}>
           <LinearGradient
@@ -75,11 +84,18 @@ const RegisterOnBoardGender: FunctionComponent<RegisterOnboardGenderProps> = ({
             shadowOpacity: 0.25,
             shadowRadius: 1,
             elevation: 0.5,
+            borderRadius: 20,
+            borderWidth: 7,
+            borderColor:
+              selectedGender.selectedGender === 'Female'
+                ? '#BD97FB'
+                : 'transparent',
           }}
           // width={'250px'}
           // height={'40px'}>
           onPress={() => {
-            console.log('pressed');
+            setSelectedGender({selectedGender: 'Female'});
+            console.log('Pressable');
           }}>
           <LinearGradient
             colors={['#ffffff', '#FFEDD1', '#FFA3C4']}
@@ -122,11 +138,18 @@ const RegisterOnBoardGender: FunctionComponent<RegisterOnboardGenderProps> = ({
             shadowOpacity: 0.25,
             shadowRadius: 1,
             elevation: 0.5,
+            borderRadius: 20,
+            borderWidth: 7,
+            borderColor:
+              selectedGender.selectedGender === 'LGTBQ+'
+                ? '#BD97FB'
+                : 'transparent',
           }}
           // width={'250px'}
           // height={'40px'}>
           onPress={() => {
-            console.log('pressed');
+            setSelectedGender({selectedGender: 'LGTBQ+'});
+            console.log('Pressable');
           }}>
           <LinearGradient
             colors={['#8172F7', '#55BEF0', '#EEE696', '#EF8B88']}
@@ -146,7 +169,7 @@ const RegisterOnBoardGender: FunctionComponent<RegisterOnboardGenderProps> = ({
               alt="key icon"
               source={require('../assets/gender_icon.png')}
             />
-            <Text color={'#232259'} fontWeight={'medium'} fontSize={16}>
+            <Text color={'#232259'} fontWeight={'medium'} fontSize={13}>
               LGBTQ+
             </Text>
           </LinearGradient>
@@ -160,10 +183,17 @@ const RegisterOnBoardGender: FunctionComponent<RegisterOnboardGenderProps> = ({
             shadowOpacity: 0.25,
             shadowRadius: 1,
             elevation: 0.5,
+            borderRadius: 20,
+            borderWidth: 7,
+            borderColor:
+              selectedGender.selectedGender === 'None'
+                ? '#BD97FB'
+                : 'transparent',
           }}
           // width={'250px'}
           // height={'40px'}>
           onPress={() => {
+            setSelectedGender({selectedGender: 'None'});
             console.log('pressed');
           }}>
           <LinearGradient
@@ -216,7 +246,8 @@ const RegisterOnBoardGender: FunctionComponent<RegisterOnboardGenderProps> = ({
           style={{width: 250, height: 40}}
           // width={'250px'}
           // height={'40px'}>
-          onPress={() => {
+          onPress={async () => {
+            updateOnboardingGender(selectedGender.selectedGender);
             navigation.navigate('Onboard2');
           }}>
           <LinearGradient

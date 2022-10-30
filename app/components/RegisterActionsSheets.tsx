@@ -27,6 +27,7 @@ import ActionSheet, {
 import FormInput from './FormInput';
 import GradientButton from './GradientButton';
 import {useAuth} from '../hooks/useAuth';
+import {Config} from '../env';
 export interface RegisterUserInput {
   name: string;
   email: string;
@@ -205,6 +206,10 @@ const RegisterActionsSheet: FunctionComponent<RegisterActionsSheetProps> = ({
           <Center>
             <GradientButton
               onPress={async () => {
+                if (Config.bypassRegister) {
+                  actionSheetRef.current?.hide();
+                  payload?.navigation.navigate('Onboard1');
+                }
                 let errCount = 0;
                 const error = {
                   name: false,
@@ -214,32 +219,22 @@ const RegisterActionsSheet: FunctionComponent<RegisterActionsSheetProps> = ({
                   username: false,
                 };
                 if (!userInput.email) {
-                  //
-                  // setInvalidInput({...invalidInput, email: true});
                   error.email = true;
                   errCount++;
                 }
                 if (!userInput.name) {
-                  //
-                  // setInvalidInput({...invalidInput, name: true});
                   error.name = true;
                   errCount++;
                 }
                 if (!userInput.password || !userInput.confirmPassword) {
-                  //
-                  // setInvalidInput({...invalidInput, password: true});
                   error.password = true;
                   errCount++;
                 }
                 if (!userInput.username) {
-                  //
-                  // setInvalidInput({...invalidInput, username: true});
                   error.username = true;
                   errCount++;
                 }
                 if (userInput.password !== userInput.confirmPassword) {
-                  //
-                  // setInvalidInput({...invalidInput, confirmPassword: true});
                   error.confirmPassword = true;
                   errCount++;
                 }
@@ -250,7 +245,7 @@ const RegisterActionsSheet: FunctionComponent<RegisterActionsSheetProps> = ({
                   const res = await register({username, password, email, name});
                   if (res.msg) {
                     actionSheetRef.current?.hide();
-                    payload?.navigation.navigate('Onboard1');
+                    // payload?.navigation.navigate('Onboard1');
                   }
                   if (res.error) {
                     if (res.error === 'Email must be an email') {
