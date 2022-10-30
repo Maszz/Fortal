@@ -137,7 +137,7 @@ const RegisterOnboardActivity: FunctionComponent<
 
       <Box
         style={{
-          flex: 0.3,
+          flex: 0.2,
           justifyContent: 'flex-end',
           alignItems: 'center',
         }}>
@@ -149,17 +149,22 @@ const RegisterOnboardActivity: FunctionComponent<
           Tap once on your favorite genres
         </Text>
       </Box>
-      <Box style={{flex: 0.15}} />
+      <Box style={{flex: 0.13}} />
+      <Box style={{flex: 0.2}}>
+        <ScrollView
+          horizontal={true}
+          showsHorizontalScrollIndicator={false}
+          pagingEnabled={true}
+          flex={1}>
+          {renderTags()}
+        </ScrollView>
+      </Box>
 
-      <ScrollView
-        horizontal={true}
-        showsHorizontalScrollIndicator={false}
-        pagingEnabled={true}
-        flex={1}>
-        {renderTags()}
-      </ScrollView>
-      <Box style={{flex: 0.1}} />
-      <Box style={{flex: 0.1}}>
+      <Box
+        style={{
+          flex: 0.2,
+          justifyContent: 'flex-end',
+        }}>
         <Center style={{flexDirection: 'row'}}>
           <Box
             style={{
@@ -180,44 +185,43 @@ const RegisterOnboardActivity: FunctionComponent<
           />
         </Center>
       </Box>
-
-      <TouchableOpacity
-        style={{
-          width: 250,
-          height: 40,
-          position: 'absolute',
-          bottom: 115,
-          alignSelf: 'center',
-        }}
-        // width={'250px'}
-        // height={'40px'}>
-        onPress={async () => {
-          await updateOnboarding(true);
-          // console.log(Object.keys(tags).filter(key => tags[key]));
-          await updateUserInterestedTags(
-            Object.keys(tags).filter(key => tags[key]),
-          );
-
-          await navigation.navigate('HomeIndex');
-        }}>
-        <LinearGradient
-          colors={['#3275F3', '#BD97FB', '#FFDFD8']}
-          useAngle={true}
-          angle={90}
-          angleCenter={{x: 0.5, y: 0.5}}
+      <Box flex={0.11} justifyContent={'flex-end'}>
+        <TouchableOpacity
           style={{
-            flex: 1,
-            paddingLeft: 15,
-            paddingRight: 15,
-            borderRadius: 25,
-            justifyContent: 'center',
-            alignItems: 'center',
+            width: 250,
+            height: 40,
+            alignSelf: 'center',
+          }}
+          // width={'250px'}
+          // height={'40px'}>
+          onPress={async () => {
+            await updateOnboarding(true);
+            // console.log(Object.keys(tags).filter(key => tags[key]));
+            await updateUserInterestedTags(
+              Object.keys(tags).filter(key => tags[key]),
+            );
+
+            await navigation.navigate('HomeIndex');
           }}>
-          <Text color={'white'} bold fontSize={16}>
-            Next
-          </Text>
-        </LinearGradient>
-      </TouchableOpacity>
+          <LinearGradient
+            colors={['#3275F3', '#BD97FB', '#FFDFD8']}
+            useAngle={true}
+            angle={90}
+            angleCenter={{x: 0.5, y: 0.5}}
+            style={{
+              flex: 1,
+              paddingLeft: 15,
+              paddingRight: 15,
+              borderRadius: 25,
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
+            <Text color={'white'} bold fontSize={16}>
+              Next
+            </Text>
+          </LinearGradient>
+        </TouchableOpacity>
+      </Box>
     </View>
   );
 };
