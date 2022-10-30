@@ -149,15 +149,17 @@ const RegisterOnboardActivity: FunctionComponent<
           Tap once on your favorite genres
         </Text>
       </Box>
-      <Box style={{flex: 0.08}} />
+      <Box style={{flex: 0.15}} />
 
       <ScrollView
         horizontal={true}
         showsHorizontalScrollIndicator={false}
-        pagingEnabled={true}>
+        pagingEnabled={true}
+        flex={1}>
         {renderTags()}
       </ScrollView>
-      <Box style={{flex: 0.8}}>
+      <Box style={{flex: 0.1}} />
+      <Box style={{flex: 0.1}}>
         <Center style={{flexDirection: 'row'}}>
           <Box
             style={{
