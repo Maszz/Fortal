@@ -1,9 +1,9 @@
 const devConfig = {
   graphqlHttp: 'http://localhost:3333/graphql',
   graphqlWs: 'ws://localhost:3333/graphql',
-  bypassUser: false,
+  bypassUser: true,
   bypassRegister: false,
-  goOnboard: false,
+  goOnboard: true,
 };
 
 /**
