@@ -181,7 +181,27 @@ const useAuth = () => {
     const {username, at, rt, onboarding} = user;
     dispatch(userAction.mutate({username, at, rt, onboarding}));
   }, [user]);
+  const updateUserInterestedTags = async (tags: string[]) => {
+    const response = await fetch('http://localhost:3333/user/update/tags', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${user.at}`,
+      },
+      body: JSON.stringify({
+        userId: user.username,
+        tags: tags,
+      }),
+    });
 
+    const body = (await response.json()) as {result: boolean};
+    if (body) {
+      setUser({
+        ...user,
+        onboarding: body.result,
+      });
+    }
+  };
   const updateOnboarding = async (onboarding: boolean) => {
     setLoading(true);
 
@@ -199,6 +219,7 @@ const useAuth = () => {
         }),
       },
     );
+
     const body = (await response.json()) as {result: boolean};
     if (body) {
       setUser({
@@ -266,5 +287,6 @@ const useAuth = () => {
     updateOnboarding,
     updateOnboardingGender,
     isMount,
+    updateUserInterestedTags,
   };
 };

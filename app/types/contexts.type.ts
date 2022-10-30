@@ -38,4 +38,5 @@ export interface AuthContextData {
   updateOnboarding: (onboard: boolean) => Promise<void>;
   updateOnboardingGender: (gender: string) => Promise<void>;
   isMount: boolean;
+  updateUserInterestedTags: (tags: string[]) => Promise<void>;
 }

@@ -3,7 +3,7 @@ const devConfig = {
   graphqlWs: 'ws://localhost:3333/graphql',
   bypassUser: false,
   bypassRegister: false,
-  goOnboard: true,
+  goOnboard: false,
 };
 
 /**

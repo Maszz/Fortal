@@ -12,6 +12,8 @@ import {
   Container,
   ScrollView,
   Flex,
+  VStack,
+  FlatList,
 } from 'native-base';
 import {FunctionComponent, useEffect} from 'react';
 import {RegisterOnboardActivityProps} from '../types';
@@ -28,7 +30,7 @@ export interface Tags {
 const RegisterOnboardActivity: FunctionComponent<
   RegisterOnboardActivityProps
 > = ({navigation, route}) => {
-  const {updateOnboarding} = useAuth();
+  const {updateOnboarding, updateUserInterestedTags} = useAuth();
   const [tags, setTags] = useState<Tags>({
     a: false,
     b: false,
@@ -39,18 +41,83 @@ const RegisterOnboardActivity: FunctionComponent<
     g: false,
     h: false,
   });
-  const tagfromapi = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
+  const fetchTags = async () => {
+    const response = await fetch('http://localhost:3333/tags');
+    const data = await response.json();
+    return data;
+  };
+
   useEffect(() => {
-    console.log(tags);
-  }, [tags]);
-  useEffect(() => {
-    tagfromapi.forEach(tag => {});
-    console.log(
-      tagfromapi.reduce((accumulator, value) => {
-        return {...accumulator, [value]: false};
-      }, {}),
-    );
+    fetchTags().then((data: string[]) => {
+      setTags(
+        data.reduce((accumulator, value) => {
+          return {...accumulator, [value]: false};
+        }, {}),
+      );
+    });
   }, []);
+  const renderTags = () => {
+    const tagcount = Object.keys(tags).length;
+    const rowItem = Math.ceil(tagcount / 3);
+    let itemcount = 0;
+    let offset = 0;
+    const colors = [
+      '#C4C2F3',
+      '#C9B8DA',
+      '#EDC4D6',
+      '#FFDCE2',
+      '#FFEAE5',
+      // '#C4C2F3',
+    ];
+    const colorsIndex = Array.from({length: rowItem * 2}).fill('') as string[];
+    let a = colorsIndex.map((color, i) => {
+      return Math.floor((i * colors.length) / (rowItem * 2));
+    });
+    console.log(a);
+    const gradientcolors = a.map(i => colors[i]);
+    console.log(gradientcolors);
+    const row1 = [];
+    for (let i = 0; i < 3; i++) {
+      const row = [];
+      // if (i % 2 !== 0) {
+      //   row.push(<Box w={6} />);
+      // }
+      let tempIndex = 0;
+
+      for (let j = 0; j < rowItem; j++) {
+        if (itemcount < tagcount) {
+          const key = Object.keys(tags)[itemcount];
+          // const color1 = colors[j % colors.length];
+          // const color2 = colors[(j + 1) % colors.length];
+          const color1 = gradientcolors[tempIndex];
+          const color2 = gradientcolors[tempIndex + 1];
+
+          tempIndex += 2;
+          row.push(
+            <TagToggleButton
+              title={key}
+              setTag={(value: boolean) => {
+                setTags({...tags, [key]: value});
+              }}
+              gc={[color1, color2]}
+              key={key}
+            />,
+          );
+          itemcount++;
+        }
+      }
+
+      row1.push(
+        <Flex direction="row" mt={2}>
+          {row}
+        </Flex>,
+      );
+
+      offset++;
+    }
+
+    return <>{<VStack>{row1}</VStack>}</>;
+  };
   return (
     <View style={{flex: 1}}>
       {/* <Box
@@ -70,7 +137,7 @@ const RegisterOnboardActivity: FunctionComponent<
 
       <Box
         style={{
-          flex: 0.15,
+          flex: 0.3,
           justifyContent: 'flex-end',
           alignItems: 'center',
         }}>
@@ -83,53 +150,53 @@ const RegisterOnboardActivity: FunctionComponent<
         </Text>
       </Box>
       <Box style={{flex: 0.08}} />
-      <Container>
-        <TouchableHighlight
-          style={{height: 45, borderRadius: 35}}
-          onPress={() => {
-            console.log('Pressable');
-          }}>
-          <LinearGradient
-            colors={['#3275F3', '#BD97FB', '#FFDFD8']}
-            useAngle={true}
-            angle={90}
-            angleCenter={{x: 0.5, y: 0.5}}
-            style={{
-              flex: 1,
-              paddingLeft: 15,
-              paddingRight: 15,
-              borderRadius: 35,
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}>
-            <Text color={'white'} bold fontSize={16}>
-              test button
-            </Text>
-          </LinearGradient>
-        </TouchableHighlight>
-      </Container>
-      <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-        <Flex direction="row">
-          {Object.entries(tags).map(([key, value]) => (
-            <TagToggleButton
-              title={key}
-              setTag={v => {
-                setTags({...tags, key: v});
-              }}
-              key={key}
-            />
-          ))}
-        </Flex>
-      </ScrollView>
 
-      <TagToggleButton title={'test'} setTag={v => {}} />
+      <ScrollView
+        horizontal={true}
+        showsHorizontalScrollIndicator={false}
+        pagingEnabled={true}>
+        {renderTags()}
+      </ScrollView>
+      <Box style={{flex: 0.8}}>
+        <Center style={{flexDirection: 'row'}}>
+          <Box
+            style={{
+              width: 11,
+              height: 11,
+              backgroundColor: '#A8B0C5',
+              borderRadius: 10,
+              marginRight: 10,
+            }}
+          />
+          <Box
+            style={{
+              width: 11,
+              height: 11,
+              backgroundColor: '#A55EDA',
+              borderRadius: 10,
+            }}
+          />
+        </Center>
+      </Box>
+
       <TouchableOpacity
-        style={{width: 250, height: 40}}
+        style={{
+          width: 250,
+          height: 40,
+          position: 'absolute',
+          bottom: 115,
+          alignSelf: 'center',
+        }}
         // width={'250px'}
         // height={'40px'}>
         onPress={async () => {
           await updateOnboarding(true);
-          navigation.navigate('HomeIndex');
+          // console.log(Object.keys(tags).filter(key => tags[key]));
+          await updateUserInterestedTags(
+            Object.keys(tags).filter(key => tags[key]),
+          );
+
+          await navigation.navigate('HomeIndex');
         }}>
         <LinearGradient
           colors={['#3275F3', '#BD97FB', '#FFDFD8']}
