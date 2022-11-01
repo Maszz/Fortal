@@ -20,6 +20,9 @@ import {
   Text,
   HStack,
   Image,
+  ZStack,
+  VStack,
+  Spacer,
 } from 'native-base';
 import {ApolloClient, ApolloProvider, InMemoryCache} from '@apollo/client';
 import {
@@ -62,7 +65,9 @@ import LoadingScreen from './screens/loadingScreen';
 import {useNavigation} from '@react-navigation/native';
 import {useSelector, useDispatch} from 'react-redux';
 import {setStackAction} from './redux/reducers/navigation';
+import SearchScreenStack from './screens/SearchScreen';
 import './utils/warningIgnore';
+import Icon from './utils/ImageIcon';
 const Stack = createStackNavigator<StackScreenParams>();
 const defaultScreenOption: StackNavigationOptions = {
   headerShown: false,
@@ -133,6 +138,54 @@ const StackNavigation = () => {
               name="CreateModal"
               component={CreateModalScreen}
               options={{presentation: 'modal'}}
+            />
+            <Stack.Screen
+              name="SearchScreen"
+              component={SearchScreenStack}
+              options={{
+                headerShown: true,
+                header: (props: StackHeaderProps) => {
+                  return (
+                    <Box
+                      safeAreaTop
+                      w={'100%'}
+                      backgroundColor={'white'}
+                      shadow={1}>
+                      <HStack
+                        w={'100%'}
+                        paddingBottom={3}
+                        marginTop={3}
+                        // alignItems={'center'}
+
+                        justifyContent={'space-between'}>
+                        <TouchableOpacity
+                          onPress={() => {
+                            props.navigation.goBack();
+                          }}>
+                          <Image
+                            marginLeft={10}
+                            marginBottom={3}
+                            alt="key icon"
+                            source={require('./assets/back_icon.png')}
+                          />
+                        </TouchableOpacity>
+                        <Box
+                          justifyContent={'center'}
+                          alignItems="center"
+                          position={'absolute'}
+                          bottom={6}
+                          width={'100%'}>
+                          <Image
+                            source={Icon.homeScreen.logo}
+                            h={41}
+                            alt={'asdfs'}
+                          />
+                        </Box>
+                      </HStack>
+                    </Box>
+                  );
+                },
+              }}
             />
           </>
         )}

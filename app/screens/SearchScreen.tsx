@@ -1,6 +1,6 @@
+import {Text, View} from 'native-base';
 import {FunctionComponent} from 'react';
-import {View, Text} from 'native-base';
-import {SearchScreenProps} from '../../types/home.type';
+import {SearchScreenProps} from '../types';
 const SearchScreen: FunctionComponent<SearchScreenProps> = () => {
   return (
     <View>

@@ -1,4 +1,5 @@
 import {createStackNavigator, StackScreenProps} from '@react-navigation/stack';
+import SearchScreen from '../screens/Home/Search';
 
 export type StackScreenParams = {
   HomeIndex: undefined;
@@ -7,6 +8,7 @@ export type StackScreenParams = {
   Onboard2: undefined;
   Loading: undefined;
   CreateModal: undefined;
+  SearchScreen: undefined;
 };
 export type HomeIndexScreenProps = StackScreenProps<
   StackScreenParams,
@@ -24,4 +26,8 @@ export type RegisterOnboardActivityProps = StackScreenProps<
 export type CreateModalProps = StackScreenProps<
   StackScreenParams,
   'CreateModal'
+>;
+export type SearchScreenProps = StackScreenProps<
+  StackScreenParams,
+  'SearchScreen'
 >;

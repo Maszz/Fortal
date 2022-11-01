@@ -4,7 +4,7 @@ import {
   BottomTabBarButtonProps,
 } from '@react-navigation/bottom-tabs';
 import Home from './home';
-import {TabScreenParams, HomeIndexScreenProps} from '../../types';
+import {HomeScreenTypes, HomeIndexScreenProps} from '../../types';
 import {FunctionComponent, useLayoutEffect} from 'react';
 import {View, Text, Button, Box, Image, HStack, Spacer} from 'native-base';
 import Icon from '../../utils/ImageIcon';
@@ -23,7 +23,7 @@ import {store, RootState} from '../../redux';
 import {useNavigation} from '@react-navigation/native';
 import {setStackAction} from '../../redux/reducers/navigation';
 
-const Tab = createBottomTabNavigator<TabScreenParams>();
+const Tab = createBottomTabNavigator<HomeScreenTypes.TabScreenParams>();
 
 const CreateTabbarButton: FunctionComponent<BottomTabBarButtonProps> = ({
   children,
@@ -171,6 +171,12 @@ const HomeIndex: FunctionComponent<HomeIndexScreenProps> = ({
             </View>
           ),
         }}
+        listeners={({navigation, route}) => ({
+          tabPress: e => {
+            e.preventDefault();
+            navigation.navigate('SearchScreen');
+          },
+        })}
       />
       <Tab.Screen
         name="Create"
