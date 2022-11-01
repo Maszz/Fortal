@@ -5,6 +5,7 @@ import {persistReducer} from 'redux-persist';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {userReducer} from './user';
 import {MMKVStorage} from '../mmkv';
+import {navigationReducer} from './navigation';
 const persistConfig = {
   key: 'count',
   storage: MMKVStorage,
@@ -17,4 +18,5 @@ const userPersistConfig = {
 export const rootReducer = combineReducers({
   count: persistReducer(persistConfig, counterReducer),
   user: persistReducer(userPersistConfig, userReducer),
+  navigation: navigationReducer,
 });

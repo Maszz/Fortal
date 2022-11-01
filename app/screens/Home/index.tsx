@@ -20,6 +20,8 @@ import {useAuth} from '../../hooks/useAuth';
 import {Config} from '../../env';
 import {useSelector, useDispatch} from 'react-redux';
 import {store, RootState} from '../../redux';
+import {useNavigation} from '@react-navigation/native';
+import {setStackAction} from '../../redux/reducers/navigation';
 
 const Tab = createBottomTabNavigator<TabScreenParams>();
 
@@ -50,14 +52,16 @@ const HomeIndex: FunctionComponent<HomeIndexScreenProps> = ({
   route,
 }) => {
   const {user} = useAuth();
-
+  const dispatch = useDispatch();
   useEffect(() => {
-    if (!user.onboarding && !Config.bypassRegister) {
+    if (!user.onboarding && Config.bypassRegister) {
       navigation.navigate('Onboard1');
     }
     if (Config.goOnboard) {
       navigation.navigate('Onboard1');
     }
+    // set navigation object ref to navigation of stack
+    dispatch(setStackAction({stackNavigation: navigation}));
   }, []);
   return (
     <Tab.Navigator

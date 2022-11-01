@@ -59,6 +59,9 @@ import HomeIndex from './screens/Home/index';
 import {Config} from './env';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import LoadingScreen from './screens/loadingScreen';
+import {useNavigation} from '@react-navigation/native';
+import {useSelector, useDispatch} from 'react-redux';
+import {setStackAction} from './redux/reducers/navigation';
 import './utils/warningIgnore';
 const Stack = createStackNavigator<StackScreenParams>();
 const defaultScreenOption: StackNavigationOptions = {
@@ -72,6 +75,8 @@ const StackNavigation = () => {
    */
   // const user = useState(false);
   const {user, loading, isMount} = useAuth();
+  const navigation = useNavigation();
+  const dispatch = useDispatch();
 
   return (
     <>
@@ -83,7 +88,13 @@ const StackNavigation = () => {
         ) : (
           <>
             <Stack.Screen name="HomeIndex" component={HomeIndex} />
-            <Stack.Screen name="Onboard1" component={RegisterOnboardGender} />
+            <Stack.Screen
+              name="Onboard1"
+              component={RegisterOnboardGender}
+              options={{
+                gestureEnabled: false,
+              }}
+            />
             <Stack.Screen
               name="Onboard2"
               component={RegisterOnboardActivity}

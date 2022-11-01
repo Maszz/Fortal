@@ -5,6 +5,7 @@ import {StyleSheet, TouchableOpacity} from 'react-native';
 import {SheetManager} from 'react-native-actions-sheet';
 import LinearGradient from 'react-native-linear-gradient';
 import {useAuth} from '../hooks/useAuth';
+import GenderButton from '../components/GenderButton';
 const RegisterOnBoardGender: FunctionComponent<RegisterOnboardGenderProps> = ({
   navigation,
   route,
@@ -30,7 +31,7 @@ const RegisterOnBoardGender: FunctionComponent<RegisterOnboardGenderProps> = ({
           marginLeft: 55,
         }}>
         {/* button tag */}
-        <TouchableOpacity
+        {/* <TouchableOpacity
           style={{
             width: 100,
             height: 120,
@@ -74,8 +75,36 @@ const RegisterOnBoardGender: FunctionComponent<RegisterOnboardGenderProps> = ({
               Male
             </Text>
           </LinearGradient>
-        </TouchableOpacity>
-        <TouchableOpacity
+        </TouchableOpacity> */}
+        <GenderButton
+          title="Male"
+          onPress={v => {
+            setSelectedGender(prev => {
+              if (prev.selectedGender === v) {
+                return {selectedGender: ''};
+              }
+              return {selectedGender: v};
+            });
+            console.log('Pressableasd');
+          }}
+          selected={selectedGender.selectedGender === 'Male'}
+          selectedColor={['#FFFFFF', '#8CDFFF', '#4879F6']}
+        />
+        <GenderButton
+          title="Female"
+          onPress={v => {
+            setSelectedGender(prev => {
+              if (prev.selectedGender === v) {
+                return {selectedGender: ''};
+              }
+              return {selectedGender: v};
+            });
+            console.log('Pressableasd');
+          }}
+          selected={selectedGender.selectedGender === 'Female'}
+          selectedColor={['#ffffff', '#FFEDD1', '#FFA3C4']}
+        />
+        {/* <TouchableOpacity
           style={{
             width: 100,
             height: 120,
@@ -119,7 +148,7 @@ const RegisterOnBoardGender: FunctionComponent<RegisterOnboardGenderProps> = ({
               Female
             </Text>
           </LinearGradient>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </Box>
       <Box
         style={{
@@ -129,7 +158,7 @@ const RegisterOnBoardGender: FunctionComponent<RegisterOnboardGenderProps> = ({
           marginRight: 55,
           marginLeft: 55,
         }}>
-        <TouchableOpacity
+        {/* <TouchableOpacity
           style={{
             width: 100,
             height: 120,
@@ -173,8 +202,37 @@ const RegisterOnBoardGender: FunctionComponent<RegisterOnboardGenderProps> = ({
               LGBTQ+
             </Text>
           </LinearGradient>
-        </TouchableOpacity>
-        <TouchableOpacity
+        </TouchableOpacity> */}
+        <GenderButton
+          title="LGBTQ+"
+          onPress={v => {
+            setSelectedGender(prev => {
+              if (prev.selectedGender === v) {
+                return {selectedGender: ''};
+              }
+              return {selectedGender: v};
+            });
+            console.log('Pressableasd');
+          }}
+          selected={selectedGender.selectedGender === 'LGBTQ+'}
+          selectedColor={['#8172F7', '#55BEF0', '#EEE696', '#EF8B88']}
+        />
+        <GenderButton
+          title="Other"
+          onPress={v => {
+            setSelectedGender(prev => {
+              if (prev.selectedGender === v) {
+                return {selectedGender: ''};
+              }
+              return {selectedGender: v};
+            });
+            console.log('Pressableasd');
+          }}
+          selected={selectedGender.selectedGender === 'Other'}
+          selectedColor={['#FFFFFF', '#D1D1D1', '#8B9093']}
+        />
+
+        {/* <TouchableOpacity
           style={{
             width: 100,
             height: 120,
@@ -218,7 +276,7 @@ const RegisterOnBoardGender: FunctionComponent<RegisterOnboardGenderProps> = ({
               None
             </Text>
           </LinearGradient>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </Box>
       <Box style={{flex: 0.09}}>
         <Center style={{flexDirection: 'row'}}>

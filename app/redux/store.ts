@@ -19,7 +19,13 @@ export const store = configureStore({
     getDefaultMiddleware({
       serializableCheck: {
         // Ignore these action types
-        ignoredActions: ['persist/PERSIST'],
+        ignoredActions: [
+          'persist/PERSIST',
+          'navigation/setstack',
+          'navigation/settab',
+        ],
+        ignoredPaths: ['navigation'],
+
         // Ignore these field paths in all actions
       },
     }).concat(middlewares),
