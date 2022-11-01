@@ -32,14 +32,23 @@ const RegisterOnboardActivity: FunctionComponent<
 > = ({navigation, route}) => {
   const {updateOnboarding, updateUserInterestedTags} = useAuth();
   const [tags, setTags] = useState<Tags>({
-    a: false,
-    b: false,
-    c: false,
-    d: false,
-    e: false,
-    f: false,
-    g: false,
-    h: false,
+    Sports: false,
+    Game: false,
+    Music: false,
+    Movie: false,
+    Food: false,
+    Travel: false,
+    Fashion: false,
+    Beauty: false,
+    IT: false,
+    Finance: false,
+    Education: false,
+    Politics: false,
+    Health: false,
+    Religion: false,
+    Art: false,
+    Science: false,
+    Tech: false,
   });
   const fetchTags = async () => {
     const response = await fetch('http://localhost:3333/tags');
@@ -149,8 +158,8 @@ const RegisterOnboardActivity: FunctionComponent<
           Tap once on your favorite genres
         </Text>
       </Box>
-      <Box style={{flex: 0.13}} />
-      <Box style={{flex: 0.2}}>
+      <Box style={{flex: 0.03}} />
+      <Box style={{flex: 0.3, paddingTop: 25}}>
         <ScrollView
           horizontal={true}
           showsHorizontalScrollIndicator={false}
