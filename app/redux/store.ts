@@ -2,7 +2,16 @@ import {configureStore} from '@reduxjs/toolkit';
 import {rootReducer} from './reducers';
 import {persistStore} from 'redux-persist';
 import {storage} from './mmkv';
-const middlewares = [] as any;
+import {searchApi, authApi, userApi, tagsApi} from './apis';
+
+import {setupListeners} from '@reduxjs/toolkit/query';
+
+const middlewares = [
+  searchApi.middleware,
+  authApi.middleware,
+  userApi.middleware,
+  tagsApi.middleware,
+] as any;
 
 if (__DEV__) {
   console.log('Running in Dev Mode.');
@@ -30,6 +39,8 @@ export const store = configureStore({
       },
     }).concat(middlewares),
 });
+setupListeners(store.dispatch);
+
 export const persistor = persistStore(store);
 
 // Infer the `RootState` and `AppDispatch` types from the store itself

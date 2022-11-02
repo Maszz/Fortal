@@ -9,6 +9,8 @@ export type StackScreenParams = {
   Loading: undefined;
   CreateModal: undefined;
   SearchScreen: undefined;
+  EventScreen: {eventId: string; eventName: string};
+  OtherProfileScreen: {userId: string};
 };
 export type HomeIndexScreenProps = StackScreenProps<
   StackScreenParams,
@@ -30,4 +32,14 @@ export type CreateModalProps = StackScreenProps<
 export type SearchScreenProps = StackScreenProps<
   StackScreenParams,
   'SearchScreen'
+>;
+
+export type EventScreenProps = StackScreenProps<
+  StackScreenParams,
+  'EventScreen'
+>;
+
+export type OtherProfileScreenProps = StackScreenProps<
+  StackScreenParams,
+  'OtherProfileScreen'
 >;

@@ -23,7 +23,10 @@ import LinearGradient from 'react-native-linear-gradient';
 import {useAuth} from '../hooks/useAuth';
 import TagToggleButton from '../components/TagToggleButton';
 import {useState} from 'react';
-
+import {useGetTagsQuery} from '../redux/apis';
+import LoadingScreen from './loadingScreen';
+import {useDispatch} from 'react-redux';
+import {setLoadingAction} from '../redux/reducers/navigation';
 export interface Tags {
   [key: string]: boolean;
 }
@@ -32,39 +35,47 @@ const RegisterOnboardActivity: FunctionComponent<
 > = ({navigation, route}) => {
   const {updateOnboarding, updateUserInterestedTags} = useAuth();
   const [tags, setTags] = useState<Tags>({
-    Sports: false,
-    Game: false,
-    Music: false,
-    Movie: false,
-    Food: false,
-    Travel: false,
-    Fashion: false,
-    Beauty: false,
-    IT: false,
-    Finance: false,
-    Education: false,
-    Politics: false,
-    Health: false,
-    Religion: false,
-    Art: false,
-    Science: false,
-    Tech: false,
+    // Sports: false,
+    // Game: false,
+    // Music: false,
+    // Movie: false,
+    // Food: false,
+    // Travel: false,
+    // Fashion: false,
+    // Beauty: false,
+    // IT: false,
+    // Finance: false,
+    // Education: false,
+    // Politics: false,
+    // Health: false,
+    // Religion: false,
+    // Art: false,
+    // Science: false,
+    // Tech: false,
   });
-  const fetchTags = async () => {
-    const response = await fetch('http://localhost:3333/tags');
-    const data = await response.json();
-    return data;
-  };
+  const {data: tagsData, isSuccess, isLoading} = useGetTagsQuery();
+  const dispatch = useDispatch();
+  // const fetchTags = async () => {
+  //   const response = await fetch('http://localhost:3333/tags');
+  //   const data = await response.json();
+  //   return data;
+  // };
 
   useEffect(() => {
-    fetchTags().then((data: string[]) => {
-      setTags(
-        data.reduce((accumulator, value) => {
-          return {...accumulator, [value]: false};
-        }, {}),
-      );
-    });
-  }, []);
+    // fetchTags().then((data: string[]) => {
+    //   setTags(
+    //     data.reduce((accumulator, value) => {
+    //       return {...accumulator, [value]: false};
+    //     }, {}),
+    //   );
+    // });
+    dispatch(setLoadingAction(true));
+
+    if (isSuccess) {
+      dispatch(setLoadingAction(false));
+      setTags(tagsData);
+    }
+  }, [isSuccess]);
   const renderTags = () => {
     const tagcount = Object.keys(tags).length;
     const rowItem = Math.ceil(tagcount / 3);
@@ -82,9 +93,9 @@ const RegisterOnboardActivity: FunctionComponent<
     let a = colorsIndex.map((color, i) => {
       return Math.floor((i * colors.length) / (rowItem * 2));
     });
-    console.log(a);
+    // console.log(a);
     const gradientcolors = a.map(i => colors[i]);
-    console.log(gradientcolors);
+    // console.log(gradientcolors);
     const row1 = [];
     for (let i = 0; i < 3; i++) {
       const row = [];
@@ -127,6 +138,7 @@ const RegisterOnboardActivity: FunctionComponent<
 
     return <>{<VStack>{row1}</VStack>}</>;
   };
+
   return (
     <View style={{flex: 1}}>
       {/* <Box

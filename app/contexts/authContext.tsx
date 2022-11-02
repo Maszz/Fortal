@@ -15,9 +15,22 @@ import {
   AuthContextData,
   DeviceInfo,
   User,
-  LoginResponseDto,
+  // LoginResponseDto,
   RegisterFormInput,
 } from '../types';
+import {
+  useSignupMutation,
+  ErrorResponse,
+  LoginResponseDto,
+  useSignInMutation,
+  useLogoutMutation,
+} from '../redux/apis/AuthApi';
+import {
+  useUpdateOnboardingMutation,
+  useUpdateOnboardingGenderMutation,
+  useUpdateUserInterestedTagsMutation,
+} from '../redux/apis/UserApi';
+
 export const AuthContext = createContext<AuthContextData>(
   {} as AuthContextData,
 );
@@ -35,7 +48,15 @@ const useAuth = () => {
   const userR = useSelector<RootState, RootState['user']>(state => state.user);
   const [loading, setLoading] = useState(true);
   const [isMount, setIsMount] = useState(false);
-
+  const [signup, result] = useSignupMutation();
+  const [signin, resultSignin] = useSignInMutation();
+  const [logoutMutate, resultLogout] = useLogoutMutation();
+  const [updateOnboardingMutate, resultUpdateOnboarding] =
+    useUpdateOnboardingMutation();
+  const [updateOnboardingGenderMutation, resultUpdateOnboardingGender] =
+    useUpdateOnboardingGenderMutation();
+  const [updateUserInterestedTagsMutation, resultUpdateUserInterestedTags] =
+    useUpdateUserInterestedTagsMutation();
   const dispatch = useDispatch();
   const register = async ({
     name,
@@ -45,42 +66,21 @@ const useAuth = () => {
   }: RegisterFormInput) => {
     try {
       setLoading(true);
-      const response = await fetch('http://localhost:3333/auth/signup', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          username,
-          password,
-          name,
-          email,
-          deviceId: deviceInfo.deviceId,
-          platform: deviceInfo.Platform,
-          manufacturer: deviceInfo.manufacturer,
-        }),
-      });
-      const body = (await response.json()) as LoginResponseDto;
-      // console.log('body', body);
+
+      const body = await signup({
+        username,
+        password,
+        name,
+        email,
+        deviceId: deviceInfo.deviceId,
+        platform: deviceInfo.Platform,
+        manufacturer: deviceInfo.manufacturer,
+      }).unwrap();
+
+      console.log('body', body);
       setLoading(false);
 
-      if (body.error === 'Bad Request') {
-        // if error is bad request messgae will be only array of string
-        const b = body.message as string[];
-        if (b.find((m: string) => m === 'email must be an email')) {
-          return {
-            msg: false,
-            error: 'Email must be an email',
-          };
-        }
-      }
-      if (
-        body.error === 'Forbidden' &&
-        body.message === 'Credentials incorrect'
-      ) {
-        console.log('Credentials incorrect');
-        return {msg: false, error: 'Credentials incorrect'};
-      }
+      // not nessary to check body from rtk query because it will throw error if not success
       if (body.access_token) {
         setUser({
           // handle bad typing from backend , will fix in the future :)
@@ -94,75 +94,89 @@ const useAuth = () => {
       }
       return {msg: false};
     } catch (e) {
-      console.log(e);
+      setLoading(false);
+      let result = (e as ErrorResponse).data;
+      if (result.error === 'Bad Request') {
+        // if error is bad request messgae will be only array of string
+        const b = result.message as string[];
+        if (b.find((m: string) => m === 'email must be an email')) {
+          return {
+            msg: false,
+            error: 'Email must be an email',
+          };
+        }
+      }
+      if (
+        result.error === 'Forbidden' &&
+        result.message === 'Credentials incorrect'
+      ) {
+        console.log('Credentials incorrect');
+        return {msg: false, error: 'Credentials incorrect'};
+      }
       return {msg: false, error: 'Something went wrong'};
     }
   };
   const login = async (username: string, password: string) => {
-    setLoading(true);
-    const response = await fetch('http://localhost:3333/auth/signin', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
+    try {
+      setLoading(true);
+
+      const body = await signin({
         username,
         password,
         deviceId: deviceInfo.deviceId,
         platform: deviceInfo.Platform,
         manufacturer: deviceInfo.manufacturer,
-      }),
-    });
-    const body = (await response.json()) as LoginResponseDto;
-    // console.log(body);
-    // TODO : handle authentication login stuff.
-    setLoading(false);
+      }).unwrap();
+      // console.log(body);
+      // TODO : handle authentication login stuff.
+      setLoading(false);
 
-    if (body.error) {
-      console.log('Invalid ID');
-      // setUser({} as User);
+      if (body.access_token) {
+        setUser({
+          // handle bad typing from backend , will fix in the future :)
+          username: body.userId as string,
+          at: body.access_token as string,
+          rt: body.refresh_token as string,
+          onboarding: body.onboarding as boolean,
+        });
+        console.log('Login success w/ username: ' + body.userId);
+        return true;
+      }
       return false;
+    } catch (e) {
+      setLoading(false);
+      let result = (e as ErrorResponse).data;
+      if (result.error) {
+        console.log('Invalid ID');
+        // setUser({} as User);
+        return false;
+      }
     }
-    if (body.access_token) {
-      setUser({
-        // handle bad typing from backend , will fix in the future :)
-        username: body.userId as string,
-        at: body.access_token as string,
-        rt: body.refresh_token as string,
-        onboarding: body.onboarding as boolean,
-      });
-      console.log('Login success w/ username: ' + body.userId);
-      return true;
-    }
-    return false;
   };
 
   const logout = async () => {
-    setLoading(true);
+    try {
+      setLoading(true);
+      const body = await logoutMutate({at: user.at}).unwrap();
 
-    const response = await fetch('http://localhost:3333/auth/logout', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${user.at}`,
-      },
-    });
-    const body = await response.json();
-    // TODO : handle authentication logout stuff.
-    if (body.status === 'error') {
-      // TODO : session timeout set user to {} and redirect to login page
-      setUser({} as User);
-      console.log('Session timeout');
-      return;
-    }
-    if (body == 'OK') {
-      setUser({} as User);
-      console.log('Logout success');
-      return;
-    }
+      // TODO : handle authentication logout stuff.
+      setLoading(false);
 
-    setUser({} as User);
-    setLoading(false);
+      setUser({} as User);
+    } catch (e) {
+      setLoading(false);
+      let result = (e as ErrorResponse).data;
+      console.log('logout');
+      console.log(e);
+
+      if (result.message === 'Unauthorized') {
+        // TODO : session timeout set user to {} and redirect to login page
+        setUser({} as User);
+        console.log('Session timeout');
+        return;
+      }
+      // setUser({} as User);
+    }
   };
   const getDeviceInfo = async () => {
     const uid = await getUniqueId();
@@ -182,79 +196,96 @@ const useAuth = () => {
     dispatch(userAction.mutate({username, at, rt, onboarding}));
   }, [user]);
   const updateUserInterestedTags = async (tags: string[]) => {
-    const response = await fetch('http://localhost:3333/user/update/tags', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${user.at}`,
-      },
-      body: JSON.stringify({
-        userId: user.username,
-        tags: tags,
-      }),
-    });
+    // const response = await fetch('http://localhost:3333/user/update/tags', {
+    //   method: 'POST',
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //     Authorization: `Bearer ${user.at}`,
+    //   },
+    //   body: JSON.stringify({
+    //     userId: user.username,
+    //     tags: tags,
+    //   }),
+    // });
 
-    const body = (await response.json()) as {result: boolean};
-    if (body) {
-      setUser({
-        ...user,
-        onboarding: body.result,
-      });
-    }
+    // const body = (await response.json()) as {result: boolean};
+    const body = await updateUserInterestedTagsMutation({
+      userId: user.username,
+      tags: tags,
+    }).unwrap();
+    // if (body) {
+    //   setUser({
+    //     ...user,
+    //     onboarding: body.result,
+    //   });
+    // }
   };
   const updateOnboarding = async (onboarding: boolean) => {
-    setLoading(true);
+    try {
+      setLoading(true);
 
-    const response = await fetch(
-      'http://localhost:3333/user/update/onboarding',
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${user.at}`,
-        },
-        body: JSON.stringify({
-          userId: user.username,
-          onboarding: onboarding,
-        }),
-      },
-    );
+      // const response = await fetch(
+      //   'http://localhost:3333/user/update/onboarding',
+      //   {
+      //     method: 'POST',
+      //     headers: {
+      //       'Content-Type': 'application/json',
+      //       Authorization: `Bearer ${user.at}`,
+      //     },
+      //     body: JSON.stringify({
+      //       userId: user.username,
+      //       onboarding: onboarding,
+      //     }),
+      //   },
+      // );
 
-    const body = (await response.json()) as {result: boolean};
-    if (body) {
-      setUser({
-        ...user,
-        onboarding: body.result,
-      });
+      // const body = (await response.json()) as {result: boolean};
+      const body = await updateOnboardingMutate({
+        userId: user.username,
+        onboarding: onboarding,
+      }).unwrap();
+
+      if (body) {
+        setUser({
+          ...user,
+          onboarding: body.result,
+        });
+      }
+
+      console.log('updateOnboarding', body);
+      setLoading(false);
+    } catch (e) {
+      setLoading(false);
+      console.log('updateOnboarding', e);
     }
-
-    console.log('updateOnboarding', body);
-    setLoading(false);
   };
   const updateOnboardingGender = async (gender: string) => {
-    const response = await fetch(
-      'http://localhost:3333/user/update/onboarding/gender',
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${user.at}`,
-        },
-        body: JSON.stringify({
-          userId: user.username,
-          gender: gender,
-        }),
-      },
-    );
-    const body = (await response.json()) as {result: boolean};
+    // const response = await fetch(
+    //   'http://localhost:3333/user/update/onboarding/gender',
+    //   {
+    //     method: 'POST',
+    //     headers: {
+    //       'Content-Type': 'application/json',
+    //       Authorization: `Bearer ${user.at}`,
+    //     },
+    //     body: JSON.stringify({
+    //       userId: user.username,
+    //       gender: gender,
+    //     }),
+    //   },
+    // );
+    // const body = (await response.json()) as {result: boolean};
+    const body = await updateOnboardingGenderMutation({
+      userId: user.username,
+      gender: gender,
+    });
     // if (body) {
     //   setUser({
     //     ...user,
     //     gender: body.result,
     //   });
     // }
-
-    // console.log('updateOnboarding', body);
+    console.log('updateOnboarding', body);
   };
 
   useEffect(() => {

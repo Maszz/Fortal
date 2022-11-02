@@ -249,7 +249,7 @@ const RegisterActionsSheet: FunctionComponent<RegisterActionsSheetProps> = ({
                   }
                   if (res.error) {
                     if (res.error === 'Email must be an email') {
-                      console.log(res.error);
+                      // console.log(res.error);
                       error.email = true;
 
                       // alert('Email must be an email');

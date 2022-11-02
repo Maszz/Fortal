@@ -60,6 +60,9 @@ const HomeIndex: FunctionComponent<HomeIndexScreenProps> = ({
     if (Config.goOnboard) {
       navigation.navigate('Onboard1');
     }
+    if (!user.onboarding) {
+      navigation.navigate('Onboard1');
+    }
     // set navigation object ref to navigation of stack
     dispatch(setStackAction({stackNavigation: navigation}));
   }, []);

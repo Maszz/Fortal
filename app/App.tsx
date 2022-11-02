@@ -68,6 +68,8 @@ import {setStackAction} from './redux/reducers/navigation';
 import SearchScreenStack from './screens/SearchScreen';
 import './utils/warningIgnore';
 import Icon from './utils/ImageIcon';
+import EventScreen from './screens/eventScreen';
+import OtherProfileScreen from './screens/otherProfile';
 const Stack = createStackNavigator<StackScreenParams>();
 const defaultScreenOption: StackNavigationOptions = {
   headerShown: false,
@@ -80,8 +82,10 @@ const StackNavigation = () => {
    */
   // const user = useState(false);
   const {user, loading, isMount} = useAuth();
-  const navigation = useNavigation();
-  const dispatch = useDispatch();
+  const isLoading = useSelector<
+    RootState,
+    RootState['navigation']['isLoading']
+  >(state => state.navigation.isLoading);
 
   return (
     <>
@@ -146,11 +150,7 @@ const StackNavigation = () => {
                 headerShown: true,
                 header: (props: StackHeaderProps) => {
                   return (
-                    <Box
-                      safeAreaTop
-                      w={'100%'}
-                      backgroundColor={'white'}
-                      shadow={1}>
+                    <Box safeAreaTop w={'100%'} backgroundColor={'white'}>
                       <HStack
                         w={'100%'}
                         paddingBottom={3}
@@ -169,28 +169,44 @@ const StackNavigation = () => {
                             source={require('./assets/back_icon.png')}
                           />
                         </TouchableOpacity>
-                        <Box
+                        {/* <Box
                           justifyContent={'center'}
                           alignItems="center"
-                          position={'absolute'}
+                          // position={'absolute'}
                           bottom={6}
-                          width={'100%'}>
+                          right={42}>
                           <Image
                             source={Icon.homeScreen.logo}
                             h={41}
                             alt={'asdfs'}
                           />
-                        </Box>
+                        </Box> */}
                       </HStack>
                     </Box>
                   );
                 },
               }}
             />
+            <Stack.Screen
+              name="EventScreen"
+              component={EventScreen}
+              options={{
+                gestureEnabled: true,
+                headerShown: true,
+              }}
+            />
+            <Stack.Screen
+              name="OtherProfileScreen"
+              component={OtherProfileScreen}
+              options={{
+                gestureEnabled: true,
+                headerShown: true,
+              }}
+            />
           </>
         )}
       </Stack.Navigator>
-      {(loading || !isMount) && <LoadingScreen />}
+      {(loading || !isMount || isLoading) && <LoadingScreen />}
     </>
   );
 };
