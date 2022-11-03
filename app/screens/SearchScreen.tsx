@@ -17,12 +17,16 @@ import Icon from 'react-native-vector-icons/AntDesign';
 import SearchBar from '../components/SearchBar';
 import {initialState} from '../redux/reducers/navigation';
 import {Query} from '../graphql/graphql';
-import {useGetSearchItemQuery, QueryItem} from '../redux/apis/SearchApi';
+import {
+  useGetSearchItemQuery,
+  QueryItem,
+  SearchResponse,
+} from '../redux/apis/SearchApi';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {useSelector} from 'react-redux';
 import {RootState} from '../redux';
 import LinearGradient from 'react-native-linear-gradient';
-import {useGetSearchItemContextQuery} from '../redux/apis/SearchApi';
+
 const SearchScreen: FunctionComponent<SearchScreenProps> = () => {
   const [searchInput, setSearchInput] = useState('');
   const [item, setItem] = useState([]);
@@ -57,7 +61,7 @@ const SearchScreen: FunctionComponent<SearchScreenProps> = () => {
       <ScrollView showsVerticalScrollIndicator={false}>
         <VStack>
           {!clearResult
-            ? searchResult?.map((item: QueryItem, index: number) => (
+            ? searchResult?.map((item: SearchResponse, index: number) => (
                 <SearchItem item={item} key={index} />
               ))
             : null}
@@ -68,7 +72,7 @@ const SearchScreen: FunctionComponent<SearchScreenProps> = () => {
 };
 export default SearchScreen;
 export interface SearchItemProps {
-  item: QueryItem;
+  item: SearchResponse;
 }
 const SearchItem: FunctionComponent<SearchItemProps> = ({item}) => {
   const navigation = useSelector<
@@ -76,7 +80,7 @@ const SearchItem: FunctionComponent<SearchItemProps> = ({item}) => {
     RootState['navigation']['stackNavigation']
   >(state => state.navigation.stackNavigation);
   // const [data, setData] = useState<any>();
-  const {data} = useGetSearchItemContextQuery(item, {});
+  // const {data} = useGetSearchItemContextQuery(item, {});
 
   useEffect(() => {
     // if (item.type === 'user') {
@@ -98,12 +102,19 @@ const SearchItem: FunctionComponent<SearchItemProps> = ({item}) => {
     // }
   }, []);
   useEffect(() => {
-    console.log('Data', data);
-  }, [data]);
+    // console.log('Data', data);
+  }, []);
   return (
     <>
       {item.type === 'event' ? (
-        <Pressable py={4}>
+        <Pressable
+          py={4}
+          onPress={() => {
+            navigation.navigate('EventScreen', {
+              eventName: item.content,
+              eventId: item.id ? item.id : '',
+            });
+          }}>
           <HStack>
             <VStack w={'20%'}>
               {/* <Text>Search</Text> */}
@@ -123,13 +134,13 @@ const SearchItem: FunctionComponent<SearchItemProps> = ({item}) => {
             </VStack>
             <VStack w={'75%'} pl={3}>
               <Text alignSelf={'flex-start'} fontWeight={'bold'} px={'1'}>
-                {data?.name}
+                {item?.content}
               </Text>
               <Text numberOfLines={1} ellipsizeMode={'tail'}>
-                date : {data?.date}
+                date : {item?.date}
               </Text>
               <Text numberOfLines={1} ellipsizeMode={'tail'}>
-                location: {data?.location}
+                location: {item?.location}
               </Text>
             </VStack>
           </HStack>
@@ -140,16 +151,9 @@ const SearchItem: FunctionComponent<SearchItemProps> = ({item}) => {
           // height={'20'}
           onPress={() => {
             console.log('item', item);
-            if (item.type === 'event') {
-              navigation.navigate('EventScreen', {
-                eventName: item.content,
-                eventId: item.id ? item.id : '',
-              });
-            } else {
-              navigation.navigate('OtherProfileScreen', {
-                userId: item.content,
-              });
-            }
+            navigation.navigate('OtherProfileScreen', {
+              userId: item.content,
+            });
           }}>
           <HStack justifyContent={'space-around'}>
             <VStack w={'20%'}>
@@ -174,10 +178,10 @@ const SearchItem: FunctionComponent<SearchItemProps> = ({item}) => {
                 fontWeight={'bold'}
                 px={'1'}
                 numberOfLines={1}>
-                {data?.profile?.name}@{data?.username}
+                {item?.name}@{item?.content}
               </Text>
               <Text numberOfLines={2} ellipsizeMode={'tail'} minHeight={10}>
-                {data?.profile?.bio ? data?.profile?.bio : 'No bio'}
+                {item?.bio ? item?.bio : 'No bio'}
               </Text>
             </VStack>
             <Box justifyContent={'flex-end'} alignItems={'flex-end'}>

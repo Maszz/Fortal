@@ -5,6 +5,25 @@ export interface QueryItem {
   type: string;
   id?: string;
 }
+export interface SearchResponse {
+  content: string;
+  type: string;
+  id: string;
+  name?: string;
+  bio?: string;
+  date?: string;
+  location?: string;
+}
+export interface UserProfileResponse {
+  username: string;
+  profile?: {
+    name?: string;
+    surname?: string;
+    bio?: string;
+  };
+  categories: string[];
+}
+export interface getUserByUserNameResponse {}
 export const searchApi = createApi({
   reducerPath: 'searchApi',
   baseQuery: fetchBaseQuery({baseUrl: 'http://localhost:3333/'}),
@@ -12,21 +31,26 @@ export const searchApi = createApi({
   refetchOnMountOrArgChange: 10,
 
   endpoints: builder => ({
-    getSearchItem: builder.query<QueryItem[], string>({
+    getSearchItem: builder.query<SearchResponse[], string>({
       query: name => {
         return {url: `search/keyword`, params: {term: name}};
       },
     }),
-    getSearchItemContext: builder.query<any, QueryItem>({
-      query: context => {
-        if (context.type === 'user') {
-          return {url: `user/${context.content}`};
-        } else {
-          return {url: `event/getEvent/${context.id}`};
-        }
+    getSearchItemUserByUsername: builder.query<UserProfileResponse, string>({
+      query: username => {
+        return {url: `user/${username}`};
+      },
+    }),
+    getSearchItemEvent: builder.query<any, string>({
+      query: id => {
+        return {url: `event/getEvent/${id}`};
       },
     }),
   }),
 });
 
-export const {useGetSearchItemQuery, useGetSearchItemContextQuery} = searchApi;
+export const {
+  useGetSearchItemQuery,
+  useGetSearchItemEventQuery,
+  useGetSearchItemUserByUsernameQuery,
+} = searchApi;

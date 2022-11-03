@@ -7,9 +7,9 @@
  *
  * @format
  */
-import React, {FunctionComponent, useEffect, useState} from 'react';
-import {Provider} from 'react-redux';
-import {PersistGate} from 'redux-persist/integration/react';
+import React, { FunctionComponent, useEffect, useState } from 'react';
+import { Provider } from 'react-redux';
+import { PersistGate } from 'redux-persist/integration/react';
 // @ts-ignore: no declaration files
 import FlipperAsyncStorage from 'rn-flipper-async-storage-advanced';
 import {
@@ -24,7 +24,7 @@ import {
   VStack,
   Spacer,
 } from 'native-base';
-import {ApolloClient, ApolloProvider, InMemoryCache} from '@apollo/client';
+import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';
 import {
   useFlipper,
   useReduxDevToolsExtension,
@@ -43,28 +43,28 @@ import {
   StackNavigationOptions,
   StackHeaderProps,
 } from '@react-navigation/stack';
-import {Animated} from 'react-native';
-import {client} from './graphql/client';
-import {countAction, persistor, RootState, store} from './redux';
+import { Animated } from 'react-native';
+import { client } from './graphql/client';
+import { countAction, persistor, RootState, store } from './redux';
 import App from './screens/_App';
 import LoginScreen from './screens/loginScreen';
 import CreateModalScreen from './screens/createModal';
-import type {StackScreenParams, HomeIndexScreenProps} from './types';
-import {View} from 'native-base';
-import {SheetProvider} from 'react-native-actions-sheet';
+import type { StackScreenParams, HomeIndexScreenProps } from './types';
+import { View } from 'native-base';
+import { SheetProvider } from 'react-native-actions-sheet';
 import './utils/SheetManager';
 import RegisterOnboardGender from './screens/registerOnboardGender';
 import RegisterOnboardActivity from './screens/registerOnboardActivity';
 import Home from './screens/Home/home';
-import {AuthProvider} from './contexts/authContext';
-import {useAuth} from './hooks/useAuth';
+import { AuthProvider } from './contexts/authContext';
+import { useAuth } from './hooks/useAuth';
 import HomeIndex from './screens/Home/index';
-import {Config} from './env';
-import {TouchableOpacity} from 'react-native-gesture-handler';
+import { Config } from './env';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 import LoadingScreen from './screens/loadingScreen';
-import {useNavigation} from '@react-navigation/native';
-import {useSelector, useDispatch} from 'react-redux';
-import {setStackAction} from './redux/reducers/navigation';
+import { useNavigation } from '@react-navigation/native';
+import { useSelector, useDispatch } from 'react-redux';
+import { setStackAction } from './redux/reducers/navigation';
 import SearchScreenStack from './screens/SearchScreen';
 import './utils/warningIgnore';
 import Icon from './utils/ImageIcon';
@@ -81,7 +81,7 @@ const StackNavigation = () => {
    * when Defined new Screen you should declare type of it in folder type.
    */
   // const user = useState(false);
-  const {user, loading, isMount} = useAuth();
+  const { user, loading, isMount } = useAuth();
   const isLoading = useSelector<
     RootState,
     RootState['navigation']['isLoading']
@@ -141,7 +141,7 @@ const StackNavigation = () => {
             <Stack.Screen
               name="CreateModal"
               component={CreateModalScreen}
-              options={{presentation: 'modal'}}
+              options={{ presentation: 'modal' }}
             />
             <Stack.Screen
               name="SearchScreen"
@@ -200,7 +200,7 @@ const StackNavigation = () => {
               component={OtherProfileScreen}
               options={{
                 gestureEnabled: true,
-                headerShown: true,
+                headerShown: false,
               }}
             />
           </>
