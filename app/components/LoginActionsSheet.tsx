@@ -116,7 +116,11 @@ const LoginActionsSheet: FunctionComponent<LoginActionsSheetProps> = ({
             variant="unstyled"
             alignSelf={'flex-end'}
             onPress={() => {
-              console.log('Pressed');
+              console.log('Pressedhgf');
+
+              SheetManager.hide('login-sheet', {
+                payload: true,
+              });
             }}>
             <Text color={'#998CEB'} underline fontSize={12}>
               {t('loginActionsSheet:forgetPassword')}

@@ -61,25 +61,28 @@ const LoginScreen: FunctionComponent<LoginScreenProps> = ({
       <Box style={{flex: 1}}>
         <Box alignItems="center" justifyContent={'space-between'} flex={1}>
           <GradientButton
-            onPress={() => {
-              SheetManager.show('login-sheet', {
+            onPress={async () => {
+              const a = await SheetManager.show('login-sheet', {
+                payload: {
+                  id: 'login-sheet',
+                  navigation: navigation,
+                },
+              });
+              if (a) {
+                SheetManager.show('forgot-password-sheet');
+              }
+            }}
+            text={t('loginScreen:signin')}
+          />
+          <TouchableOpacity
+            onPress={async () => {
+              const a = await SheetManager.show('register-sheet', {
                 payload: {
                   id: 'login-sheet',
                   navigation: navigation,
                 },
               });
             }}
-            text={t('loginScreen:signin')}
-          />
-          <TouchableOpacity
-            onPress={() =>
-              SheetManager.show('register-sheet', {
-                payload: {
-                  id: 'login-sheet',
-                  navigation: navigation,
-                },
-              })
-            }
             style={{
               width: 250,
               height: 40,

@@ -36,5 +36,10 @@ interface RegisterActionsSheetPayload {
   navigation: any;
 }
 
+interface ForgotPasswordActionsSheetPayload {}
+
 export interface RegisterActionsSheetProps
   extends SheetProps<RegisterActionsSheetPayload> {}
+
+export interface ForgotPasswordActionsSheetProps
+  extends SheetProps<ForgotPasswordActionsSheetPayload> {}
