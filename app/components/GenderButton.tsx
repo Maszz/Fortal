@@ -9,6 +9,7 @@ export interface GenderButtonProps {
   onPress: (title: string) => void;
   selected: boolean;
   title: string;
+  value: string;
   selectedColor: string[];
   containerStyle?: StyleProp<ViewStyle>;
 }
@@ -16,6 +17,7 @@ const GenderButton: FunctionComponent<GenderButtonProps> = ({
   selected,
   onPress,
   title,
+  value,
   selectedColor,
   containerStyle = {
     width: 100,
@@ -34,7 +36,7 @@ const GenderButton: FunctionComponent<GenderButtonProps> = ({
       // height={'40px'}>
       onPress={() => {
         // setSelectedGender({selectedGender: 'Male'});
-        onPress(title);
+        onPress(value);
         console.log('Pressable');
       }}>
       <LinearGradient

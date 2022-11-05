@@ -27,6 +27,7 @@ import {useGetTagsQuery} from '../redux/apis';
 import LoadingScreen from './loadingScreen';
 import {useDispatch} from 'react-redux';
 import {setLoadingAction} from '../redux/reducers/navigation';
+import {useTranslation} from 'react-i18next';
 export interface Tags {
   [key: string]: boolean;
 }
@@ -34,6 +35,7 @@ const RegisterOnboardActivity: FunctionComponent<
   RegisterOnboardActivityProps
 > = ({navigation, route}) => {
   const {updateOnboarding, updateUserInterestedTags} = useAuth();
+  const {t} = useTranslation();
   const [tags, setTags] = useState<Tags>({
     // Sports: false,
     // Game: false,
@@ -163,11 +165,11 @@ const RegisterOnboardActivity: FunctionComponent<
           alignItems: 'center',
         }}>
         <Text fontSize={20} color={'#232259'} fontWeight={'medium'}>
-          Pick your prefer activity you like
+          {t('onboardingActivity:header')}
         </Text>
         <Text />
         <Text fontSize={16} color={'#232259'}>
-          Tap once on your favorite genres
+          {t('onboardingActivity:description')}
         </Text>
       </Box>
       <Box style={{flex: 0.03}} />

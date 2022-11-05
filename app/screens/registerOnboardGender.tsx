@@ -6,19 +6,23 @@ import {SheetManager} from 'react-native-actions-sheet';
 import LinearGradient from 'react-native-linear-gradient';
 import {useAuth} from '../hooks/useAuth';
 import GenderButton from '../components/GenderButton';
+import {useTranslation} from 'react-i18next';
+
 const RegisterOnBoardGender: FunctionComponent<RegisterOnboardGenderProps> = ({
   navigation,
   route,
 }) => {
   const {updateOnboardingGender} = useAuth();
   const [selectedGender, setSelectedGender] = useState({selectedGender: ''});
+  const {t} = useTranslation();
+  // t('registerActionsSheet:username'
   return (
     <View style={{flex: 1}}>
       <Box style={{flex: 0.2}} />
       <Box style={{flex: 0.1}}>
         <Center>
           <Text fontSize={32} fontWeight={'medium'} color={'#232259'}>
-            Gender
+            {t('onboardingGender:gender')}
           </Text>
         </Center>
       </Box>
@@ -30,54 +34,9 @@ const RegisterOnBoardGender: FunctionComponent<RegisterOnboardGenderProps> = ({
           marginRight: 55,
           marginLeft: 55,
         }}>
-        {/* button tag */}
-        {/* <TouchableOpacity
-          style={{
-            width: 100,
-            height: 120,
-            shadowColor: 'black',
-            shadowOffset: {width: 2, height: 2},
-            shadowOpacity: 0.25,
-            shadowRadius: 1,
-            elevation: 0.5,
-            borderWidth: 7,
-            borderRadius: 20,
-            borderColor:
-              selectedGender.selectedGender === 'Male'
-                ? '#BD97FB'
-                : 'transparent',
-          }}
-          // width={'250px'}
-          // height={'40px'}>
-          onPress={() => {
-            setSelectedGender({selectedGender: 'Male'});
-            console.log('Pressable');
-          }}>
-          <LinearGradient
-            colors={['#FFFFFF', '#8CDFFF', '#4879F6']}
-            useAngle={true}
-            angle={0}
-            angleCenter={{x: 0.5, y: 0.65}}
-            style={{
-              flex: 1,
-              paddingLeft: 15,
-              paddingRight: 15,
-              borderRadius: 10,
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}>
-            <Image
-              marginBottom={3}
-              alt="key icon"
-              source={require('../assets/gender_icon.png')}
-            />
-            <Text color={'#232259'} fontWeight={'medium'} fontSize={16}>
-              Male
-            </Text>
-          </LinearGradient>
-        </TouchableOpacity> */}
         <GenderButton
-          title="Male"
+          title={t('onboardingGender:male')}
+          value={'Male'}
           onPress={v => {
             setSelectedGender(prev => {
               if (prev.selectedGender === v) {
@@ -91,7 +50,8 @@ const RegisterOnBoardGender: FunctionComponent<RegisterOnboardGenderProps> = ({
           selectedColor={['#FFFFFF', '#8CDFFF', '#4879F6']}
         />
         <GenderButton
-          title="Female"
+          title={t('onboardingGender:female')}
+          value={'Female'}
           onPress={v => {
             setSelectedGender(prev => {
               if (prev.selectedGender === v) {
@@ -104,51 +64,6 @@ const RegisterOnBoardGender: FunctionComponent<RegisterOnboardGenderProps> = ({
           selected={selectedGender.selectedGender === 'Female'}
           selectedColor={['#ffffff', '#FFEDD1', '#FFA3C4']}
         />
-        {/* <TouchableOpacity
-          style={{
-            width: 100,
-            height: 120,
-            shadowColor: 'black',
-            shadowOffset: {width: 2, height: 2},
-            shadowOpacity: 0.25,
-            shadowRadius: 1,
-            elevation: 0.5,
-            borderRadius: 20,
-            borderWidth: 7,
-            borderColor:
-              selectedGender.selectedGender === 'Female'
-                ? '#BD97FB'
-                : 'transparent',
-          }}
-          // width={'250px'}
-          // height={'40px'}>
-          onPress={() => {
-            setSelectedGender({selectedGender: 'Female'});
-            console.log('Pressable');
-          }}>
-          <LinearGradient
-            colors={['#ffffff', '#FFEDD1', '#FFA3C4']}
-            useAngle={true}
-            angle={0}
-            angleCenter={{x: 0.5, y: 0.65}}
-            style={{
-              flex: 1,
-              paddingLeft: 15,
-              paddingRight: 15,
-              borderRadius: 10,
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}>
-            <Image
-              marginBottom={3}
-              alt="key icon"
-              source={require('../assets/gender_icon.png')}
-            />
-            <Text color={'#232259'} fontWeight={'medium'} fontSize={16}>
-              Female
-            </Text>
-          </LinearGradient>
-        </TouchableOpacity> */}
       </Box>
       <Box
         style={{
@@ -158,53 +73,9 @@ const RegisterOnBoardGender: FunctionComponent<RegisterOnboardGenderProps> = ({
           marginRight: 55,
           marginLeft: 55,
         }}>
-        {/* <TouchableOpacity
-          style={{
-            width: 100,
-            height: 120,
-            shadowColor: 'black',
-            shadowOffset: {width: 2, height: 2},
-            shadowOpacity: 0.25,
-            shadowRadius: 1,
-            elevation: 0.5,
-            borderRadius: 20,
-            borderWidth: 7,
-            borderColor:
-              selectedGender.selectedGender === 'LGTBQ+'
-                ? '#BD97FB'
-                : 'transparent',
-          }}
-          // width={'250px'}
-          // height={'40px'}>
-          onPress={() => {
-            setSelectedGender({selectedGender: 'LGTBQ+'});
-            console.log('Pressable');
-          }}>
-          <LinearGradient
-            colors={['#8172F7', '#55BEF0', '#EEE696', '#EF8B88']}
-            useAngle={true}
-            angle={0}
-            angleCenter={{x: 0.5, y: 0.5}}
-            style={{
-              flex: 1,
-              paddingLeft: 15,
-              paddingRight: 15,
-              borderRadius: 10,
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}>
-            <Image
-              marginBottom={3}
-              alt="key icon"
-              source={require('../assets/gender_icon.png')}
-            />
-            <Text color={'#232259'} fontWeight={'medium'} fontSize={13}>
-              LGBTQ+
-            </Text>
-          </LinearGradient>
-        </TouchableOpacity> */}
         <GenderButton
-          title="LGBTQ+"
+          title={t('onboardingGender:lgbtQ')}
+          value={'LGBTQ+'}
           onPress={v => {
             setSelectedGender(prev => {
               if (prev.selectedGender === v) {
@@ -218,7 +89,8 @@ const RegisterOnBoardGender: FunctionComponent<RegisterOnboardGenderProps> = ({
           selectedColor={['#8172F7', '#55BEF0', '#EEE696', '#EF8B88']}
         />
         <GenderButton
-          title="Other"
+          title={t('onboardingGender:other')}
+          value={'Other'}
           onPress={v => {
             setSelectedGender(prev => {
               if (prev.selectedGender === v) {
@@ -231,52 +103,6 @@ const RegisterOnBoardGender: FunctionComponent<RegisterOnboardGenderProps> = ({
           selected={selectedGender.selectedGender === 'Other'}
           selectedColor={['#FFFFFF', '#D1D1D1', '#8B9093']}
         />
-
-        {/* <TouchableOpacity
-          style={{
-            width: 100,
-            height: 120,
-            shadowColor: 'black',
-            shadowOffset: {width: 2, height: 2},
-            shadowOpacity: 0.25,
-            shadowRadius: 1,
-            elevation: 0.5,
-            borderRadius: 20,
-            borderWidth: 7,
-            borderColor:
-              selectedGender.selectedGender === 'None'
-                ? '#BD97FB'
-                : 'transparent',
-          }}
-          // width={'250px'}
-          // height={'40px'}>
-          onPress={() => {
-            setSelectedGender({selectedGender: 'None'});
-            console.log('pressed');
-          }}>
-          <LinearGradient
-            colors={['#FFFFFF', '#D1D1D1', '#8B9093']}
-            useAngle={true}
-            angle={0}
-            angleCenter={{x: 0.5, y: 0.65}}
-            style={{
-              flex: 1,
-              paddingLeft: 15,
-              paddingRight: 15,
-              borderRadius: 10,
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}>
-            <Image
-              marginBottom={3}
-              alt="key icon"
-              source={require('../assets/gender_icon.png')}
-            />
-            <Text color={'#232259'} fontWeight={'medium'} fontSize={16}>
-              None
-            </Text>
-          </LinearGradient>
-        </TouchableOpacity> */}
       </Box>
       <Box style={{flex: 0.09}}>
         <Center style={{flexDirection: 'row'}}>

@@ -23,8 +23,8 @@ const MapViewScreen: FunctionComponent<MapViewScreenProps> = ({
   const [region, setRegion] = useState<Region>({} as Region);
   const [isMount, setIsMount] = useState<boolean>(false);
   const [pin, setPin] = useState<LatLng>({
-    latitude: location.latitude,
-    longitude: location.longitude,
+    latitude: location.marker.latitude,
+    longitude: location.marker.longitude,
   });
   // const [isMount, setIsMount] = useState(false);
   const styles = StyleSheet.create({
@@ -64,7 +64,7 @@ const MapViewScreen: FunctionComponent<MapViewScreenProps> = ({
                 latitude: e.nativeEvent.coordinate.latitude,
                 longitude: e.nativeEvent.coordinate.longitude,
               });
-              console.log(e.nativeEvent.coordinate);
+              // console.log(e.nativeEvent.coordinate);
             }}>
             <Marker
               coordinate={{latitude: pin.latitude, longitude: pin.longitude}}

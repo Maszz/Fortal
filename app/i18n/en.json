@@ -22,7 +22,7 @@
     "passwordPlaceholder": "Enter your password",
     "forgetPassword": "Forgot password?"
   },
-  "registersActionSheet": {
+  "registerActionsSheet": {
     "title_1": "New",
     "title_2": "Account",
     "name": "name",
@@ -35,5 +35,16 @@
     "passwordPlaceholder": "Enter your password",
     "confirmPassword": "Confirm password",
     "confirmPasswordPlaceholder": "Confirm your password"
+  },
+  "onboardingGender": {
+    "gender": "Gender",
+    "male": "Male",
+    "female": "Female",
+    "lgbtQ": "LGBTQ+",
+    "other": "Other"
+  },
+  "onboardingActivity": {
+    "header": "Pick your prefer activity you like",
+    "description": "Tap once on your favorite genres"
   }
 }

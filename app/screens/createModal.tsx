@@ -14,6 +14,9 @@ import {
   ScrollView,
   Select,
   Switch,
+  Pressable,
+  Modal,
+  FormControl,
 } from 'native-base';
 import {
   TouchableOpacity,
@@ -32,6 +35,7 @@ import {useDispatch} from 'react-redux';
 import {setLocationAction} from '../redux/reducers/locationReducer';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import moment from 'moment';
+
 export interface CreateEventForm {
   startDate: moment.Moment;
   startTime: moment.Moment;
@@ -39,6 +43,8 @@ export interface CreateEventForm {
   maxMember: string;
   memberType: string;
   isPublic: boolean;
+  profileColor: string[];
+  eventName: string;
 }
 const Home: FunctionComponent<CreateModalProps> = ({route, navigation}) => {
   const {stackNavigation} = useSelector<RootState, RootState['navigation']>(
@@ -50,6 +56,8 @@ const Home: FunctionComponent<CreateModalProps> = ({route, navigation}) => {
     state => state.location,
   );
   const dispatch = useDispatch();
+  const [showModal, setShowModal] = useState(false);
+
   const [region, setRegion] = useState<Region>({} as Region);
   const [eventData, setEventData] = useState<CreateEventForm>({
     startDate: moment(),
@@ -57,7 +65,17 @@ const Home: FunctionComponent<CreateModalProps> = ({route, navigation}) => {
     endTime: moment(),
     maxMember: '4',
     memberType: 'Unlimited',
+    isPublic: true,
+    profileColor: ['#FEDDE0', '#8C84D4'],
+    eventName: 'Location name',
   } as CreateEventForm);
+  const onSubmit = () => {
+    const date = eventData.startDate.toISOString().split('T')[0];
+    const startTime = eventData.startTime.toISOString().split('T')[1];
+    const endTime = eventData.endTime.toISOString().split('T')[1];
+    const startDateTime = moment(date + 'T' + startTime);
+    const endDateTime = moment(date + 'T' + endTime);
+  };
   useEffect(() => {
     // call once when initial mounting the component
     Geolocation.getCurrentPosition(
@@ -86,6 +104,15 @@ const Home: FunctionComponent<CreateModalProps> = ({route, navigation}) => {
         console.log(error);
       },
     );
+    console.log(eventData.startDate.toISOString().split('T')[0]);
+    console.log(eventData.startTime.toISOString().split('T')[1]);
+    console.log(
+      moment(
+        eventData.startDate.toISOString().split('T')[0] +
+          'T' +
+          eventData.startTime.toISOString().split('T')[1],
+      ).toISOString(),
+    );
     console.log('effeft');
   }, []);
   return (
@@ -93,7 +120,7 @@ const Home: FunctionComponent<CreateModalProps> = ({route, navigation}) => {
       <ScrollView w={'100%'} backgroundColor={'white'} h={'100%'}>
         <VStack mx={4} flex={1} h={height}>
           <LinearGradient
-            colors={['#FEDDE0', '#8C84D4']}
+            colors={eventData.profileColor}
             useAngle={true}
             angle={0}
             angleCenter={{x: 0.5, y: 0.5}}
@@ -166,22 +193,33 @@ const Home: FunctionComponent<CreateModalProps> = ({route, navigation}) => {
                   </HStack>
                 </ZStack>
               </TouchableOpacity>
-              <ZStack
-                w={'90%'}
-                height={'24'}
-                flexWrap={'wrap'}
-                alignItems={'center'}>
-                <Box
-                  backgroundColor={'white'}
-                  w={'100%'}
-                  height={'100%'}
-                  opacity={20}
-                  borderRadius={'3xl'}
-                />
-                <Text fontSize={32} fontWeight={700} w={'90%'} h={'100%'}>
-                  Location name
-                </Text>
-              </ZStack>
+              <TouchableOpacity
+                onPress={() => {
+                  setShowModal(true);
+                }}>
+                <ZStack
+                  w={'90%'}
+                  height={'24'}
+                  flexWrap={'wrap'}
+                  alignItems={'center'}>
+                  <Box
+                    backgroundColor={'white'}
+                    w={'100%'}
+                    height={'100%'}
+                    opacity={20}
+                    borderRadius={'3xl'}
+                  />
+                  <Text
+                    fontSize={32}
+                    fontWeight={700}
+                    w={'90%'}
+                    h={'100%'}
+                    numberOfLines={2}
+                    ellipsizeMode={'tail'}>
+                    {eventData.eventName}
+                  </Text>
+                </ZStack>
+              </TouchableOpacity>
             </Box>
           </LinearGradient>
           <Box mt={5} mx={4}>
@@ -301,7 +339,10 @@ const Home: FunctionComponent<CreateModalProps> = ({route, navigation}) => {
                   keyboardType={'numeric'}
                 />
               </HStack>
-              <HStack alignItems={'center'} justifyContent={'space-between'}>
+              <HStack
+                alignItems={'center'}
+                justifyContent={'space-between'}
+                mt={4}>
                 <Text>Public Group</Text>
                 <Spacer />
                 <Switch
@@ -317,16 +358,170 @@ const Home: FunctionComponent<CreateModalProps> = ({route, navigation}) => {
                 />
               </HStack>
             </VStack>
-            <HStack>
+            <HStack mt={4}>
               <Text fontSize={14} fontWeight={700} color={'#232259'}>
                 Color
               </Text>
             </HStack>
           </Box>
+          <HStack justifyContent={'space-between'} w={'70%'} mt={4} ml={4}>
+            <GradientCircleButton
+              isSelected={
+                eventData.profileColor[0] == '#FFEAE5' &&
+                eventData.profileColor[1] == '#8C84D4'
+              }
+              colors={['#FFEAE5', '#8C84D4']}
+              angle={300}
+              borderColor={'#8172F7'}
+              onPress={v => {
+                setEventData({
+                  ...eventData,
+                  profileColor: v,
+                });
+              }}
+            />
+            <GradientCircleButton
+              isSelected={
+                eventData.profileColor[0] == '#9FDDFB' &&
+                eventData.profileColor[1] == '#8172F7'
+              }
+              colors={['#9FDDFB', '#8172F7']}
+              angle={300}
+              borderColor={'#8172F7'}
+              onPress={v => {
+                setEventData({
+                  ...eventData,
+                  profileColor: v,
+                });
+              }}
+            />
+            <GradientCircleButton
+              isSelected={
+                eventData.profileColor[0] == '#FFFDC3' &&
+                eventData.profileColor[1] == '#6BB79D'
+              }
+              colors={['#FFFDC3', '#6BB79D']}
+              angle={300}
+              borderColor={'#8172F7'}
+              onPress={v => {
+                setEventData({
+                  ...eventData,
+                  profileColor: v,
+                });
+              }}
+            />
+            <GradientCircleButton
+              isSelected={
+                eventData.profileColor[0] == '#F4FF92' &&
+                eventData.profileColor[1] == '#EF8B88'
+              }
+              colors={['#F4FF92', '#EF8B88']}
+              angle={300}
+              borderColor={'#8172F7'}
+              onPress={v => {
+                setEventData({
+                  ...eventData,
+                  profileColor: v,
+                });
+              }}
+            />
+          </HStack>
         </VStack>
       </ScrollView>
+      <EventNameModal
+        isOpen={showModal}
+        setIsOpen={setShowModal}
+        setValue={v => {
+          setEventData({...eventData, eventName: v});
+        }}
+        value={eventData.eventName}
+      />
     </KeyboardAvoidingView>
   );
 };
 
 export default Home;
+
+export interface GradientCircleButtonProps {
+  colors: string[];
+  borderColor: string;
+  angle: number;
+  isSelected: boolean;
+  onPress: (v: string[]) => void;
+}
+export const GradientCircleButton: FunctionComponent<
+  GradientCircleButtonProps
+> = ({colors, borderColor, angle, onPress, isSelected}) => {
+  return (
+    <Pressable
+      onPress={() => {
+        onPress(colors);
+      }}>
+      <LinearGradient
+        colors={colors}
+        useAngle={true}
+        angle={angle}
+        angleCenter={{x: 0.5, y: 0.5}}
+        style={{
+          width: 50,
+          height: 50,
+          borderRadius: 25,
+          borderColor: isSelected ? borderColor : 'transparent',
+          borderWidth: 4,
+        }}
+      />
+    </Pressable>
+  );
+};
+export interface EventNameModalProps {
+  isOpen: boolean;
+  setIsOpen(isOpen: boolean): void;
+  value: string;
+  setValue: (value: string) => void;
+}
+export const EventNameModal: FunctionComponent<EventNameModalProps> = ({
+  isOpen,
+  setIsOpen,
+  value,
+  setValue,
+}) => {
+  const [text, setText] = useState(value);
+  return (
+    <Modal isOpen={isOpen} onClose={() => setIsOpen(false)}>
+      <Modal.Content maxWidth="400px">
+        <Modal.CloseButton />
+        <Modal.Header>Edit Event Name</Modal.Header>
+        <Modal.Body>
+          <FormControl>
+            <FormControl.Label>Name</FormControl.Label>
+            <Input
+              value={text}
+              onChangeText={v => {
+                setText(v);
+              }}
+            />
+          </FormControl>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button.Group space={2}>
+            <Button
+              variant="ghost"
+              colorScheme="blueGray"
+              onPress={() => {
+                setIsOpen(false);
+              }}>
+              Cancel
+            </Button>
+            <Button
+              onPress={() => {
+                setValue(text);
+                setIsOpen(false);
+              }}>
+              Save
+            </Button>
+          </Button.Group>
+        </Modal.Footer>
+      </Modal.Content>
+    </Modal>
+  );
+};

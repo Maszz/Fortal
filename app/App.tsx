@@ -229,11 +229,7 @@ const Wrapper = () => {
     useFlipper(navigationRef); //eslint-disable-line react-hooks/rules-of-hooks
     useReduxDevToolsExtension(navigationRef); //eslint-disable-line react-hooks/rules-of-hooks
   }
-  Geolocation.setRNConfiguration({
-    skipPermissionRequests: false,
-    authorizationLevel: 'always',
-    locationProvider: 'auto',
-  });
+
   Geolocation.requestAuthorization(
     () => {
       console.log('requestAuthorization');

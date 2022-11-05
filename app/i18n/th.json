@@ -35,5 +35,16 @@
     "passwordPlaceholder": "กรอกรหัสผ่าน",
     "confirmPassword": "ยืนยันรหัสผ่าน",
     "confirmPasswordPlaceholder": "กรอกรหัสผ่านอีกครั้ง"
+  },
+  "onboardingGender": {
+    "gender": "เพศ",
+    "male": "ชาย",
+    "female": "หญิง",
+    "lgbtQ": "LGBTQ+",
+    "other": "ไม่ระบุ"
+  },
+  "onboardingActivity": {
+    "header": "เลือกกิจกรรมที่คุณชอบ",
+    "description": "กดเลือกกิจกรรมที่คุณชอบ"
   }
 }
