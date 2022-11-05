@@ -3,10 +3,10 @@ import {
   fetchBaseQuery,
   FetchBaseQueryError,
 } from '@reduxjs/toolkit/query/react';
-
+import {Config} from '../../env';
 export const tagsApi = createApi({
   reducerPath: 'tagsApi',
-  baseQuery: fetchBaseQuery({baseUrl: 'http://localhost:3333/tags/'}),
+  baseQuery: fetchBaseQuery({baseUrl: `${Config.apiBaseUrl}/tags/`}),
   endpoints: builder => ({
     getTags: builder.query<{[key: string]: boolean}, void>({
       query: () => {

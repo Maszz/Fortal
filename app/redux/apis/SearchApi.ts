@@ -1,5 +1,5 @@
 import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react';
-
+import {Config} from '../../env';
 export interface QueryItem {
   content: string;
   type: string;
@@ -26,7 +26,7 @@ export interface UserProfileResponse {
 export interface getUserByUserNameResponse {}
 export const searchApi = createApi({
   reducerPath: 'searchApi',
-  baseQuery: fetchBaseQuery({baseUrl: 'http://localhost:3333/'}),
+  baseQuery: fetchBaseQuery({baseUrl: `${Config.apiBaseUrl}/`}),
   keepUnusedDataFor: 10,
   refetchOnMountOrArgChange: 10,
 
@@ -53,4 +53,5 @@ export const {
   useGetSearchItemQuery,
   useGetSearchItemEventQuery,
   useGetSearchItemUserByUsernameQuery,
+  useLazyGetSearchItemQuery,
 } = searchApi;

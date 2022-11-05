@@ -1,4 +1,5 @@
 import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react';
+import {Config} from '../../env';
 export interface SigninMutationPayload {
   username: string;
   password: string;
@@ -32,9 +33,10 @@ export interface ErrorResponse {
   };
   status: number;
 }
+
 export const authApi = createApi({
   reducerPath: 'authApi',
-  baseQuery: fetchBaseQuery({baseUrl: 'http://localhost:3333/auth/'}),
+  baseQuery: fetchBaseQuery({baseUrl: `${Config.apiBaseUrl}/auth/`}),
 
   endpoints: builder => ({
     signIn: builder.mutation<LoginResponseDto, SigninMutationPayload>({

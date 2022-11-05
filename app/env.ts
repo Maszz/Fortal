@@ -4,6 +4,7 @@ const devConfig = {
   bypassUser: false,
   bypassRegister: false,
   goOnboard: false,
+  apiBaseUrl: 'http://192.168.1.150:3333',
 };
 
 /**
@@ -14,7 +15,8 @@ const prodConfig = {
   graphqlWs: 'ws://localhost:3333/graphql',
   bypassUser: false,
   bypassRegister: false,
-  goOnboard: true,
+  goOnboard: false,
+  apiBaseUrl: 'http://localhost:3333',
 };
 
 export const Config = __DEV__ ? devConfig : prodConfig;

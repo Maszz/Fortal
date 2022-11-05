@@ -21,6 +21,7 @@ import {
   useGetSearchItemQuery,
   QueryItem,
   SearchResponse,
+  useLazyGetSearchItemQuery,
 } from '../redux/apis/SearchApi';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {useSelector} from 'react-redux';
@@ -29,6 +30,7 @@ import LinearGradient from 'react-native-linear-gradient';
 
 const SearchScreen: FunctionComponent<SearchScreenProps> = () => {
   const [searchInput, setSearchInput] = useState('');
+
   const [item, setItem] = useState([]);
   const {data: searchResult} = useGetSearchItemQuery(searchInput);
   //   const [postSearchItem, result] = usePostSearchItemMutation();
@@ -45,7 +47,7 @@ const SearchScreen: FunctionComponent<SearchScreenProps> = () => {
 
   return (
     <View paddingX={4} backgroundColor={'white'} w={'100%'} h={'100%'}>
-      <Text>Search Screen</Text>
+      <Text>Search</Text>
       <Box>
         <SearchBar
           onSearchSubmit={term => {
@@ -56,7 +58,7 @@ const SearchScreen: FunctionComponent<SearchScreenProps> = () => {
           }}
         />
       </Box>
-      <Text>Search</Text>
+      <Text mt={'4'}>Search</Text>
       <Divider my={2} />
       <ScrollView showsVerticalScrollIndicator={false}>
         <VStack>

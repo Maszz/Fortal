@@ -3,6 +3,7 @@ import {
   fetchBaseQuery,
   FetchBaseQueryError,
 } from '@reduxjs/toolkit/query/react';
+import {Config} from '../../env';
 export interface UpdateOnboardingMutationPayload {
   userId: string;
   onboarding: boolean;
@@ -20,7 +21,7 @@ export interface UpdateOnboardingResponseDto {
 }
 export const userApi = createApi({
   reducerPath: 'userApi',
-  baseQuery: fetchBaseQuery({baseUrl: 'http://localhost:3333/user/'}),
+  baseQuery: fetchBaseQuery({baseUrl: `${Config.apiBaseUrl}/user/`}),
   endpoints: builder => ({
     updateOnboarding: builder.mutation<
       UpdateOnboardingResponseDto,

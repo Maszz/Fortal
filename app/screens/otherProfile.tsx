@@ -10,16 +10,19 @@ import {
   VStack,
   Button,
   Skeleton,
+  Container,
+  Pressable,
+  Stack,
 } from 'native-base';
 import {OtherProfileScreenProps} from '../types';
 import {FunctionComponent, useEffect} from 'react';
-import {TouchableOpacity} from 'react-native';
-
+import LinearGradient from 'react-native-linear-gradient';
 import {TabRouter} from '@react-navigation/native';
 import {Heading} from 'native-base';
 import {useGetSearchItemUserByUsernameQuery} from '../redux/apis/SearchApi';
 import {setLoadingAction} from '../redux/reducers/navigation';
 import {useDispatch} from 'react-redux';
+import {StyleSheet, TouchableOpacity, TouchableHighlight} from 'react-native';
 const OtherProfileScreen: FunctionComponent<OtherProfileScreenProps> = ({
   route,
   navigation,
@@ -29,6 +32,7 @@ const OtherProfileScreen: FunctionComponent<OtherProfileScreenProps> = ({
   const {userId} = route.params;
   const {data: user, isSuccess} = useGetSearchItemUserByUsernameQuery(userId);
   const dispatch = useDispatch();
+
   useEffect(() => {
     console.log('User', user);
     dispatch(setLoadingAction(true));
@@ -128,7 +132,7 @@ const OtherProfileScreen: FunctionComponent<OtherProfileScreenProps> = ({
             <Text>Following</Text>
           </VStack>
         </HStack>
-        <VStack mx={5} mt={5} backgroundColor={'amber.200'}>
+        <VStack mx={5} mt={5}>
           <Text fontWeight={'bold'} fontSize={'32'}>
             {user ? user.profile?.name || 'Name' : 'Name'}
           </Text>
@@ -148,23 +152,44 @@ const OtherProfileScreen: FunctionComponent<OtherProfileScreenProps> = ({
           Interested
         </Text>
         <VStack>
-          {user
-            ? user.categories.map((category, index) => (
-                <Text key={index} fontSize={'12'} fontWeight={'normal'} mt={2}>
-                  {category}
-                </Text>
-              ))
-            : null}
-          <HStack justifyContent={'space-between'} mt={5}>
-            <Text>asddas</Text>
+          <HStack mt={5} flexWrap={'wrap'} w={'95%'}>
+            {user
+              ? user.categories.map((category, index) => (
+                  <TagButton text={category} color={'#cdcdcd'} />
+                ))
+              : null}
           </HStack>
-          <HStack>
+          {/* <HStack>
             <Text>dasdsa</Text>
-          </HStack>
+          </HStack> */}
         </VStack>
+
+        {/* <TagButton text={'asdfasdasd'} /> */}
       </VStack>
     </View>
   );
 };
 
 export default OtherProfileScreen;
+
+export const TagButton = ({text, color}: any) => {
+  return (
+    <Container mr={2} my={1}>
+      <TouchableOpacity
+        onPress={() => {}}
+        style={{
+          backgroundColor: color,
+          paddingVertical: 7,
+          paddingHorizontal: 10,
+          borderRadius: 20,
+          minWidth: 45,
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}>
+        <Text rounded={'full'} fontSize={'10px'}>
+          {text}
+        </Text>
+      </TouchableOpacity>
+    </Container>
+  );
+};

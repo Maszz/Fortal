@@ -1,5 +1,6 @@
 import {createStackNavigator, StackScreenProps} from '@react-navigation/stack';
 import SearchScreen from '../screens/Home/Search';
+import {Region} from 'react-native-maps';
 
 export type StackScreenParams = {
   HomeIndex: undefined;
@@ -11,7 +12,9 @@ export type StackScreenParams = {
   SearchScreen: undefined;
   EventScreen: {eventId: string; eventName: string};
   OtherProfileScreen: {userId: string};
+  MapViewScreen: undefined;
 };
+
 export type HomeIndexScreenProps = StackScreenProps<
   StackScreenParams,
   'HomeIndex'
@@ -42,4 +45,9 @@ export type EventScreenProps = StackScreenProps<
 export type OtherProfileScreenProps = StackScreenProps<
   StackScreenParams,
   'OtherProfileScreen'
+>;
+
+export type MapViewScreenProps = StackScreenProps<
+  StackScreenParams,
+  'MapViewScreen'
 >;
