@@ -116,7 +116,10 @@ const HomeIndex: FunctionComponent<HomeIndexScreenProps> = ({
                     style={{marginRight: 10}}
                   />
                 </TouchableOpacity>
-                <TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() => {
+                    navigation.navigate('SettingScreen');
+                  }}>
                   <Ionicons
                     size={22}
                     name="ios-settings-outline"

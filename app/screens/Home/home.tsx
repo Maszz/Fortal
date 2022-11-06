@@ -290,7 +290,7 @@ const Home: FunctionComponent<HomeScreenTypes.HomeScreenProps> = ({route}) => {
             }}>
             {/* this is activity component  */}
             <LinearGradient
-              colors={['#FEDDE0', '#8172F7']}
+              colors={['#9FDDFB', '#FFAECB']}
               useAngle={true}
               angle={0}
               angleCenter={{x: 0.5, y: 0.5}}
@@ -367,7 +367,7 @@ const Home: FunctionComponent<HomeScreenTypes.HomeScreenProps> = ({route}) => {
             }}>
             {/* this is activity component  */}
             <LinearGradient
-              colors={['#FFFDC3', '#6BB79D']}
+              colors={['#F4FF92', '#EF8B88']}
               useAngle={true}
               angle={0}
               angleCenter={{x: 0.5, y: 0.5}}

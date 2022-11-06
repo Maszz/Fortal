@@ -17,6 +17,7 @@ import {
   Pressable,
   Modal,
   FormControl,
+  Divider,
 } from 'native-base';
 import {
   TouchableOpacity,
@@ -35,6 +36,8 @@ import {useDispatch} from 'react-redux';
 import {setLocationAction} from '../redux/reducers/locationReducer';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import moment from 'moment';
+import {border} from 'native-base/lib/typescript/theme/styled-system';
+import GradientButton from '../components/GradientButton';
 
 export interface CreateEventForm {
   startDate: moment.Moment;
@@ -237,7 +240,7 @@ const Home: FunctionComponent<CreateModalProps> = ({route, navigation}) => {
             />
             <VStack>
               <HStack alignItems={'center'} mt={4}>
-                <Text fontSize={14} fontWeight={700} color={'#232259'}>
+                <Text fontSize={14} fontWeight={'bold'} color={'#232259'}>
                   Start
                 </Text>
                 <Spacer />
@@ -264,7 +267,7 @@ const Home: FunctionComponent<CreateModalProps> = ({route, navigation}) => {
                   mode={'time'}
                   is24Hour={true}
                   accentColor={'#232259'}
-                  style={{marginLeft: 3}}
+                  style={{marginLeft: 3, borderRadius: 10}}
                   onChange={v => {
                     console.log(v.nativeEvent.timestamp);
                     setEventData({
@@ -343,7 +346,10 @@ const Home: FunctionComponent<CreateModalProps> = ({route, navigation}) => {
                 alignItems={'center'}
                 justifyContent={'space-between'}
                 mt={4}>
-                <Text>Public Group</Text>
+                <Image source={require('../assets/eye_icon.png')} />
+                <Text color={'#8B9093'} fontWeight={'normal'} marginLeft={3}>
+                  Public Group
+                </Text>
                 <Spacer />
                 <Switch
                   value={eventData.isPublic}
@@ -353,8 +359,13 @@ const Home: FunctionComponent<CreateModalProps> = ({route, navigation}) => {
                   onToggle={v => {
                     setEventData({...eventData, isPublic: v});
                   }}
-                  offTrackColor="rose.200"
-                  onTrackColor="lime.200"
+                  size={'sm'}
+                  width={20}
+                  borderColor={'#232259'}
+                  borderWidth={1}
+                  offTrackColor="#A8B0C5"
+                  offThumbColor="white"
+                  onTrackColor="#8C84D4"
                 />
               </HStack>
             </VStack>
@@ -364,7 +375,11 @@ const Home: FunctionComponent<CreateModalProps> = ({route, navigation}) => {
               </Text>
             </HStack>
           </Box>
-          <HStack justifyContent={'space-between'} w={'70%'} mt={4} ml={4}>
+          <Divider bg={'white'} my={2} />
+          <HStack
+            justifyContent={'space-between'}
+            paddingLeft={30}
+            paddingRight={30}>
             <GradientCircleButton
               isSelected={
                 eventData.profileColor[0] == '#FFEAE5' &&
@@ -416,6 +431,21 @@ const Home: FunctionComponent<CreateModalProps> = ({route, navigation}) => {
                 eventData.profileColor[1] == '#EF8B88'
               }
               colors={['#F4FF92', '#EF8B88']}
+              angle={300}
+              borderColor={'#8172F7'}
+              onPress={v => {
+                setEventData({
+                  ...eventData,
+                  profileColor: v,
+                });
+              }}
+            />
+            <GradientCircleButton
+              isSelected={
+                eventData.profileColor[0] == '#9FDDFB' &&
+                eventData.profileColor[1] == '#FFAECB'
+              }
+              colors={['#9FDDFB', '#FFAECB']}
               angle={300}
               borderColor={'#8172F7'}
               onPress={v => {

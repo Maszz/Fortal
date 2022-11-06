@@ -13,6 +13,7 @@ export type StackScreenParams = {
   EventScreen: {eventId: string; eventName: string};
   OtherProfileScreen: {userId: string};
   MapViewScreen: undefined;
+  SettingScreen: undefined;
 };
 
 export type HomeIndexScreenProps = StackScreenProps<
@@ -50,4 +51,9 @@ export type OtherProfileScreenProps = StackScreenProps<
 export type MapViewScreenProps = StackScreenProps<
   StackScreenParams,
   'MapViewScreen'
+>;
+
+export type SettingScreenProps = StackScreenProps<
+  StackScreenParams,
+  'SettingScreen'
 >;

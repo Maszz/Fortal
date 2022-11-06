@@ -72,7 +72,7 @@ import EventScreen from './screens/eventScreen';
 import OtherProfileScreen from './screens/otherProfile';
 import MapViewScreen from './screens/MapView';
 import Geolocation from '@react-native-community/geolocation';
-
+import SettingScreen from './screens/SettingScreen';
 const Stack = createStackNavigator<StackScreenParams>();
 const defaultScreenOption: StackNavigationOptions = {
   headerShown: false,
@@ -144,7 +144,7 @@ const StackNavigation = () => {
             <Stack.Screen
               name="CreateModal"
               component={CreateModalScreen}
-              options={{presentation: 'modal'}}
+              // options={{presentation: 'modal'}}
             />
             <Stack.Screen
               name="SearchScreen"
@@ -209,6 +209,14 @@ const StackNavigation = () => {
             <Stack.Screen
               name="MapViewScreen"
               component={MapViewScreen}
+              options={{
+                gestureEnabled: true,
+                headerShown: false,
+              }}
+            />
+            <Stack.Screen
+              name="SettingScreen"
+              component={SettingScreen}
               options={{
                 gestureEnabled: true,
                 headerShown: false,
