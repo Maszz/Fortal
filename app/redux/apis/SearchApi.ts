@@ -23,6 +23,14 @@ export interface UserProfileResponse {
   };
   categories: string[];
 }
+export interface LocationSearchResponse {
+  geometry: {
+    lat: number;
+    lng: number;
+  };
+  place: string;
+  flag: string;
+}
 export interface getUserByUserNameResponse {}
 export const searchApi = createApi({
   reducerPath: 'searchApi',
@@ -46,6 +54,11 @@ export const searchApi = createApi({
         return {url: `event/getEvent/${id}`};
       },
     }),
+    getSearchLocationEvent: builder.query<LocationSearchResponse[], string>({
+      query: location => {
+        return {url: `search/location`, params: {term: location}};
+      },
+    }),
   }),
 });
 
@@ -54,4 +67,5 @@ export const {
   useGetSearchItemEventQuery,
   useGetSearchItemUserByUsernameQuery,
   useLazyGetSearchItemQuery,
+  useGetSearchLocationEventQuery,
 } = searchApi;
