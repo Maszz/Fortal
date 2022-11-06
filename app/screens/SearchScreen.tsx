@@ -47,7 +47,7 @@ const SearchScreen: FunctionComponent<SearchScreenProps> = () => {
 
   return (
     <View paddingX={4} backgroundColor={'white'} w={'100%'} h={'100%'}>
-      <Text>Search</Text>
+      <Text mt={5}>Search</Text>
       <Box>
         <SearchBar
           onSearchSubmit={term => {
