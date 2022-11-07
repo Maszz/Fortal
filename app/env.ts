@@ -4,8 +4,8 @@ const devConfig = {
   bypassUser: false,
   bypassRegister: false,
   goOnboard: false,
-  apiBaseUrl: 'http://192.168.1.150:3333',
-  // apiBaseUrl: 'http://localhost:4032',
+  // apiBaseUrl: 'http://192.168.1.150:3333',
+  apiBaseUrl: 'http://localhost:4032',
 };
 
 /**

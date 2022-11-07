@@ -38,6 +38,10 @@ import SearchBar from '../components/SearchBar';
 import MaskedView from '@react-native-masked-view/masked-view';
 import LinearGradient from 'react-native-linear-gradient';
 
+export interface Address {
+  addressName: string;
+  addressDetail: string;
+}
 const MapViewScreen: FunctionComponent<MapViewScreenProps> = ({
   navigation,
   route,
@@ -57,6 +61,7 @@ const MapViewScreen: FunctionComponent<MapViewScreenProps> = ({
     latitude: location.marker.latitude,
     longitude: location.marker.longitude,
   });
+  const [address, setAddress] = useState<Address>({} as Address);
   const ref = useRef<MapView>(null);
   const searchRef = useRef<any>(null);
 
@@ -86,6 +91,10 @@ const MapViewScreen: FunctionComponent<MapViewScreenProps> = ({
         location;
       setRegion({latitude, longitude, latitudeDelta, longitudeDelta});
       setPin(other.marker);
+      setAddress({
+        addressName: other.addressName,
+        addressDetail: other.addressDetail,
+      });
       setIsMount(true);
     }
   }, []);
@@ -288,7 +297,15 @@ const MapViewScreen: FunctionComponent<MapViewScreenProps> = ({
             <Text fontWeight={400} fontSize={10}>
               Address name
             </Text>
-            <Input borderRadius={10} bgColor={'#F3F3F3'} mt={5} />
+            <Input
+              borderRadius={10}
+              bgColor={'#F3F3F3'}
+              mt={5}
+              onChangeText={v => {
+                setAddress({...address, addressName: v});
+              }}
+              value={address.addressName}
+            />
             <Box mt={6}>
               <Text fontWeight={400} fontSize={10}>
                 address
@@ -298,6 +315,10 @@ const MapViewScreen: FunctionComponent<MapViewScreenProps> = ({
                 bgColor={'#F3F3F3'}
                 mt={2}
                 autoCompleteType
+                value={address.addressDetail}
+                onChangeText={v => {
+                  setAddress({...address, addressDetail: v});
+                }}
               />
             </Box>
           </VStack>
@@ -308,6 +329,18 @@ const MapViewScreen: FunctionComponent<MapViewScreenProps> = ({
               // height={'40px'}>
               onPress={() => {
                 console.log('onPress');
+                dispatch(
+                  setLocationAction({
+                    latitude: region.latitude,
+                    longitude: region.longitude,
+                    latitudeDelta: region.latitudeDelta,
+                    longitudeDelta: region.longitudeDelta,
+                    marker: pin,
+                    addressName: address.addressName,
+                    addressDetail: address.addressDetail,
+                  }),
+                );
+                navigation.goBack();
               }}>
               <LinearGradient
                 colors={['#3275F3', '#BD97FB', '#FFDFD8']}

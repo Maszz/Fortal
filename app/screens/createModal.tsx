@@ -46,7 +46,7 @@ export interface CreateEventForm {
   maxMember: string;
   memberType: string;
   isPublic: boolean;
-  profileColor: string[];
+  eventColors: string[];
   eventName: string;
 }
 const Home: FunctionComponent<CreateModalProps> = ({route, navigation}) => {
@@ -61,7 +61,6 @@ const Home: FunctionComponent<CreateModalProps> = ({route, navigation}) => {
   const dispatch = useDispatch();
   const [showModal, setShowModal] = useState(false);
 
-  const [region, setRegion] = useState<Region>({} as Region);
   const [eventData, setEventData] = useState<CreateEventForm>({
     startDate: moment(),
     startTime: moment(),
@@ -69,7 +68,7 @@ const Home: FunctionComponent<CreateModalProps> = ({route, navigation}) => {
     maxMember: '4',
     memberType: 'Unlimited',
     isPublic: true,
-    profileColor: ['#FEDDE0', '#8C84D4'],
+    eventColors: ['#FEDDE0', '#8C84D4'],
     eventName: 'Location name',
   } as CreateEventForm);
   const onSubmit = () => {
@@ -84,12 +83,7 @@ const Home: FunctionComponent<CreateModalProps> = ({route, navigation}) => {
     Geolocation.getCurrentPosition(
       info => {
         console.log(info);
-        // setRegion({
-        //   latitude: info.coords.latitude,
-        //   longitude: info.coords.longitude,
-        //   latitudeDelta: 0.0922,
-        //   longitudeDelta: 0.0421,
-        // });
+
         dispatch(
           setLocationAction({
             latitude: info.coords.latitude,
@@ -100,6 +94,8 @@ const Home: FunctionComponent<CreateModalProps> = ({route, navigation}) => {
               latitude: info.coords.latitude,
               longitude: info.coords.longitude,
             },
+            addressName: '',
+            addressDetail: '',
           }),
         );
       },
@@ -119,11 +115,11 @@ const Home: FunctionComponent<CreateModalProps> = ({route, navigation}) => {
     console.log('effeft');
   }, []);
   return (
-    <KeyboardAvoidingView style={{flex: 1}} behavior={'position'}>
+    <KeyboardAvoidingView style={{flex: 1}} behavior={'padding'}>
       <ScrollView w={'100%'} backgroundColor={'white'} h={'100%'}>
         <VStack mx={4} flex={1} h={height}>
           <LinearGradient
-            colors={eventData.profileColor}
+            colors={eventData.eventColors}
             useAngle={true}
             angle={0}
             angleCenter={{x: 0.5, y: 0.5}}
@@ -145,23 +141,22 @@ const Home: FunctionComponent<CreateModalProps> = ({route, navigation}) => {
                   navigation.goBack();
                 }}>
                 <Image
-                  marginLeft={10}
+                  marginLeft={8}
                   marginBottom={3}
                   alt="key icon"
                   source={require('../assets/back_icon.png')}
+                  style={{tintColor: 'white'}}
                 />
               </TouchableOpacity>
-              <Spacer />
+              {/* <Spacer /> */}
               <TouchableOpacity
+                style={{marginRight: 30}}
                 onPress={() => {
-                  navigation.goBack();
+                  // navigation.goBack();
                 }}>
-                <Image
-                  marginBottom={3}
-                  marginRight={10}
-                  alt="settingIcon"
-                  source={require('../assets/setting_icon.png')}
-                />
+                <Text fontSize={16} fontWeight={700} color={'white'}>
+                  Done
+                </Text>
               </TouchableOpacity>
             </HStack>
             <Box w={'100%'} position={'absolute'} bottom={3} left={5}>
@@ -316,6 +311,11 @@ const Home: FunctionComponent<CreateModalProps> = ({route, navigation}) => {
                 <Select
                   selectedValue={eventData.memberType}
                   accessibilityLabel="Choose Service"
+                  borderRadius={20}
+                  bgColor={'#F3F3F3'}
+                  dropdownIcon={
+                    <Image source={require('../assets/dropdown_icon.png')} />
+                  }
                   placeholder="Choose Service"
                   // _selectedItem={{
                   //   bg: 'teal.600',
@@ -360,9 +360,9 @@ const Home: FunctionComponent<CreateModalProps> = ({route, navigation}) => {
                     setEventData({...eventData, isPublic: v});
                   }}
                   size={'sm'}
-                  width={20}
+                  // width={20}
                   borderColor={'#232259'}
-                  borderWidth={1}
+                  // borderWidth={1}
                   offTrackColor="#A8B0C5"
                   offThumbColor="white"
                   onTrackColor="#8C84D4"
@@ -382,23 +382,23 @@ const Home: FunctionComponent<CreateModalProps> = ({route, navigation}) => {
             paddingRight={30}>
             <GradientCircleButton
               isSelected={
-                eventData.profileColor[0] == '#FFEAE5' &&
-                eventData.profileColor[1] == '#8C84D4'
+                eventData.eventColors[0] == '#FEDDE0' &&
+                eventData.eventColors[1] == '#8C84D4'
               }
-              colors={['#FFEAE5', '#8C84D4']}
+              colors={['#FEDDE0', '#8C84D4']}
               angle={300}
               borderColor={'#8172F7'}
               onPress={v => {
                 setEventData({
                   ...eventData,
-                  profileColor: v,
+                  eventColors: v,
                 });
               }}
             />
             <GradientCircleButton
               isSelected={
-                eventData.profileColor[0] == '#9FDDFB' &&
-                eventData.profileColor[1] == '#8172F7'
+                eventData.eventColors[0] == '#9FDDFB' &&
+                eventData.eventColors[1] == '#8172F7'
               }
               colors={['#9FDDFB', '#8172F7']}
               angle={300}
@@ -406,14 +406,14 @@ const Home: FunctionComponent<CreateModalProps> = ({route, navigation}) => {
               onPress={v => {
                 setEventData({
                   ...eventData,
-                  profileColor: v,
+                  eventColors: v,
                 });
               }}
             />
             <GradientCircleButton
               isSelected={
-                eventData.profileColor[0] == '#FFFDC3' &&
-                eventData.profileColor[1] == '#6BB79D'
+                eventData.eventColors[0] == '#FFFDC3' &&
+                eventData.eventColors[1] == '#6BB79D'
               }
               colors={['#FFFDC3', '#6BB79D']}
               angle={300}
@@ -421,14 +421,14 @@ const Home: FunctionComponent<CreateModalProps> = ({route, navigation}) => {
               onPress={v => {
                 setEventData({
                   ...eventData,
-                  profileColor: v,
+                  eventColors: v,
                 });
               }}
             />
             <GradientCircleButton
               isSelected={
-                eventData.profileColor[0] == '#F4FF92' &&
-                eventData.profileColor[1] == '#EF8B88'
+                eventData.eventColors[0] == '#F4FF92' &&
+                eventData.eventColors[1] == '#EF8B88'
               }
               colors={['#F4FF92', '#EF8B88']}
               angle={300}
@@ -436,14 +436,14 @@ const Home: FunctionComponent<CreateModalProps> = ({route, navigation}) => {
               onPress={v => {
                 setEventData({
                   ...eventData,
-                  profileColor: v,
+                  eventColors: v,
                 });
               }}
             />
             <GradientCircleButton
               isSelected={
-                eventData.profileColor[0] == '#9FDDFB' &&
-                eventData.profileColor[1] == '#FFAECB'
+                eventData.eventColors[0] == '#9FDDFB' &&
+                eventData.eventColors[1] == '#FFAECB'
               }
               colors={['#9FDDFB', '#FFAECB']}
               angle={300}
@@ -451,7 +451,7 @@ const Home: FunctionComponent<CreateModalProps> = ({route, navigation}) => {
               onPress={v => {
                 setEventData({
                   ...eventData,
-                  profileColor: v,
+                  eventColors: v,
                 });
               }}
             />
