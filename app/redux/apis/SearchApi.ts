@@ -31,6 +31,7 @@ export interface LocationSearchResponse {
   place: string;
   flag: string;
 }
+
 export interface getUserByUserNameResponse {}
 export const searchApi = createApi({
   reducerPath: 'searchApi',

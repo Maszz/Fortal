@@ -2,7 +2,7 @@ import {configureStore} from '@reduxjs/toolkit';
 import {rootReducer} from './reducers';
 import {persistStore} from 'redux-persist';
 import {storage} from './mmkv';
-import {searchApi, authApi, userApi, tagsApi} from './apis';
+import {searchApi, authApi, userApi, tagsApi, eventApi} from './apis';
 
 import {setupListeners} from '@reduxjs/toolkit/query';
 
@@ -11,6 +11,7 @@ const middlewares = [
   authApi.middleware,
   userApi.middleware,
   tagsApi.middleware,
+  eventApi.middleware,
 ] as any;
 
 if (__DEV__) {

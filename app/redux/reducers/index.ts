@@ -6,7 +6,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {userReducer} from './user';
 import {MMKVStorage} from '../mmkv';
 import {navigationReducer} from './navigation';
-import {authApi, searchApi, userApi, tagsApi} from '../apis';
+import {authApi, searchApi, userApi, tagsApi, eventApi} from '../apis';
 import {locationReducer} from './locationReducer';
 const persistConfig = {
   key: 'count',
@@ -26,4 +26,5 @@ export const rootReducer = combineReducers({
   [authApi.reducerPath]: authApi.reducer,
   [userApi.reducerPath]: userApi.reducer,
   [tagsApi.reducerPath]: tagsApi.reducer,
+  [eventApi.reducerPath]: eventApi.reducer,
 });

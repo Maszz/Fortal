@@ -1,3 +1,4 @@
+import {onFocus} from '@reduxjs/toolkit/dist/query/core/setupListeners';
 import {Text, View, Heading, Input} from 'native-base';
 import {
   FunctionComponent,
@@ -18,12 +19,16 @@ export interface SearchBarProps {
   clearResults: (value: boolean) => void;
   style?: StyleProp<ViewStyle>;
   getRef?: RefObject<any>;
+  onFocus?: () => void;
+  onBlur?: () => void;
 }
 const SaerchBar: FunctionComponent<SearchBarProps> = ({
   onSearchSubmit,
   clearResults,
   style,
   getRef,
+  onFocus,
+  onBlur,
 }) => {
   const [term, setTerm] = useState('');
   const [debouncedTerm, setDebouncedTerm] = useState(term);
@@ -65,8 +70,19 @@ const SaerchBar: FunctionComponent<SearchBarProps> = ({
           } else {
             clearResults(false);
           }
+          if (onFocus) {
+            onFocus();
+          }
         }}
-        onBlur={e => clearResults(true)}
+        onBlur={e => {
+          clearResults(true);
+          // delay onBlur to invoke to prevent screen shift
+          if (onBlur) {
+            setTimeout(() => {
+              onBlur();
+            }, 100);
+          }
+        }}
       />
     </View>
   );
