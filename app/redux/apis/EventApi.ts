@@ -29,11 +29,64 @@ export interface CreateEventDto {
   };
   creatorUsername: string;
 }
+export interface CreateEventResponse {
+  event: Event;
+  eventChat: EventChat;
+}
+
+export interface Event {
+  createdAt: string;
+  creatorId: string;
+  description: string;
+  endDate: string;
+  eventColors: EventColors;
+  id: string;
+  isPublic: boolean;
+  location: Location;
+  locationDetails: string;
+  locationMarker: LocationMarker;
+  locationName: string;
+  memberLimit: number;
+  memberType: string;
+  name: string;
+  participantsId: any[];
+  startDate: string;
+  updatedAt: string;
+}
+
+export interface EventColors {
+  c1: string;
+  c2: string;
+}
+
+export interface Location {
+  latitude: number;
+  latitudeDelta: number;
+  longitude: number;
+  longitudeDelta: number;
+}
+
+export interface LocationMarker {
+  latitude: number;
+  longitude: number;
+}
+
+export interface EventChat {
+  eventId: string;
+  id: string;
+  updatedAt: string;
+}
+export interface GetEventResponse {
+  name: string;
+  description: string;
+  startDate: string;
+  eventColors: EventColors;
+}
 export const eventApi = createApi({
   reducerPath: 'eventApi',
   baseQuery: fetchBaseQuery({baseUrl: `${Config.apiBaseUrl}/event/`}),
   endpoints: builder => ({
-    createEvent: builder.mutation<any, CreateEventDto>({
+    createEvent: builder.mutation<CreateEventResponse, CreateEventDto>({
       query: eventData => {
         return {
           url: 'createEvent',
@@ -56,7 +109,28 @@ export const eventApi = createApi({
         };
       },
     }),
+    getEventList: builder.query<
+      GetEventResponse[],
+      {offset: number; limit: number}
+    >({
+      query: params => {
+        return {
+          url: 'getEventList',
+          params: {offset: params.offset, limit: params.limit},
+        };
+      },
+      transformResponse: (response: GetEventResponse[]) => {
+        if (response.length > 0) {
+          return [...response];
+        }
+        return [];
+      },
+    }),
   }),
 });
 
-export const {useCreateEventMutation} = eventApi;
+export const {
+  useCreateEventMutation,
+  useGetEventListQuery,
+  useLazyGetEventListQuery,
+} = eventApi;
