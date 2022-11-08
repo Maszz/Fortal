@@ -35,6 +35,11 @@ interface RegisterActionsSheetPayload {
   id: string;
   navigation: any;
 }
+interface EventCardActionsSheetPayload {
+  eventId: string;
+}
+export interface EventCardActionsSheetProps
+  extends SheetProps<EventCardActionsSheetPayload> {}
 
 interface ForgotPasswordActionsSheetPayload {}
 

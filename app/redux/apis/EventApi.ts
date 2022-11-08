@@ -29,11 +29,85 @@ export interface CreateEventDto {
   };
   creatorUsername: string;
 }
+export interface CreateEventResponse {
+  event: Event;
+  eventChat: EventChat;
+}
+
+export interface Event {
+  createdAt: string;
+  creatorId: string;
+  description: string;
+  endDate: string;
+  eventColors: EventColors;
+  id: string;
+  isPublic: boolean;
+  location: Location;
+  locationDetails: string;
+  locationMarker: LocationMarker;
+  locationName: string;
+  memberLimit: number;
+  memberType: string;
+  name: string;
+  participantsId: any[];
+  startDate: string;
+  updatedAt: string;
+}
+
+export interface EventColors {
+  c1: string;
+  c2: string;
+}
+
+export interface Location {
+  latitude: number;
+  latitudeDelta: number;
+  longitude: number;
+  longitudeDelta: number;
+}
+
+export interface LocationMarker {
+  latitude: number;
+  longitude: number;
+}
+
+export interface EventChat {
+  eventId: string;
+  id: string;
+  updatedAt: string;
+}
+export interface GetEventResponse {
+  id: string;
+  name: string;
+  description: string;
+  startDate: string;
+  eventColors: EventColors;
+}
+export interface GetEventByIdResponse {
+  createdAt: string;
+  creatorId: string;
+  description: string;
+  endDate: string;
+  eventColors: EventColors;
+  id: string;
+  isPublic: boolean;
+  location: Location;
+  locationDetails: string;
+  locationMarker: LocationMarker;
+  locationName: string;
+  memberLimit: number;
+  memberType: string;
+  name: string;
+  participantsId: Array<any>;
+  startDate: string;
+  updatedAt: string;
+}
+
 export const eventApi = createApi({
   reducerPath: 'eventApi',
   baseQuery: fetchBaseQuery({baseUrl: `${Config.apiBaseUrl}/event/`}),
   endpoints: builder => ({
-    createEvent: builder.mutation<any, CreateEventDto>({
+    createEvent: builder.mutation<CreateEventResponse, CreateEventDto>({
       query: eventData => {
         return {
           url: 'createEvent',
@@ -56,7 +130,44 @@ export const eventApi = createApi({
         };
       },
     }),
+    getEventList: builder.query<
+      GetEventResponse[],
+      {offset: number; limit: number; u: string}
+    >({
+      query: params => {
+        return {
+          url: 'getEventList',
+          params: {offset: params.offset, limit: params.limit, u: params.u},
+        };
+      },
+    }),
+    getEventById: builder.query<GetEventByIdResponse, string>({
+      query: eventId => {
+        return {
+          url: 'getEventById',
+          params: {id: eventId},
+        };
+      },
+    }),
+    joinedEvent: builder.mutation<
+      GetEventByIdResponse,
+      {eventId: string; userName: string}
+    >({
+      query: params => {
+        return {
+          url: 'addParticipant',
+          method: 'POST',
+          body: {eventId: params.eventId, username: params.userName},
+        };
+      },
+    }),
   }),
 });
 
-export const {useCreateEventMutation} = eventApi;
+export const {
+  useCreateEventMutation,
+  useGetEventListQuery,
+  useLazyGetEventListQuery,
+  useGetEventByIdQuery,
+  useJoinedEventMutation,
+} = eventApi;

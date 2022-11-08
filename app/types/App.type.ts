@@ -1,9 +1,8 @@
 import {createStackNavigator, StackScreenProps} from '@react-navigation/stack';
 import SearchScreen from '../screens/Home/Search';
 import {Region} from 'react-native-maps';
-import ProfileScreen from '../screens/Home/Profile';
-import {ProfileScreenProps} from './home.type';
-
+import {Location, LocationMarker} from '../redux/apis';
+import ProfileScreen from '../screens/ProfileScreen';
 export type StackScreenParams = {
   HomeIndex: undefined;
   Login: {eventId: string};
@@ -12,10 +11,16 @@ export type StackScreenParams = {
   Loading: undefined;
   CreateModal: undefined;
   SearchScreen: undefined;
-  EventScreen: {eventId: string; eventName: string};
+  EventScreen: {eventId: string};
   OtherProfileScreen: {userId: string};
   MapViewScreen: undefined;
   SettingScreen: undefined;
+  MapViewForEventCardScreen: {
+    location: Location;
+    locationName: string;
+    locationMarker: LocationMarker;
+    locationDescription: string;
+  };
   ProfileScreen: undefined;
 };
 
@@ -59,6 +64,11 @@ export type MapViewScreenProps = StackScreenProps<
 export type SettingScreenProps = StackScreenProps<
   StackScreenParams,
   'SettingScreen'
+>;
+
+export type MapViewForEventCardScreenProps = StackScreenProps<
+  StackScreenParams,
+  'MapViewForEventCardScreen'
 >;
 export type ProfileScreenProps = StackScreenProps<
   StackScreenParams,

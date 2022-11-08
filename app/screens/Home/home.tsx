@@ -1,24 +1,65 @@
-import {View, Text, Button, Box, Divider, Image} from 'native-base';
+import {View, Text, Button, Box, Divider, Image, HStack} from 'native-base';
 import {useAuth} from '../../hooks/useAuth';
 import {HomeScreenTypes} from '../../types';
-import {FunctionComponent} from 'react';
+import {FunctionComponent, useState} from 'react';
 import {useEffect} from 'react';
 import {useNavigation} from '@react-navigation/native';
 import {Config} from '../../env';
 import {useSelector, useDispatch} from 'react-redux';
 import {store, RootState} from '../../redux';
-import {StyleSheet, TouchableOpacity, Platform, ScrollView} from 'react-native';
+import {useGetEventList} from '../../hooks/useEventList';
+import {
+  StyleSheet,
+  TouchableOpacity,
+  Platform,
+  ScrollView,
+  RefreshControl,
+  NativeScrollEvent,
+} from 'react-native';
 import {Line} from 'react-native-svg';
 import LinearGradient from 'react-native-linear-gradient';
-
+import EventCard from '../../components/EventCard';
+import {useGetEventListQuery} from '../../redux/apis';
+import 'moment-timezone';
+import moment from 'moment';
+import {SheetManager} from 'react-native-actions-sheet';
 const Home: FunctionComponent<HomeScreenTypes.HomeScreenProps> = ({route}) => {
   const {logout, user} = useAuth();
+  // const {data, refetch} = useGetEventListQuery({offset: 0, limit: 10});
+  const [refreshing, setRefreshing] = useState(false);
+  const {eventList: data, refetch, loadMore} = useGetEventList();
+  const onRefresh = () => {
+    setRefreshing(true);
+    refetch();
+    setRefreshing(false);
+    console.log('refreshing');
+  };
+  const isCloseToBottom = ({
+    layoutMeasurement,
+    contentOffset,
+    contentSize,
+  }: NativeScrollEvent) => {
+    const paddingToBottom = 20;
+    return (
+      layoutMeasurement.height + contentOffset.y >=
+      contentSize.height - paddingToBottom
+    );
+  };
 
   return (
     <ScrollView
+      refreshControl={
+        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+      }
+      onScroll={({nativeEvent}) => {
+        if (isCloseToBottom(nativeEvent)) {
+          loadMore();
+        }
+      }}
+      scrollEventThrottle={400}
       horizontal={false}
       showsHorizontalScrollIndicator={false}
-      pagingEnabled={true}
+      // pagingEnabled={true}
       style={{flex: 10, backgroundColor: 'white'}}>
       {/* portion 1 == > story */}
       <Box
@@ -111,329 +152,52 @@ const Home: FunctionComponent<HomeScreenTypes.HomeScreenProps> = ({route}) => {
         </ScrollView>
       </Box>
       {/* portion 3 == tag filter */}
-      <Box
+      <HStack
+        flex={5}
+        flexDirection={'column'}
+        paddingTop={30}
+        // paddingY={20}
         style={{
-          flex: 5,
-          flexDirection: 'column',
+          // flex: 5,
+          // flexDirection: 'column',
           paddingHorizontal: 20,
-          paddingTop: 30,
+          // paddingTop: 30,
         }}>
         <Text fontSize={14} fontWeight={'medium'}>
           Activities near me
         </Text>
         <Divider my={2.5} bg="black" marginBottom={5} />
         {/* copy this box to make column */}
-        <Box flexDirection={'row'} justifyContent={'space-between'} marginY={4}>
-          <TouchableOpacity
-            // width={'250px'}
-            // height={'40px'}>
-            onPress={() => {
-              // setSelectedGender({selectedGender: 'Male'});
-
-              console.log('Pressable');
-            }}>
-            {/* this is activity component  */}
-            <LinearGradient
-              colors={['#FEDDE0', '#8172F7']}
-              useAngle={true}
-              angle={0}
-              angleCenter={{x: 0.5, y: 0.5}}
-              style={{
-                flex: 3,
-                paddingHorizontal: 14,
-                paddingVertical: 20,
-                borderRadius: 10,
-                height: 220,
-                width: 170,
-                shadowColor: 'black',
-                shadowOpacity: 0.5,
-                shadowOffset: {width: 170, height: 5},
-                flexDirection: 'column',
-              }}>
-              {/* <Image
-                marginBottom={3}
-                alt="key icon"
-                source={require('../../assets/gender_icon.png')}
-              /> */}
-              <Text
-                color={'#232259'}
-                fontWeight={'bold'}
-                fontSize={24}
-                flex={0.8}
-                alignContent={'center'}>
-                Hello
-              </Text>
-              <Text
-                flex={0.3}
-                color={'#232259'}
-                fontSize={10}
-                fontWeight={'light'}>
-                date time
-              </Text>
-              <Text
-                paddingTop={3}
-                flex={1.4}
-                color={'#232259'}
-                fontSize={12}
-                fontWeight={'normal'}>
-                Taken from the Latin words "dolorem ipsum", which translates to
-                ...
-              </Text>
-              <Divider my={3} bg="white" opacity={0.5} />
-              <Box
-                flex={0.5}
-                flexDirection={'row'}
-                justifyContent={'space-between'}>
-                <Text>start</Text>
-                <Box
-                  justifyContent={'center'}
-                  alignItems={'center'}
-                  style={{
-                    backgroundColor: 'white',
-                    borderRadius: 20,
-                    width: 35,
-                    height: 35,
-                  }}>
-                  <Text fontSize={12}>10+</Text>
-                </Box>
-              </Box>
-            </LinearGradient>
-          </TouchableOpacity>
-
-          {/* column 2 */}
-          <TouchableOpacity
-            // width={'250px'}
-            // height={'40px'}>
-            onPress={() => {
-              // setSelectedGender({selectedGender: 'Male'});
-
-              console.log('Pressable');
-            }}>
-            {/* this is activity component  */}
-            <LinearGradient
-              colors={['#FFFDC3', '#6BB79D']}
-              useAngle={true}
-              angle={0}
-              angleCenter={{x: 0.5, y: 0.5}}
-              style={{
-                flex: 3,
-                paddingHorizontal: 14,
-                paddingVertical: 20,
-                borderRadius: 10,
-                height: 220,
-                width: 170,
-                shadowColor: 'black',
-                shadowOpacity: 0.5,
-                shadowOffset: {width: 170, height: 5},
-                flexDirection: 'column',
-              }}>
-              {/* <Image
-                marginBottom={3}
-                alt="key icon"
-                source={require('../../assets/gender_icon.png')}
-              /> */}
-              <Text
-                color={'#232259'}
-                fontWeight={'bold'}
-                fontSize={24}
-                flex={0.8}
-                alignContent={'center'}>
-                Hello
-              </Text>
-              <Text
-                flex={0.3}
-                color={'#232259'}
-                fontSize={10}
-                fontWeight={'light'}>
-                date time
-              </Text>
-              <Text
-                paddingTop={3}
-                flex={1.4}
-                color={'#232259'}
-                fontSize={12}
-                fontWeight={'normal'}>
-                Taken from the Latin words "dolorem ipsum", which translates to
-                ...
-              </Text>
-              <Divider my={3} bg="white" opacity={0.5} />
-              <Box
-                flex={0.5}
-                flexDirection={'row'}
-                justifyContent={'space-between'}>
-                <Text>start</Text>
-                <Box
-                  justifyContent={'center'}
-                  alignItems={'center'}
-                  style={{
-                    backgroundColor: 'white',
-                    borderRadius: 20,
-                    width: 35,
-                    height: 35,
-                  }}>
-                  <Text fontSize={12}>10+</Text>
-                </Box>
-              </Box>
-            </LinearGradient>
-          </TouchableOpacity>
+        <Box
+          flexDirection={'row'}
+          justifyContent={'space-between'}
+          flexWrap={'wrap'}
+          // marginY={4}
+          // marginTop={4}
+          w={'100%'}>
+          {data?.map((item, index: number) => {
+            return (
+              <EventCard
+                onPress={() => {
+                  SheetManager.show('eventCard-sheet', {
+                    payload: {
+                      eventId: item.id,
+                    },
+                  });
+                }}
+                style={{marginVertical: 7, marginBottom: 20}}
+                title={item.name}
+                date={moment(item.startDate).format('DD MMMM YYYY')}
+                description={item.description}
+                colors={[item.eventColors.c1, item.eventColors.c2]}
+                key={index}
+              />
+            );
+          })}
         </Box>
 
         {/* row 2 */}
-        <Box flexDirection={'row'} justifyContent={'space-between'}>
-          <TouchableOpacity
-            // width={'250px'}
-            // height={'40px'}>
-            onPress={() => {
-              // setSelectedGender({selectedGender: 'Male'});
-
-              console.log('Pressable');
-            }}>
-            {/* this is activity component  */}
-            <LinearGradient
-              colors={['#9FDDFB', '#FFAECB']}
-              useAngle={true}
-              angle={0}
-              angleCenter={{x: 0.5, y: 0.5}}
-              style={{
-                flex: 3,
-                paddingHorizontal: 14,
-                paddingVertical: 20,
-                borderRadius: 10,
-                height: 220,
-                width: 170,
-                shadowColor: 'black',
-                shadowOpacity: 0.5,
-                shadowOffset: {width: 170, height: 5},
-                flexDirection: 'column',
-              }}>
-              {/* <Image
-                marginBottom={3}
-                alt="key icon"
-                source={require('../../assets/gender_icon.png')}
-              /> */}
-              <Text
-                color={'#232259'}
-                fontWeight={'bold'}
-                fontSize={24}
-                flex={0.8}
-                alignContent={'center'}>
-                Hello
-              </Text>
-              <Text
-                flex={0.3}
-                color={'#232259'}
-                fontSize={10}
-                fontWeight={'light'}>
-                date time
-              </Text>
-              <Text
-                paddingTop={3}
-                flex={1.4}
-                color={'#232259'}
-                fontSize={12}
-                fontWeight={'normal'}>
-                Taken from the Latin words "dolorem ipsum", which translates to
-                ...
-              </Text>
-              <Divider my={3} bg="white" opacity={0.5} />
-              <Box
-                flex={0.5}
-                flexDirection={'row'}
-                justifyContent={'space-between'}>
-                <Text>start</Text>
-                <Box
-                  justifyContent={'center'}
-                  alignItems={'center'}
-                  style={{
-                    backgroundColor: 'white',
-                    borderRadius: 20,
-                    width: 35,
-                    height: 35,
-                  }}>
-                  <Text fontSize={12}>10+</Text>
-                </Box>
-              </Box>
-            </LinearGradient>
-          </TouchableOpacity>
-
-          {/* column 2 */}
-          <TouchableOpacity
-            // width={'250px'}
-            // height={'40px'}>
-            onPress={() => {
-              // setSelectedGender({selectedGender: 'Male'});
-
-              console.log('Pressable');
-            }}>
-            {/* this is activity component  */}
-            <LinearGradient
-              colors={['#F4FF92', '#EF8B88']}
-              useAngle={true}
-              angle={0}
-              angleCenter={{x: 0.5, y: 0.5}}
-              style={{
-                flex: 3,
-                paddingHorizontal: 14,
-                paddingVertical: 20,
-                borderRadius: 10,
-                height: 220,
-                width: 170,
-                shadowColor: 'black',
-                shadowOpacity: 0.5,
-                shadowOffset: {width: 170, height: 5},
-                flexDirection: 'column',
-              }}>
-              {/* <Image
-                marginBottom={3}
-                alt="key icon"
-                source={require('../../assets/gender_icon.png')}
-              /> */}
-              <Text
-                color={'#232259'}
-                fontWeight={'bold'}
-                fontSize={24}
-                flex={0.8}
-                alignContent={'center'}>
-                Hello
-              </Text>
-              <Text
-                flex={0.3}
-                color={'#232259'}
-                fontSize={10}
-                fontWeight={'light'}>
-                date time
-              </Text>
-              <Text
-                paddingTop={3}
-                flex={1.4}
-                color={'#232259'}
-                fontSize={12}
-                fontWeight={'normal'}>
-                Taken from the Latin words "dolorem ipsum", which translates to
-                ...
-              </Text>
-              <Divider my={3} bg="white" opacity={0.5} />
-              <Box
-                flex={0.5}
-                flexDirection={'row'}
-                justifyContent={'space-between'}>
-                <Text>start</Text>
-                <Box
-                  justifyContent={'center'}
-                  alignItems={'center'}
-                  style={{
-                    backgroundColor: 'white',
-                    borderRadius: 20,
-                    width: 35,
-                    height: 35,
-                  }}>
-                  <Text fontSize={12}>10+</Text>
-                </Box>
-              </Box>
-            </LinearGradient>
-          </TouchableOpacity>
-        </Box>
-      </Box>
+      </HStack>
 
       <Button onPress={() => logout()}>btn</Button>
     </ScrollView>

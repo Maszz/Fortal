@@ -73,6 +73,7 @@ import OtherProfileScreen from './screens/otherProfile';
 import MapViewScreen from './screens/MapView';
 import Geolocation from '@react-native-community/geolocation';
 import SettingScreen from './screens/SettingScreen';
+import MapViewForEventCardScreen from './screens/MapViewForEventCard';
 import ProfileScreen from './screens/ProfileScreen';
 const Stack = createStackNavigator<StackScreenParams>();
 const defaultScreenOption: StackNavigationOptions = {
@@ -268,6 +269,39 @@ const StackNavigation = () => {
               options={{
                 gestureEnabled: true,
                 headerShown: false,
+              }}
+            />
+            <Stack.Screen
+              name="MapViewForEventCardScreen"
+              component={MapViewForEventCardScreen}
+              options={{
+                gestureEnabled: true,
+                headerShown: true,
+                headerLeft(props) {
+                  return (
+                    <TouchableOpacity
+                      style={{marginLeft: 30, marginBottom: 3}}
+                      onPress={props.onPress}>
+                      <Image
+                        alt="key icon"
+                        source={require('./assets/back_icon.png')}
+                      />
+                    </TouchableOpacity>
+                  );
+                },
+                title: 'Map',
+                headerTitle(props) {
+                  return (
+                    <View alignSelf={'center'} justifyContent={'center'}>
+                      <Text>Maps</Text>
+                    </View>
+                  );
+                },
+                headerStyle: {
+                  backgroundColor: 'white',
+                  shadowOpacity: 0,
+                  elevation: 0,
+                },
               }}
             />
             <Stack.Screen

@@ -20,10 +20,11 @@ interface AccesToken {
   at: string;
 }
 export interface LoginResponseDto {
-  access_token?: string;
-  refresh_token?: string;
-  userId?: string;
-  onboarding?: boolean;
+  access_token: string;
+  refresh_token: string;
+  userId: string;
+  id: string;
+  onboarding: boolean;
 }
 export interface ErrorResponse {
   data: {

@@ -27,7 +27,8 @@ import {TouchableOpacity} from 'react-native-gesture-handler';
 import {useSelector} from 'react-redux';
 import {RootState} from '../redux';
 import LinearGradient from 'react-native-linear-gradient';
-
+import {SheetManager} from 'react-native-actions-sheet';
+import moment from 'moment';
 const SearchScreen: FunctionComponent<SearchScreenProps> = () => {
   const [searchInput, setSearchInput] = useState('');
 
@@ -112,9 +113,13 @@ const SearchItem: FunctionComponent<SearchItemProps> = ({item}) => {
         <Pressable
           py={4}
           onPress={() => {
-            navigation.navigate('EventScreen', {
-              eventName: item.content,
-              eventId: item.id ? item.id : '',
+            // navigation.navigate('EventScreen', {
+            //   eventId: item.id ? item.id : '',
+            // });
+            SheetManager.show('eventCard-sheet', {
+              payload: {
+                eventId: item.id,
+              },
             });
           }}>
           <HStack>
@@ -139,7 +144,12 @@ const SearchItem: FunctionComponent<SearchItemProps> = ({item}) => {
                 {item?.content}
               </Text>
               <Text numberOfLines={1} ellipsizeMode={'tail'}>
-                date : {item?.date}
+                date :{' '}
+                {item?.date
+                  ? moment(item?.date)
+                      .tz('Asia/Bangkok')
+                      .format('DD MMM YYYY, h:mm a')
+                  : ''}
               </Text>
               <Text numberOfLines={1} ellipsizeMode={'tail'}>
                 location: {item?.location}
