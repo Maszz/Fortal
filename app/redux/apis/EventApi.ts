@@ -77,11 +77,32 @@ export interface EventChat {
   updatedAt: string;
 }
 export interface GetEventResponse {
+  id: string;
   name: string;
   description: string;
   startDate: string;
   eventColors: EventColors;
 }
+export interface GetEventByIdResponse {
+  createdAt: string;
+  creatorId: string;
+  description: string;
+  endDate: string;
+  eventColors: EventColors;
+  id: string;
+  isPublic: boolean;
+  location: Location;
+  locationDetails: string;
+  locationMarker: LocationMarker;
+  locationName: string;
+  memberLimit: number;
+  memberType: string;
+  name: string;
+  participantsId: Array<any>;
+  startDate: string;
+  updatedAt: string;
+}
+
 export const eventApi = createApi({
   reducerPath: 'eventApi',
   baseQuery: fetchBaseQuery({baseUrl: `${Config.apiBaseUrl}/event/`}),
@@ -111,19 +132,33 @@ export const eventApi = createApi({
     }),
     getEventList: builder.query<
       GetEventResponse[],
-      {offset: number; limit: number}
+      {offset: number; limit: number; u: string}
     >({
       query: params => {
         return {
           url: 'getEventList',
-          params: {offset: params.offset, limit: params.limit},
+          params: {offset: params.offset, limit: params.limit, u: params.u},
         };
       },
-      transformResponse: (response: GetEventResponse[]) => {
-        if (response.length > 0) {
-          return [...response];
-        }
-        return [];
+    }),
+    getEventById: builder.query<GetEventByIdResponse, string>({
+      query: eventId => {
+        return {
+          url: 'getEventById',
+          params: {id: eventId},
+        };
+      },
+    }),
+    joinedEvent: builder.mutation<
+      GetEventByIdResponse,
+      {eventId: string; userName: string}
+    >({
+      query: params => {
+        return {
+          url: 'addParticipant',
+          method: 'POST',
+          body: {eventId: params.eventId, username: params.userName},
+        };
       },
     }),
   }),
@@ -133,4 +168,6 @@ export const {
   useCreateEventMutation,
   useGetEventListQuery,
   useLazyGetEventListQuery,
+  useGetEventByIdQuery,
+  useJoinedEventMutation,
 } = eventApi;

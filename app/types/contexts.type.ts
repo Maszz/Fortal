@@ -1,6 +1,7 @@
 import React, {createContext, FunctionComponent} from 'react';
 
 export interface User {
+  id: string;
   username: string;
   onboarding: boolean;
   at: string;

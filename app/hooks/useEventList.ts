@@ -7,10 +7,13 @@ import {GetEventResponse} from '../redux/apis/EventApi';
 import {useSelector, useDispatch} from 'react-redux';
 import {RootState} from '../redux/store';
 import {setLoadingAction} from '../redux/reducers/navigation';
+import {useAuth} from '../hooks/useAuth';
 const useGetEventList = () => {
+  const {user} = useAuth();
   const [params, setParams] = useState({
     offset: 0,
     limit: 10,
+    u: user.username,
   });
   const isLoadingState = useSelector<
     RootState,
@@ -39,6 +42,7 @@ const useGetEventList = () => {
         if (data.length > 0) {
           setEventList(data);
           setParams({
+            ...params,
             offset: params.offset + params.limit,
             limit: params.limit,
           });
@@ -61,6 +65,7 @@ const useGetEventList = () => {
         if (data.length > 0) {
           setEventList([...eventList, ...data]);
           setParams({
+            ...params,
             offset: params.offset + params.limit,
             limit: params.limit,
           });
@@ -74,12 +79,13 @@ const useGetEventList = () => {
   const refetch = () => {
     setEndReached(false);
     dispatch(setLoadingAction(true));
-    fetchMore({offset: 0, limit: 10})
+    fetchMore({offset: 0, limit: 10, u: user.username})
       .unwrap()
       .then((data: GetEventResponse[]) => {
         if (data.length > 0) {
           setEventList(data);
           setParams({
+            u: user.username,
             offset: 10,
             limit: 10,
           });

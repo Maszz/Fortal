@@ -84,9 +84,10 @@ const useAuth = () => {
       if (body.access_token) {
         setUser({
           // handle bad typing from backend , will fix in the future :)
-          username: body.userId as string,
-          at: body.access_token as string,
-          rt: body.refresh_token as string,
+          id: body.id,
+          username: body.userId,
+          at: body.access_token,
+          rt: body.refresh_token,
           onboarding: false,
         });
         console.log('Register success w/ username: ' + body.userId);
@@ -134,10 +135,11 @@ const useAuth = () => {
       if (body.access_token) {
         setUser({
           // handle bad typing from backend , will fix in the future :)
-          username: body.userId as string,
-          at: body.access_token as string,
-          rt: body.refresh_token as string,
-          onboarding: body.onboarding as boolean,
+          id: body.id,
+          username: body.userId,
+          at: body.access_token,
+          rt: body.refresh_token,
+          onboarding: body.onboarding,
         });
         console.log('Login success w/ username: ' + body.userId);
         return true;

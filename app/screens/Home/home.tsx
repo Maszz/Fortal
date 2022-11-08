@@ -22,6 +22,7 @@ import EventCard from '../../components/EventCard';
 import {useGetEventListQuery} from '../../redux/apis';
 import 'moment-timezone';
 import moment from 'moment';
+import {SheetManager} from 'react-native-actions-sheet';
 const Home: FunctionComponent<HomeScreenTypes.HomeScreenProps> = ({route}) => {
   const {logout, user} = useAuth();
   // const {data, refetch} = useGetEventListQuery({offset: 0, limit: 10});
@@ -177,39 +178,22 @@ const Home: FunctionComponent<HomeScreenTypes.HomeScreenProps> = ({route}) => {
           {data?.map((item, index: number) => {
             return (
               <EventCard
-                onPress={{}}
+                onPress={() => {
+                  SheetManager.show('eventCard-sheet', {
+                    payload: {
+                      eventId: item.id,
+                    },
+                  });
+                }}
                 style={{marginVertical: 7, marginBottom: 20}}
                 title={item.name}
-                date={moment(item.startDate)
-                  .tz('Asia/Bangkok')
-                  .format('DD MMMM YYYY HH:mm')}
+                date={moment(item.startDate).format('DD MMMM YYYY')}
                 description={item.description}
                 colors={[item.eventColors.c1, item.eventColors.c2]}
                 key={index}
               />
             );
           })}
-          {/* <EventCard
-            style={{marginVertical: 7}}
-            title="Hello"
-            date="datetime"
-            description='Taken from the Latin words "dolorem ipsum", which translates to'
-            colors={['#FEDDE0', '#8172F7']}
-          />
-          <EventCard
-            style={{marginVertical: 7}}
-            title="Hello"
-            date="datetime"
-            description='Taken from the Latin words "dolorem ipsum", which translates to'
-            colors={['#FFFDC3', '#6BB79D']}
-          />
-          <EventCard
-            style={{marginVertical: 7}}
-            title="Hello"
-            date="datetime"
-            description='Taken from the Latin words "dolorem ipsum", which translates to'
-            colors={['#FEDDE0', '#8172F7']}
-          /> */}
         </Box>
 
         {/* row 2 */}
