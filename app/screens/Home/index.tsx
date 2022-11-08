@@ -232,6 +232,12 @@ const HomeIndex: FunctionComponent<HomeIndexScreenProps> = ({
       <Tab.Screen
         name="Profile"
         component={ProfileScreen}
+        listeners={({navigation, route}) => ({
+          tabPress: e => {
+            e.preventDefault();
+            navigation.navigate('ProfileScreen');
+          },
+        })}
         options={{
           tabBarIcon: ({focused}) => (
             <View alignContent={'center'} justifyContent={'center'} top={3}>

@@ -5,7 +5,7 @@ const ProfileScreen: FunctionComponent<
   HomeScreenTypes.ProfileScreenProps
 > = () => {
   return (
-    <View>
+    <View flex={10} backgroundColor={'white'}>
       <Text>Profile Screen</Text>
     </View>
   );

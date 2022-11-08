@@ -1,6 +1,8 @@
 import {createStackNavigator, StackScreenProps} from '@react-navigation/stack';
 import SearchScreen from '../screens/Home/Search';
 import {Region} from 'react-native-maps';
+import ProfileScreen from '../screens/Home/Profile';
+import {ProfileScreenProps} from './home.type';
 
 export type StackScreenParams = {
   HomeIndex: undefined;
@@ -14,6 +16,7 @@ export type StackScreenParams = {
   OtherProfileScreen: {userId: string};
   MapViewScreen: undefined;
   SettingScreen: undefined;
+  ProfileScreen: undefined;
 };
 
 export type HomeIndexScreenProps = StackScreenProps<
@@ -56,4 +59,8 @@ export type MapViewScreenProps = StackScreenProps<
 export type SettingScreenProps = StackScreenProps<
   StackScreenParams,
   'SettingScreen'
+>;
+export type ProfileScreenProps = StackScreenProps<
+  StackScreenParams,
+  'ProfileScreen'
 >;

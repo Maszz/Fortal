@@ -73,6 +73,7 @@ import OtherProfileScreen from './screens/otherProfile';
 import MapViewScreen from './screens/MapView';
 import Geolocation from '@react-native-community/geolocation';
 import SettingScreen from './screens/SettingScreen';
+import ProfileScreen from './screens/ProfileScreen';
 const Stack = createStackNavigator<StackScreenParams>();
 const defaultScreenOption: StackNavigationOptions = {
   headerShown: false,
@@ -264,6 +265,14 @@ const StackNavigation = () => {
             <Stack.Screen
               name="SettingScreen"
               component={SettingScreen}
+              options={{
+                gestureEnabled: true,
+                headerShown: false,
+              }}
+            />
+            <Stack.Screen
+              name="ProfileScreen"
+              component={ProfileScreen}
               options={{
                 gestureEnabled: true,
                 headerShown: false,
