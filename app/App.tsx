@@ -75,6 +75,7 @@ import Geolocation from '@react-native-community/geolocation';
 import SettingScreen from './screens/SettingScreen';
 import MapViewForEventCardScreen from './screens/MapViewForEventCard';
 import ProfileScreen from './screens/ProfileScreen';
+import ProfileSettingScreen from './screens/ProfileSettingScreen';
 const Stack = createStackNavigator<StackScreenParams>();
 const defaultScreenOption: StackNavigationOptions = {
   headerShown: false,
@@ -307,6 +308,14 @@ const StackNavigation = () => {
             <Stack.Screen
               name="ProfileScreen"
               component={ProfileScreen}
+              options={{
+                gestureEnabled: true,
+                headerShown: false,
+              }}
+            />
+            <Stack.Screen
+              name="ProfileSettingScreen"
+              component={ProfileSettingScreen}
               options={{
                 gestureEnabled: true,
                 headerShown: false,

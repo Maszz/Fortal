@@ -17,8 +17,11 @@ import {StyleSheet, TouchableOpacity, Platform} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import {border} from 'native-base/lib/typescript/theme/styled-system';
 import {EventNameModal} from './createModal';
-
-const ProfileScreen = () => {
+import {ProfileScreenProps} from '../types';
+const ProfileScreen: FunctionComponent<ProfileScreenProps> = ({
+  navigation,
+  route,
+}) => {
   return (
     <View flex={10} backgroundColor={'white'} paddingX={5}>
       <Box flex={3} paddingY={5}>
@@ -35,19 +38,29 @@ const ProfileScreen = () => {
             flexDirection={'row'}
             marginTop={10}
             justifyContent={'space-between'}>
-            <Image
-              marginLeft={4}
-              alt="key icon"
-              source={require('../assets/back_icon.png')}
-              style={{tintColor: 'white'}}
-            />
+            <TouchableOpacity
+              onPress={() => {
+                navigation.goBack();
+              }}>
+              <Image
+                marginLeft={4}
+                alt="key icon"
+                source={require('../assets/back_icon.png')}
+                tintColor={'white'}
+              />
+            </TouchableOpacity>
             <Spacer />
-            <Image
-              marginRight={7}
-              alt="key icon"
-              source={require('../assets/dot_icon.png')}
-              style={{tintColor: 'white'}}
-            />
+            <TouchableOpacity
+              onPress={() => {
+                navigation.navigate('ProfileSettingScreen');
+              }}>
+              <Image
+                marginRight={7}
+                alt="key icon"
+                source={require('../assets/dot_icon.png')}
+                style={{tintColor: 'white'}}
+              />
+            </TouchableOpacity>
           </Box>
         </ZStack>
       </Box>
@@ -104,6 +117,7 @@ const ProfileScreen = () => {
         </HStack>
       </Box>
       <Box
+        paddingTop={5}
         paddingX={5}
         flex={1}
         // backgroundColor={'blue.100'}

@@ -22,6 +22,7 @@ export type StackScreenParams = {
     locationDescription: string;
   };
   ProfileScreen: undefined;
+  ProfileSettingScreen: undefined;
 };
 
 export type HomeIndexScreenProps = StackScreenProps<
@@ -73,4 +74,8 @@ export type MapViewForEventCardScreenProps = StackScreenProps<
 export type ProfileScreenProps = StackScreenProps<
   StackScreenParams,
   'ProfileScreen'
+>;
+export type ProfileSettingScreenProps = StackScreenProps<
+  StackScreenParams,
+  'ProfileSettingScreen'
 >;
