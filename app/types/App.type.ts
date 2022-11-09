@@ -23,6 +23,7 @@ export type StackScreenParams = {
   };
   ProfileScreen: undefined;
   ProfileSettingScreen: undefined;
+  ProfileSettingEditScreen: undefined;
 };
 
 export type HomeIndexScreenProps = StackScreenProps<
@@ -78,4 +79,8 @@ export type ProfileScreenProps = StackScreenProps<
 export type ProfileSettingScreenProps = StackScreenProps<
   StackScreenParams,
   'ProfileSettingScreen'
+>;
+export type ProfileSettingEditScreenProps = StackScreenProps<
+  StackScreenParams,
+  'ProfileSettingEditScreen'
 >;

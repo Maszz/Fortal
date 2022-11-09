@@ -76,6 +76,7 @@ import SettingScreen from './screens/SettingScreen';
 import MapViewForEventCardScreen from './screens/MapViewForEventCard';
 import ProfileScreen from './screens/ProfileScreen';
 import ProfileSettingScreen from './screens/ProfileSettingScreen';
+import ProfileSettingEditScreen from './screens/ProfileSettingEditScreen';
 const Stack = createStackNavigator<StackScreenParams>();
 const defaultScreenOption: StackNavigationOptions = {
   headerShown: false,
@@ -316,6 +317,14 @@ const StackNavigation = () => {
             <Stack.Screen
               name="ProfileSettingScreen"
               component={ProfileSettingScreen}
+              options={{
+                gestureEnabled: true,
+                headerShown: false,
+              }}
+            />
+            <Stack.Screen
+              name="ProfileSettingEditScreen"
+              component={ProfileSettingEditScreen}
               options={{
                 gestureEnabled: true,
                 headerShown: false,

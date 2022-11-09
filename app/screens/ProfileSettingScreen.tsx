@@ -37,19 +37,24 @@ const ProfileSettingScreen: FunctionComponent<ProfileSettingScreenProps> = ({
       </Box>
       <Box flex={8.8} marginX={36}>
         <VStack>
-          <Box
-            flexDirection={'row'}
-            justifyContent={'space-between'}
-            marginTop={5}>
-            <Text fontSize={16} color={'#283952'} fontWeight={'normal'}>
-              Edit profile
-            </Text>
-            <Image
-              alignSelf={'center'}
-              alt="key icon"
-              source={require('../assets/edit_icon.png')}
-            />
-          </Box>
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate('ProfileSettingEditScreen');
+            }}>
+            <Box
+              flexDirection={'row'}
+              justifyContent={'space-between'}
+              marginTop={5}>
+              <Text fontSize={16} color={'#283952'} fontWeight={'normal'}>
+                Edit profile
+              </Text>
+              <Image
+                alignSelf={'center'}
+                alt="key icon"
+                source={require('../assets/edit_icon.png')}
+              />
+            </Box>
+          </TouchableOpacity>
           <Divider my={2} />
           <Box
             flexDirection={'row'}
