@@ -1,7 +1,10 @@
 import {View, Text, Box, HStack, Image, Divider, VStack} from 'native-base';
 import {FunctionComponent} from 'react';
-import {SettingScreenProps} from '../types';
-const ProfileSettingScreen: FunctionComponent<any> = () => {
+import {ProfileSettingScreenProps} from '../types';
+import {TouchableOpacity} from 'react-native';
+const ProfileSettingScreen: FunctionComponent<ProfileSettingScreenProps> = ({
+  navigation,
+}) => {
   return (
     <View flex={10} backgroundColor={'white'}>
       <Box
@@ -14,13 +17,18 @@ const ProfileSettingScreen: FunctionComponent<any> = () => {
           marginBottom={3}
           flexDirection={'row'}
           justifyContent={'space-between'}>
-          <Image
-            width={30}
-            height={24.36}
-            alt="key icon"
-            source={require('../assets/back_icon.png')}
-            tintColor={'#232259'}
-          />
+          <TouchableOpacity
+            onPress={() => {
+              navigation.goBack();
+            }}>
+            <Image
+              width={30}
+              height={24.36}
+              alt="key icon"
+              source={require('../assets/back_icon.png')}
+              tintColor={'#232259'}
+            />
+          </TouchableOpacity>
           <Text fontSize={16} color={'#232259'} fontWeight={'bold'}>
             Profile setting
           </Text>
