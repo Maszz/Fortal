@@ -189,7 +189,7 @@ const ProfileScreen: FunctionComponent<ProfileScreenProps> = ({
           itself", Lorem Ipsum text saw a revival in the mid-20th century as
         </Text>
       </Box>
-      <Box flex={1.2} paddingX={2}>
+      <Box flex={1.2} paddingX={2} marginBottom={'30%'}>
         <Text fontSize={12} fontWeight={'normal'}>
           interested event
         </Text>
@@ -240,7 +240,7 @@ const ProfileScreen: FunctionComponent<ProfileScreenProps> = ({
           </HStack>
         </VStack>
       </Box>
-      <Box
+      {/* <Box
         flex={1.2}
         // backgroundColor={'#F5F5F5'}
         justifyContent={'center'}
@@ -251,7 +251,7 @@ const ProfileScreen: FunctionComponent<ProfileScreenProps> = ({
           alignContent={'center'}
           marginX={'32%'}>
           {/* select new beautifull image icon */}
-          <Image
+      {/* <Image
             backgroundColor={'blue.500'}
             borderRadius={'full'}
             width={30}
@@ -277,7 +277,7 @@ const ProfileScreen: FunctionComponent<ProfileScreenProps> = ({
             source={require('../assets/mail_icon.png')}
           />
         </HStack>
-      </Box>
+      </Box> */}
     </View>
   );
 };
