@@ -9,7 +9,7 @@ export interface SearchResponse {
   content: string;
   type: string;
   id: string;
-  name?: string;
+  displayName?: string;
   bio?: string;
   date?: string;
   location?: string;
@@ -17,9 +17,9 @@ export interface SearchResponse {
 export interface UserProfileResponse {
   username: string;
   profile?: {
-    name?: string;
-    surname?: string;
+    realName?: string;
     bio?: string;
+    displayName?: string;
   };
   categories: string[];
 }

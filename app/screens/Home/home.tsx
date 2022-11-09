@@ -23,11 +23,13 @@ import {useGetEventListQuery} from '../../redux/apis';
 import 'moment-timezone';
 import moment from 'moment';
 import {SheetManager} from 'react-native-actions-sheet';
+import {useIsFocused} from '@react-navigation/native';
+
 const Home: FunctionComponent<HomeScreenTypes.HomeScreenProps> = ({route}) => {
   const {logout, user} = useAuth();
   // const {data, refetch} = useGetEventListQuery({offset: 0, limit: 10});
   const [refreshing, setRefreshing] = useState(false);
-  const {eventList: data, refetch, loadMore} = useGetEventList();
+  const {eventList: data, refetch, loadMore, refocus} = useGetEventList('home');
   const onRefresh = () => {
     setRefreshing(true);
     refetch();
@@ -45,7 +47,13 @@ const Home: FunctionComponent<HomeScreenTypes.HomeScreenProps> = ({route}) => {
       contentSize.height - paddingToBottom
     );
   };
-
+  const isFocused = useIsFocused();
+  useEffect(() => {
+    if (isFocused) {
+      console.log('focused trigger');
+      refocus();
+    }
+  }, [isFocused]);
   return (
     <ScrollView
       refreshControl={

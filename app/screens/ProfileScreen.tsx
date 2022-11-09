@@ -18,10 +18,14 @@ import LinearGradient from 'react-native-linear-gradient';
 import {border} from 'native-base/lib/typescript/theme/styled-system';
 import {EventNameModal} from './createModal';
 import {ProfileScreenProps} from '../types';
+import {useGetSearchItemUserByUsernameQuery} from '../redux/apis';
+import {useAuth} from '../hooks/useAuth';
 const ProfileScreen: FunctionComponent<ProfileScreenProps> = ({
   navigation,
   route,
 }) => {
+  const {user} = useAuth();
+  const {data, isLoading} = useGetSearchItemUserByUsernameQuery(user.username);
   return (
     <View flex={10} backgroundColor={'white'} paddingX={5}>
       <Box flex={3} paddingY={5}>
@@ -76,45 +80,6 @@ const ProfileScreen: FunctionComponent<ProfileScreenProps> = ({
             transform: [{rotate: '-90deg'}],
           }}
         />
-        <HStack
-          flex={1}
-          alignSelf={'flex-end'}
-          justifyContent={'space-between'}
-          marginLeft={4}
-          marginRight={2}
-          marginBottom={'5%'}>
-          <Box
-            justifyContent={'center'}
-            backgroundColor={'white'}
-            borderColor={'#8C84D4'}
-            borderWidth={2}
-            borderRadius={'full'}
-            width={120}
-            height={35}>
-            <Text
-              fontSize={14}
-              fontWeight={'bold'}
-              color={'#8C84D4'}
-              textAlign={'center'}>
-              Add friend
-            </Text>
-          </Box>
-          <Box
-            justifyContent={'center'}
-            backgroundColor={'white'}
-            borderColor={'#8C84D4'}
-            borderWidth={2}
-            borderRadius={'full'}
-            width={60}
-            height={35}>
-            <Image
-              alignSelf={'center'}
-              alt="key icon"
-              source={require('../assets/mail_icon.png')}
-              style={{tintColor: '#8C84D4', transform: [{scale: 1.5}]}}
-            />
-          </Box>
-        </HStack>
       </Box>
       <Box
         paddingTop={5}
@@ -161,11 +126,11 @@ const ProfileScreen: FunctionComponent<ProfileScreenProps> = ({
       </Box>
       <Box flex={2.1} marginX={5}>
         <Text fontSize={32} fontWeight={'bold'}>
-          User name
+          {data?.username}
         </Text>
         <Box flexDirection={'row'} justifyContent={'space-between'}>
           <Text fontSize={14} fontWeight={'normal'} color={'#8B9093'}>
-            Nickname
+            {data?.profile?.displayName || 'no nickname set yet.'}
           </Text>
           <Box flexDirection={'row'}>
             <Text fontSize={14} fontWeight={'normal'} color={'#8B9093'}>
@@ -184,9 +149,9 @@ const ProfileScreen: FunctionComponent<ProfileScreenProps> = ({
           textAlign={'justify'}
           fontSize={14}
           fontWeight={'normal'}
+          numberOfLines={4}
           color={'#232259'}>
-          Taken from the Latin words "dolorem ipsum", which translates to "pain
-          itself", Lorem Ipsum text saw a revival in the mid-20th century as
+          {data?.profile?.bio || 'No bio'}
         </Text>
       </Box>
       <Box flex={1.2} paddingX={2} marginBottom={'30%'}>
@@ -196,28 +161,36 @@ const ProfileScreen: FunctionComponent<ProfileScreenProps> = ({
         <Divider my={2} opacity={0} />
         {/* tag loop */}
         <VStack flex={1}>
-          <HStack flex={1}>
-            <Box
-              borderRadius={'full'}
-              height={25}
-              width={45}
-              justifyContent={'center'}
-              alignContent={'center'}
-              // get input color props
-              backgroundColor={'salmon'}>
-              <Text
-                textAlign={'center'}
-                fontSize={10}
-                fontWeight={'normal'}
-                tintColor={'bluegray.500'}
-                opacity={0.8}
-                //   get text tittle props
-              >
-                #cafe
-              </Text>
-            </Box>
+          <HStack flex={1} w={'100%'} flexWrap={'wrap'}>
+            {data?.categories.map((interest: string, index: number) => {
+              return (
+                <Box
+                  key={index}
+                  borderRadius={'full'}
+                  height={25}
+                  minWidth={45}
+                  mr={2}
+                  justifyContent={'center'}
+                  alignContent={'center'}
+                  paddingX={2}
+                  mb={2}
+                  // get input color props
+                  backgroundColor={'salmon'}>
+                  <Text
+                    textAlign={'center'}
+                    fontSize={10}
+                    fontWeight={'normal'}
+                    tintColor={'bluegray.500'}
+                    opacity={0.8}
+                    //   get text tittle props
+                  >
+                    #{interest}
+                  </Text>
+                </Box>
+              );
+            })}
           </HStack>
-          <HStack flex={1}>
+          {/* <HStack flex={1}>
             <Box
               borderRadius={'full'}
               height={25}
@@ -237,7 +210,7 @@ const ProfileScreen: FunctionComponent<ProfileScreenProps> = ({
                 #cafe
               </Text>
             </Box>
-          </HStack>
+          </HStack> */}
         </VStack>
       </Box>
       {/* <Box

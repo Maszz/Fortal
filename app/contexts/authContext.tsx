@@ -58,8 +58,11 @@ const useAuth = () => {
   const [updateUserInterestedTagsMutation, resultUpdateUserInterestedTags] =
     useUpdateUserInterestedTagsMutation();
   const dispatch = useDispatch();
+  const updateUsername: (username: string) => void = (username: string) => {
+    setUser({...user, username: username});
+  };
   const register = async ({
-    name,
+    realName,
     email,
     password,
     username,
@@ -70,7 +73,7 @@ const useAuth = () => {
       const body = await signup({
         username,
         password,
-        name,
+        realName,
         email,
         deviceId: deviceInfo.deviceId,
         platform: deviceInfo.Platform,
@@ -321,5 +324,6 @@ const useAuth = () => {
     updateOnboardingGender,
     isMount,
     updateUserInterestedTags,
+    updateUsername,
   };
 };

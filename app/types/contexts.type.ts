@@ -22,7 +22,7 @@ export interface LoginResponseDto {
   statusCode?: number;
 }
 export interface RegisterFormInput {
-  name: string;
+  realName: string;
   email: string;
   password: string;
   username: string;
@@ -32,7 +32,12 @@ export interface AuthContextData {
   login: (username: string, password: string) => Promise<boolean | undefined>;
   logout: () => Promise<void>;
   loading: boolean;
-  register: ({name, email, password, username}: RegisterFormInput) => Promise<{
+  register: ({
+    realName,
+    email,
+    password,
+    username,
+  }: RegisterFormInput) => Promise<{
     msg: boolean;
     error?: string | undefined;
   }>;
@@ -40,4 +45,5 @@ export interface AuthContextData {
   updateOnboardingGender: (gender: string) => Promise<void>;
   isMount: boolean;
   updateUserInterestedTags: (tags: string[]) => Promise<void>;
+  updateUsername: (username: string) => void;
 }

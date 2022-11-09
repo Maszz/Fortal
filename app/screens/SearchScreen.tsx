@@ -190,7 +190,7 @@ const SearchItem: FunctionComponent<SearchItemProps> = ({item}) => {
                 fontWeight={'bold'}
                 px={'1'}
                 numberOfLines={1}>
-                {item?.name}@{item?.content}
+                {item?.content} {/* {item?.displayName}@ */}
               </Text>
               <Text numberOfLines={2} ellipsizeMode={'tail'} minHeight={10}>
                 {item?.bio ? item?.bio : 'No bio'}

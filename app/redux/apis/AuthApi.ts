@@ -10,7 +10,7 @@ export interface SigninMutationPayload {
 export interface SignupMutationPayload {
   username: string;
   password: string;
-  name: string;
+  realName: string;
   email: string;
   deviceId: string;
   platform: string;

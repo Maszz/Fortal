@@ -19,6 +19,27 @@ export interface UpdateUserInterestedTagsMutationPayload {
 export interface UpdateOnboardingResponseDto {
   result: boolean;
 }
+export interface UpdateProfileMutationPayload {
+  username: string;
+  cUsername: string;
+  profile: {
+    bio?: string;
+    displayName?: string;
+  };
+}
+export default interface UpdateProfileResponseDto {
+  profile: {
+    id: string;
+    createdAt: Date;
+    updatedAt: Date;
+    username: string;
+    email: string;
+    onboarding: boolean;
+    eventsJoined: string[];
+    categoryIDs: string[];
+  };
+  updateUsername: boolean;
+}
 export const userApi = createApi({
   reducerPath: 'userApi',
   baseQuery: fetchBaseQuery({baseUrl: `${Config.apiBaseUrl}/user/`}),
@@ -56,6 +77,16 @@ export const userApi = createApi({
         body,
       }),
     }),
+    updateUserProfile: builder.mutation<
+      UpdateProfileResponseDto,
+      UpdateProfileMutationPayload
+    >({
+      query: body => ({
+        url: 'update/profile',
+        method: 'POST',
+        body,
+      }),
+    }),
   }),
 });
 
@@ -63,4 +94,5 @@ export const {
   useUpdateOnboardingGenderMutation,
   useUpdateUserInterestedTagsMutation,
   useUpdateOnboardingMutation,
+  useUpdateUserProfileMutation,
 } = userApi;

@@ -35,6 +35,7 @@ import {useJoinedEventMutation} from '../redux/apis';
 import {useAuth} from '../hooks/useAuth';
 import {ErrorResponse} from '../redux/apis';
 import {Alert} from 'react-native';
+
 const EventCardActionSheet: FunctionComponent<EventCardActionsSheetProps> = ({
   sheetId,
   payload,
@@ -233,6 +234,7 @@ const EventCardActionSheet: FunctionComponent<EventCardActionsSheetProps> = ({
                         res.data.message === 'You are already a participant'
                       ) {
                         // Alert.alert('User already joined');
+
                         actionSheetRef.current?.hide();
                         stackNavigation.navigate('EventScreen', {
                           eventId: data?.id,

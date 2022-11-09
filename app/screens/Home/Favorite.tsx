@@ -1,16 +1,45 @@
-import {FunctionComponent} from 'react';
+import {FunctionComponent, useState, useEffect} from 'react';
 import {View, Text, Divider, Box, ScrollView} from 'native-base';
 import {HomeScreenTypes} from '../../types';
-import {StyleSheet, TouchableOpacity, Platform} from 'react-native';
+import {StyleSheet, TouchableOpacity, RefreshControl} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
+import EventCard from '../../components/EventCard';
+import {useGetEventList} from '../../hooks/useEventList';
+import {RootState} from '../../redux';
+import {useSelector} from 'react-redux';
+import {useIsFocused} from '@react-navigation/native';
+
 const FavoriteScreen: FunctionComponent<
   HomeScreenTypes.FavoriteScreenProps
 > = () => {
+  const {eventList: data, refetch, loadMore, refocus} = useGetEventList('user');
+  const [refreshing, setRefreshing] = useState(false);
+  const {stackNavigation} = useSelector<RootState, RootState['navigation']>(
+    (state: RootState) => state.navigation,
+  );
+
+  const isFocused = useIsFocused();
+  useEffect(() => {
+    if (isFocused) {
+      console.log('focused trigger');
+      refocus();
+    }
+  }, [isFocused]);
   return (
     <ScrollView
       horizontal={false}
       showsHorizontalScrollIndicator={false}
-      pagingEnabled={true}
+      refreshControl={
+        <RefreshControl
+          refreshing={refreshing}
+          onRefresh={() => {
+            setRefreshing(true);
+            refetch();
+            setRefreshing(false);
+          }}
+        />
+      }
+      pagingEnabled={false}
       backgroundColor={'white'}>
       <Box paddingX={5} paddingY={5}>
         <Text fontSize={14} fontWeight={'normal'}>
@@ -19,84 +48,41 @@ const FavoriteScreen: FunctionComponent<
         <Divider my={4} />
         <ScrollView
           horizontal={true}
+          height={230}
           showsHorizontalScrollIndicator={false}
-          pagingEnabled={true}>
+          scrollEventThrottle={400}
+          onScroll={({nativeEvent}) => {
+            const paddingToRight = 40;
+            const width = nativeEvent.layoutMeasurement.width;
+            const contentoffset = nativeEvent.contentOffset.x;
+            const contentSize = nativeEvent.contentSize.width;
+            // console.log('width', width);
+            // console.log('contentoffset', contentoffset);
+            // console.log('contentSize', contentSize);
+            if (width + contentoffset >= contentSize - paddingToRight) {
+              loadMore();
+            }
+          }}
+          pagingEnabled={false}>
           <Box flexDirection={'row'} justifyContent={'space-between'}>
-            <TouchableOpacity
-              // width={'250px'}
-              // height={'40px'}>
-              onPress={() => {
-                // setSelectedGender({selectedGender: 'Male'});
-
-                console.log('Pressable');
-              }}>
-              {/* this is activity component  */}
-              <LinearGradient
-                colors={['#9FDDFB', '#FFAECB']}
-                useAngle={true}
-                angle={0}
-                angleCenter={{x: 0.5, y: 0.5}}
-                style={{
-                  flex: 3,
-                  paddingHorizontal: 14,
-                  paddingVertical: 20,
-                  borderRadius: 10,
-                  height: 220,
-                  width: 170,
-                  shadowColor: 'black',
-                  shadowOpacity: 0.5,
-                  shadowOffset: {width: 170, height: 5},
-                  flexDirection: 'column',
-                }}>
-                {/* <Image
-                marginBottom={3}
-                alt="key icon"
-                source={require('../../assets/gender_icon.png')}
-              /> */}
-                <Text
-                  color={'#232259'}
-                  fontWeight={'bold'}
-                  fontSize={24}
-                  flex={0.8}
-                  alignContent={'center'}>
-                  Hello
-                </Text>
-                <Text
-                  flex={0.3}
-                  color={'#232259'}
-                  fontSize={10}
-                  fontWeight={'light'}>
-                  date time
-                </Text>
-                <Text
-                  paddingTop={3}
-                  flex={1.4}
-                  color={'#232259'}
-                  fontSize={12}
-                  fontWeight={'normal'}>
-                  Taken from the Latin words "dolorem ipsum", which translates
-                  to ...
-                </Text>
-                <Divider my={3} bg="white" opacity={0.5} />
-                <Box
-                  flex={0.5}
-                  flexDirection={'row'}
-                  justifyContent={'space-between'}>
-                  <Text>start</Text>
-                  <Box
-                    justifyContent={'center'}
-                    alignItems={'center'}
-                    style={{
-                      backgroundColor: 'white',
-                      borderRadius: 20,
-                      width: 35,
-                      height: 35,
-                    }}>
-                    <Text fontSize={12}>10+</Text>
-                  </Box>
-                </Box>
-              </LinearGradient>
-            </TouchableOpacity>
+            {data.map((item, index) => {
+              return (
+                <TouchableOpacity key={index}>
+                  <EventCard
+                    onPress={() => {
+                      stackNavigation.navigate('EventScreen', {
+                        eventId: item?.id,
+                      });
+                    }}
+                    title={item.name}
+                    date={item.startDate}
+                    description={item.description}
+                    colors={[item.eventColors.c1, item.eventColors.c2]}
+                    style={{marginRight: 10}}
+                  />
+                </TouchableOpacity>
+              );
+            })}
           </Box>
         </ScrollView>
       </Box>

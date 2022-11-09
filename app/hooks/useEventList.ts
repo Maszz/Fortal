@@ -1,6 +1,7 @@
 import {
   useGetEventListQuery,
   useLazyGetEventListQuery,
+  useLazyGetEventUserListQuery,
 } from '../redux/apis/EventApi';
 import {useState, useEffect} from 'react';
 import {GetEventResponse} from '../redux/apis/EventApi';
@@ -8,7 +9,8 @@ import {useSelector, useDispatch} from 'react-redux';
 import {RootState} from '../redux/store';
 import {setLoadingAction} from '../redux/reducers/navigation';
 import {useAuth} from '../hooks/useAuth';
-const useGetEventList = () => {
+export type EventListType = 'home' | 'user';
+const useGetEventList = (t: EventListType) => {
   const {user} = useAuth();
   const [params, setParams] = useState({
     offset: 0,
@@ -26,7 +28,7 @@ const useGetEventList = () => {
   //     refetchOnMountOrArgChange: true,
   //   });
   const [fetchMore, {data, isFetching: isFetchingMore}] =
-    useLazyGetEventListQuery();
+    t === 'home' ? useLazyGetEventListQuery() : useLazyGetEventUserListQuery();
 
   const [isLoading, setLoading] = useState(false);
   const [eventList, setEventList] = useState<GetEventResponse[]>(
@@ -94,7 +96,26 @@ const useGetEventList = () => {
       });
   };
 
-  return {loadMore, eventList, refetch};
+  const refocus = () => {
+    if (isLoading) {
+      return;
+    }
+    // dispatch(setLoadingAction(true));
+    fetchMore({
+      offset: 0,
+      limit: params.offset + params.limit,
+      u: user.username,
+    })
+      .unwrap()
+      .then((data: GetEventResponse[]) => {
+        if (data.length > 0) {
+          setEventList(data);
+        }
+        // dispatch(setLoadingAction(false));
+      });
+  };
+
+  return {loadMore, eventList, refetch, refocus};
 };
 
 export {useGetEventList};

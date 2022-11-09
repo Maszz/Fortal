@@ -29,14 +29,14 @@ import GradientButton from './GradientButton';
 import {useAuth} from '../hooks/useAuth';
 import {Config} from '../env';
 export interface RegisterUserInput {
-  name: string;
+  realName: string;
   email: string;
   password: string;
   confirmPassword: string;
   username: string;
 }
 export interface InvalidRegisterInput {
-  name: boolean;
+  realName: boolean;
   email: boolean;
   password: boolean;
   confirmPassword: boolean;
@@ -143,10 +143,10 @@ const RegisterActionsSheet: FunctionComponent<RegisterActionsSheetProps> = ({
             icon={require('../assets/user_icon.png')}
             placeholder={t('registerActionsSheet:namePlaceholder')}
             onChangeText={text => {
-              setUserInput({...userInput, name: text});
+              setUserInput({...userInput, realName: text});
             }}
-            value={userInput.name}
-            isInvalid={invalidInput.name}
+            value={userInput.realName}
+            isInvalid={invalidInput.realName}
             invalidMessage={'Invalid name'}
           />
           <FormInput
@@ -212,7 +212,7 @@ const RegisterActionsSheet: FunctionComponent<RegisterActionsSheetProps> = ({
                 }
                 let errCount = 0;
                 const error = {
-                  name: false,
+                  realName: false,
                   email: false,
                   password: false,
                   confirmPassword: false,
@@ -222,8 +222,8 @@ const RegisterActionsSheet: FunctionComponent<RegisterActionsSheetProps> = ({
                   error.email = true;
                   errCount++;
                 }
-                if (!userInput.name) {
-                  error.name = true;
+                if (!userInput.realName) {
+                  error.realName = true;
                   errCount++;
                 }
                 if (!userInput.password || !userInput.confirmPassword) {
@@ -241,8 +241,13 @@ const RegisterActionsSheet: FunctionComponent<RegisterActionsSheetProps> = ({
                 console.log(errCount);
                 if (errCount === 0) {
                   // register stuff if success navigate to next screen
-                  const {username, password, email, name} = userInput;
-                  const res = await register({username, password, email, name});
+                  const {username, password, email, realName} = userInput;
+                  const res = await register({
+                    username,
+                    password,
+                    email,
+                    realName,
+                  });
                   if (res.msg) {
                     actionSheetRef.current?.hide();
                     // payload?.navigation.navigate('Onboard1');

@@ -137,10 +137,30 @@ export const eventApi = createApi({
       query: params => {
         return {
           url: 'getEventList',
-          params: {offset: params.offset, limit: params.limit, u: params.u},
+          params: {
+            offset: params.offset,
+            limit: params.limit,
+            u: params.u,
+          },
         };
       },
     }),
+    getEventUserList: builder.query<
+      GetEventResponse[],
+      {offset: number; limit: number; u: string}
+    >({
+      query: params => {
+        return {
+          url: 'getEventUserList',
+          params: {
+            offset: params.offset,
+            limit: params.limit,
+            u: params.u,
+          },
+        };
+      },
+    }),
+
     getEventById: builder.query<GetEventByIdResponse, string>({
       query: eventId => {
         return {
@@ -170,4 +190,6 @@ export const {
   useLazyGetEventListQuery,
   useGetEventByIdQuery,
   useJoinedEventMutation,
+  useGetEventUserListQuery,
+  useLazyGetEventUserListQuery,
 } = eventApi;
