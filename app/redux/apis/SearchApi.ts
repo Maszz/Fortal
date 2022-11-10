@@ -20,6 +20,7 @@ export interface UserProfileResponse {
     realName?: string;
     bio?: string;
     displayName?: string;
+    isProfilePublic?: boolean;
   };
   categories: string[];
 }

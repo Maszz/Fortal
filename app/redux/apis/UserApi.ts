@@ -25,7 +25,10 @@ export interface UpdateProfileMutationPayload {
   profile: {
     bio?: string;
     displayName?: string;
+    isProfilePublic?: boolean;
   };
+  newTags: string[];
+  removeTags: string[];
 }
 export default interface UpdateProfileResponseDto {
   profile: {

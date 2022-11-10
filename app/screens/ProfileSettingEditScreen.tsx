@@ -11,6 +11,8 @@ import {
   Center,
   Input,
   TextArea,
+  Modal,
+  Button,
 } from 'native-base';
 import LinearGradient from 'react-native-linear-gradient';
 import {FunctionComponent} from 'react';
@@ -25,7 +27,7 @@ export interface UserEditFormInput {
   displayName: string;
   bio: string;
   username: string;
-  isPulbic: boolean;
+  isProfilePublic: boolean;
 }
 const ProfileSettingEditScreen: FunctionComponent<
   ProfileSettingEditScreenProps
@@ -38,8 +40,20 @@ const ProfileSettingEditScreen: FunctionComponent<
     displayName: data?.profile?.displayName || '',
     bio: data?.profile?.bio || '',
     username: data?.username || '',
-    isPulbic: false,
+    isProfilePublic: data?.profile?.isProfilePublic || true,
   } as UserEditFormInput);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [tags, setTags] = useState<string[]>(data?.categories || []);
+  const [newTags, setNewTags] = useState<string[]>([]);
+  const [deletedTags, setDeletedTags] = useState<string[]>([]);
+
+  useEffect(() => {
+    console.log(user);
+    console.log('data', data);
+    console.log('tags: ', tags);
+    console.log('newTags: ', newTags);
+    console.log('deletedTags: ', deletedTags);
+  }, [data, newTags, deletedTags]);
 
   return (
     <View flex={10} backgroundColor={'white'} paddingX={5}>
@@ -67,7 +81,10 @@ const ProfileSettingEditScreen: FunctionComponent<
                   profile: {
                     displayName: userFormInput.displayName,
                     bio: userFormInput.bio,
+                    isProfilePublic: userFormInput.isProfilePublic,
                   },
+                  newTags: newTags,
+                  removeTags: deletedTags,
                   cUsername: user.username,
                 })
                   .unwrap()
@@ -126,6 +143,10 @@ const ProfileSettingEditScreen: FunctionComponent<
           <TouchableOpacity
             onPress={() => {
               console.log('change profile image');
+              setUserFormInput({
+                ...userFormInput,
+                isProfilePublic: !userFormInput.isProfilePublic,
+              });
             }}>
             <Box
               justifyContent={'center'}
@@ -140,7 +161,7 @@ const ProfileSettingEditScreen: FunctionComponent<
                 fontWeight={'bold'}
                 color={'#8C84D4'}
                 textAlign={'center'}>
-                Public
+                {userFormInput?.isProfilePublic ? 'Public' : 'Private'}
               </Text>
             </Box>
           </TouchableOpacity>
@@ -222,21 +243,28 @@ const ProfileSettingEditScreen: FunctionComponent<
         </Text>
         <Divider my={2} opacity={0} />
         {/* tag loop */}
-        <HStack marginBottom={2} alignContent={'center'}>
-          <Box
-            borderRadius={'full'}
-            height={37}
-            width={37}
-            justifyContent={'center'}
-            backgroundColor={'#BFBFBF'}>
-            <Image
+        <HStack marginBottom={2} alignContent={'center'} flexWrap={'wrap'}>
+          <TouchableOpacity
+            onPress={() => {
+              setModalOpen(true);
+            }}>
+            <Box
+              borderRadius={'full'}
+              height={37}
+              width={37}
+              mr={2}
+              justifyContent={'center'}
               alignSelf={'center'}
-              alt="key icon"
-              source={require('../assets/plus_icon.png')}
-              style={{tintColor: 'white', transform: [{scale: 0.6}]}}
-            />
-          </Box>
-          <Box
+              backgroundColor={'#BFBFBF'}>
+              <Image
+                alignSelf={'center'}
+                alt="key icon"
+                source={require('../assets/plus_icon.png')}
+                style={{tintColor: 'white', transform: [{scale: 0.6}]}}
+              />
+            </Box>
+          </TouchableOpacity>
+          {/* <Box
             marginX={2}
             borderRadius={'full'}
             height={25}
@@ -255,7 +283,67 @@ const ProfileSettingEditScreen: FunctionComponent<
             >
               #cafe
             </Text>
-          </Box>
+            
+          </Box> */}
+          {tags.map((interest: string, index: number) => {
+            return (
+              <TouchableOpacity
+                key={index}
+                onPress={() => {
+                  Alert.alert(
+                    'Are your sure?',
+                    'Are you sure you want to remove this interested tags?',
+                    [
+                      // The "Yes" button
+                      {
+                        text: 'Yes',
+                        onPress: () => {
+                          // setShowBox(false);
+                          setTags(tags.filter((item, i) => item !== interest));
+                          if (newTags.includes(interest)) {
+                            setNewTags(
+                              newTags.filter((item, i) => item !== interest),
+                            );
+                            console.log('isNewTag delete');
+                          } else {
+                            setDeletedTags([...deletedTags, interest]);
+                            console.log('oldTag');
+                          }
+                        },
+                      },
+                      // The "No" button
+                      // Does nothing but dismiss the dialog when tapped
+                      {
+                        text: 'No',
+                      },
+                    ],
+                  );
+                }}>
+                <Box
+                  borderRadius={'full'}
+                  height={25}
+                  minWidth={45}
+                  mr={2}
+                  justifyContent={'center'}
+                  alignSelf={'center'}
+                  paddingX={2}
+                  mb={2}
+                  // get input color props
+                  backgroundColor={'salmon'}>
+                  <Text
+                    textAlign={'center'}
+                    fontSize={10}
+                    fontWeight={'normal'}
+                    tintColor={'bluegray.500'}
+                    opacity={0.8}
+                    //   get text tittle props
+                  >
+                    #{interest}
+                  </Text>
+                </Box>
+              </TouchableOpacity>
+            );
+          })}
         </HStack>
         {/* <HStack flex={1}>
           <Box
@@ -279,8 +367,72 @@ const ProfileSettingEditScreen: FunctionComponent<
             </Text>
           </Box>
         </HStack> */}
+        <CreateTagModal
+          modalOpen={modalOpen}
+          onClose={() => {
+            setModalOpen(false);
+          }}
+          onSave={v => {
+            if (!tags.includes(v)) {
+              if (deletedTags.includes(v)) {
+                setDeletedTags(deletedTags.filter(item => item !== v));
+                setTags([...tags, v]);
+              } else {
+                setNewTags([...newTags, v]);
+                setTags([...tags, v]);
+              }
+            } else {
+              Alert.alert('Error', 'This tag already exists');
+            }
+          }}
+        />
       </Box>
     </View>
   );
 };
 export default ProfileSettingEditScreen;
+export interface CreateTagModalProps {
+  modalOpen: boolean;
+  onClose: () => void;
+  onSave: (v: string) => void;
+}
+const CreateTagModal: FunctionComponent<CreateTagModalProps> = ({
+  modalOpen,
+  onClose,
+  onSave,
+}) => {
+  const [userInput, setUserInput] = useState('');
+  return (
+    <Modal isOpen={modalOpen} onClose={onClose} size={'xs'}>
+      <Modal.Content maxH="212">
+        <Modal.CloseButton />
+        <Modal.Header>New Interested Tags</Modal.Header>
+        <Modal.Body>
+          <View>
+            <Input value={userInput} onChangeText={v => [setUserInput(v)]} />
+          </View>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button.Group space={2}>
+            <Button
+              variant="ghost"
+              colorScheme="blueGray"
+              onPress={() => {
+                onClose();
+              }}>
+              Cancel
+            </Button>
+            <Button
+              onPress={() => {
+                onSave(userInput);
+                setUserInput('');
+                onClose();
+              }}>
+              Save
+            </Button>
+          </Button.Group>
+        </Modal.Footer>
+      </Modal.Content>
+    </Modal>
+  );
+};
