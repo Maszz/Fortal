@@ -20,12 +20,24 @@ import {EventNameModal} from './createModal';
 import {ProfileScreenProps} from '../types';
 import {useGetSearchItemUserByUsernameQuery} from '../redux/apis';
 import {useAuth} from '../hooks/useAuth';
+import {useEffect} from 'react';
+import {useIsFocused} from '@react-navigation/native';
+
 const ProfileScreen: FunctionComponent<ProfileScreenProps> = ({
   navigation,
   route,
 }) => {
   const {user} = useAuth();
-  const {data, isLoading} = useGetSearchItemUserByUsernameQuery(user.username);
+  const {data, isLoading, refetch} = useGetSearchItemUserByUsernameQuery(
+    user.username,
+  );
+  const isFocused = useIsFocused();
+  useEffect(() => {
+    if (isFocused) {
+      console.log('focused trigger');
+      refetch();
+    }
+  }, [isFocused]);
   return (
     <View flex={10} backgroundColor={'white'} paddingX={5}>
       <Box flex={3} paddingY={5}>

@@ -288,6 +288,7 @@ const ProfileSettingEditScreen: FunctionComponent<
           {tags.map((interest: string, index: number) => {
             return (
               <TouchableOpacity
+                style={{alignSelf: 'center'}}
                 key={index}
                 onPress={() => {
                   Alert.alert(
@@ -325,7 +326,6 @@ const ProfileSettingEditScreen: FunctionComponent<
                   minWidth={45}
                   mr={2}
                   justifyContent={'center'}
-                  alignSelf={'center'}
                   paddingX={2}
                   mb={2}
                   // get input color props
