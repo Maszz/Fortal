@@ -3,6 +3,7 @@ import {gql} from '@apollo/client';
 export const GetMessagesQuery = gql`
   query Messages($input: GetMessageInput!) {
     getMessage(getMessageInput: $input) {
+      id
       senderName
       message
       date
@@ -23,6 +24,7 @@ export const SendMessageMutation = gql`
 export const MessageSubscription = gql`
   subscription Message($input: SubscripionInput!) {
     messageAdded(subsciptionInput: $input) {
+      id
       senderName
       message
       date

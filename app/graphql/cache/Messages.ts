@@ -51,6 +51,7 @@ export const useMessages = ({
               newMessage,
               ...(prev.getMessage as {
                 __typename?: 'Message';
+                id: string;
                 senderName?: string | null;
                 message?: string | null;
                 date: any;
@@ -60,6 +61,7 @@ export const useMessages = ({
         },
       });
     }
+    console.log('effeft in useMessages');
   }, [subscribeToMore]);
 
   const fetchMoreAndUpdateCache = React.useMemo(() => {
@@ -81,12 +83,14 @@ export const useMessages = ({
             getMessage: [
               ...(prev.getMessage as {
                 __typename?: 'Message';
+                id: string;
                 senderName?: string | null;
                 message?: string | null;
                 date: any;
               }[]),
               ...(moreItems as {
                 __typename?: 'Message';
+                id: string;
                 senderName?: string | null;
                 message?: string | null;
                 date: any;

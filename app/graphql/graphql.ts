@@ -24,8 +24,8 @@ export type GetMessageInput = {
 
 export type Message = {
   __typename?: 'Message';
-  _id: Scalars['ID'];
   date: Scalars['DateTime'];
+  id: Scalars['ID'];
   message?: Maybe<Scalars['String']>;
   senderName?: Maybe<Scalars['String']>;
   sender_id?: Maybe<Scalars['String']>;
@@ -76,7 +76,7 @@ export type MessagesQueryVariables = Exact<{
 }>;
 
 
-export type MessagesQuery = { __typename?: 'Query', getMessage: Array<{ __typename?: 'Message', senderName?: string | null, message?: string | null, date: any }> };
+export type MessagesQuery = { __typename?: 'Query', getMessage: Array<{ __typename?: 'Message', id: string, senderName?: string | null, message?: string | null, date: any }> };
 
 export type SaveMessageMutationVariables = Exact<{
   input: SaveMessageInput;
@@ -90,12 +90,13 @@ export type MessageSubscriptionVariables = Exact<{
 }>;
 
 
-export type MessageSubscription = { __typename?: 'Subscription', messageAdded: { __typename?: 'Message', senderName?: string | null, message?: string | null, date: any } };
+export type MessageSubscription = { __typename?: 'Subscription', messageAdded: { __typename?: 'Message', id: string, senderName?: string | null, message?: string | null, date: any } };
 
 
 export const MessagesDocument = gql`
     query Messages($input: GetMessageInput!) {
   getMessage(getMessageInput: $input) {
+    id
     senderName
     message
     date
@@ -168,6 +169,7 @@ export type SaveMessageMutationOptions = Apollo.BaseMutationOptions<SaveMessageM
 export const MessageDocument = gql`
     subscription Message($input: SubscripionInput!) {
   messageAdded(subsciptionInput: $input) {
+    id
     senderName
     message
     date
