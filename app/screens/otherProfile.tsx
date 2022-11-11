@@ -17,11 +17,11 @@ import {
   Divider,
 } from 'native-base';
 import {OtherProfileScreenProps} from '../types';
-import {FunctionComponent, useEffect} from 'react';
+import {FunctionComponent, useEffect, useState} from 'react';
 import LinearGradient from 'react-native-linear-gradient';
 import {TabRouter} from '@react-navigation/native';
 import {Heading} from 'native-base';
-import {useGetSearchItemUserByUsernameQuery} from '../redux/apis/SearchApi';
+import {useGetSearchItemUserByUsernameMutation} from '../redux/apis/SearchApi';
 import {setLoadingAction} from '../redux/reducers/navigation';
 import {useDispatch} from 'react-redux';
 import {StyleSheet, TouchableOpacity, TouchableHighlight} from 'react-native';
@@ -32,17 +32,21 @@ const OtherProfileScreen: FunctionComponent<OtherProfileScreenProps> = ({
   //   if (loading) return <Loading />;
   //   if (error) return <Error />;
   const {userId} = route.params;
-  const {data: user, isSuccess} = useGetSearchItemUserByUsernameQuery(userId);
+  const [getUser, {data, isSuccess}] = useGetSearchItemUserByUsernameMutation();
   const dispatch = useDispatch();
+  const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
-    console.log('User', user);
+    // console.log('User', user);
     dispatch(setLoadingAction(true));
-
+    if (!isMounted) {
+      getUser(userId);
+      setIsMounted(true);
+    }
     if (isSuccess) {
       dispatch(setLoadingAction(false));
     }
-  }, [user]);
+  }, [isSuccess]);
   return (
     <View flex={10} backgroundColor={'white'} paddingX={5}>
       <Box flex={3} paddingY={5}>
@@ -132,11 +136,11 @@ const OtherProfileScreen: FunctionComponent<OtherProfileScreenProps> = ({
       </Box>
       <Box flex={2.1} marginX={5}>
         <Text fontSize={32} fontWeight={'bold'}>
-          {user?.username}
+          {data?.username}
         </Text>
         <Box flexDirection={'row'} justifyContent={'space-between'}>
           <Text fontSize={14} fontWeight={'normal'} color={'#8B9093'}>
-            {user?.profile?.displayName || 'no nickname set yet.'}
+            {data?.profile?.displayName || 'no nickname set yet.'}
           </Text>
           <Box flexDirection={'row'}>
             <Text fontSize={14} fontWeight={'normal'} color={'#8B9093'}>
@@ -157,7 +161,7 @@ const OtherProfileScreen: FunctionComponent<OtherProfileScreenProps> = ({
           fontWeight={'normal'}
           numberOfLines={4}
           color={'#232259'}>
-          {user?.profile?.bio || 'No bio'}
+          {data?.profile?.bio || 'No bio'}
         </Text>
       </Box>
       <Box flex={1.2} paddingX={2} marginBottom={'30%'}>
@@ -168,7 +172,7 @@ const OtherProfileScreen: FunctionComponent<OtherProfileScreenProps> = ({
         {/* tag loop */}
         <VStack flex={1}>
           <HStack flex={1} w={'100%'} flexWrap={'wrap'}>
-            {user?.categories.map((interest: string, index: number) => {
+            {data?.categories.map((interest: string, index: number) => {
               return (
                 <Box
                   key={index}
@@ -179,6 +183,7 @@ const OtherProfileScreen: FunctionComponent<OtherProfileScreenProps> = ({
                   justifyContent={'center'}
                   alignContent={'center'}
                   paddingX={2}
+                  mb={2}
                   // get input color props
                   backgroundColor={'salmon'}>
                   <Text
@@ -205,7 +210,7 @@ export default OtherProfileScreen;
 
 export const TagButton = ({text, color}: any) => {
   return (
-    <Container mr={2} my={1}>
+    <Container mr={2} mb={2}>
       <TouchableOpacity
         onPress={() => {}}
         style={{

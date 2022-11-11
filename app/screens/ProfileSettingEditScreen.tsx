@@ -19,10 +19,13 @@ import {FunctionComponent} from 'react';
 import {ProfileSettingEditScreenProps} from '../types';
 import {TouchableOpacity, Alert} from 'react-native';
 import {useState} from 'react';
-import {useGetSearchItemUserByUsernameQuery} from '../redux/apis';
+import {useGetSearchItemUserByUsernameMutation} from '../redux/apis';
 import {useAuth} from '../hooks/useAuth';
 import {useUpdateUserProfileMutation, ErrorResponse} from '../redux/apis';
 import {useEffect} from 'react';
+import {useDispatch} from 'react-redux';
+import {setLoadingAction} from '../redux/reducers/navigation';
+
 export interface UserEditFormInput {
   displayName: string;
   bio: string;
@@ -31,29 +34,53 @@ export interface UserEditFormInput {
 }
 const ProfileSettingEditScreen: FunctionComponent<
   ProfileSettingEditScreenProps
-> = () => {
+> = ({navigation}) => {
   const {user, updateUsername} = useAuth();
-  const {data, isLoading} = useGetSearchItemUserByUsernameQuery(user.username);
+  const [getData, {data, isSuccess}] = useGetSearchItemUserByUsernameMutation();
+
   const [updateUserProfile, resultUpdateUserProfile] =
     useUpdateUserProfileMutation();
   const [userFormInput, setUserFormInput] = useState<UserEditFormInput>({
-    displayName: data?.profile?.displayName || '',
-    bio: data?.profile?.bio || '',
-    username: data?.username || '',
-    isProfilePublic: data?.profile?.isProfilePublic || true,
+    displayName: data?.profile?.displayName,
+    bio: data?.profile?.bio,
+    username: data?.username,
+    isProfilePublic: data?.profile?.isProfilePublic,
   } as UserEditFormInput);
   const [modalOpen, setModalOpen] = useState(false);
   const [tags, setTags] = useState<string[]>(data?.categories || []);
   const [newTags, setNewTags] = useState<string[]>([]);
   const [deletedTags, setDeletedTags] = useState<string[]>([]);
+  const [isMounted, setIsMounted] = useState(false);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     console.log(user);
     console.log('data', data);
-    console.log('tags: ', tags);
-    console.log('newTags: ', newTags);
-    console.log('deletedTags: ', deletedTags);
-  }, [data, newTags, deletedTags]);
+    if (!isMounted) {
+      dispatch(setLoadingAction(true));
+
+      setIsMounted(true);
+      getData(user?.username)
+        .unwrap()
+        .then(res => {
+          setUserFormInput({
+            displayName: res.profile?.displayName,
+            bio: res.profile?.bio,
+            username: res.username,
+            isProfilePublic: res.profile?.isProfilePublic,
+          } as UserEditFormInput);
+          setTags(res.categories || []);
+        });
+    }
+    if (isSuccess) {
+      dispatch(setLoadingAction(false));
+    }
+
+    // console.log('tags: ', tags);
+    // console.log('newTags: ', newTags);
+    // console.log('deletedTags: ', deletedTags);
+    // console.log('isProfilePublic: ', userFormInput.isProfilePublic);
+  }, [isSuccess]);
 
   return (
     <View flex={10} backgroundColor={'white'} paddingX={5}>
@@ -97,6 +124,7 @@ const ProfileSettingEditScreen: FunctionComponent<
                     } else {
                       console.log('usernaem do not change');
                     }
+                    navigation.goBack();
                   })
                   .catch(err => {
                     const result = (err as ErrorResponse).data;
@@ -245,6 +273,7 @@ const ProfileSettingEditScreen: FunctionComponent<
         {/* tag loop */}
         <HStack marginBottom={2} alignContent={'center'} flexWrap={'wrap'}>
           <TouchableOpacity
+            style={{marginBottom: 5}}
             onPress={() => {
               setModalOpen(true);
             }}>

@@ -1,11 +1,17 @@
 const devConfig = {
-  graphqlHttp: 'http://192.168.1.148:3333/graphql',
-  graphqlWs: 'ws://192.168.1.148:3333/graphql',
+  // graphqlHttp: 'http://192.168.1.148:3333/graphql',
+  // graphqlWs: 'ws://192.168.1.148:3333/graphql',
   bypassUser: false,
   bypassRegister: false,
   goOnboard: false,
-  apiBaseUrl: 'http://192.168.1.148:3333',
+  // apiBaseUrl: 'http://192.168.1.148:3333',
   // apiBaseUrl: 'http://localhost:4032',
+  graphqlHttp: 'http://localhost:3333/graphql',
+  graphqlWs: 'ws://localhost:3333/graphql',
+  // bypassUser: false,
+  // bypassRegister: false,
+  // goOnboard: false,
+  apiBaseUrl: 'http://localhost:3333',
 };
 
 /**

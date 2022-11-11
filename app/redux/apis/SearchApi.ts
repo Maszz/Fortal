@@ -46,9 +46,12 @@ export const searchApi = createApi({
         return {url: `search/keyword`, params: {term: name}};
       },
     }),
-    getSearchItemUserByUsername: builder.query<UserProfileResponse, string>({
+    getSearchItemUserByUsername: builder.mutation<UserProfileResponse, string>({
       query: username => {
-        return {url: `user/${username}`};
+        return {
+          url: `user/${username}`,
+          method: 'GET',
+        };
       },
     }),
     getSearchItemEvent: builder.query<any, string>({
@@ -67,7 +70,7 @@ export const searchApi = createApi({
 export const {
   useGetSearchItemQuery,
   useGetSearchItemEventQuery,
-  useGetSearchItemUserByUsernameQuery,
+  useGetSearchItemUserByUsernameMutation,
   useLazyGetSearchItemQuery,
   useGetSearchLocationEventQuery,
 } = searchApi;

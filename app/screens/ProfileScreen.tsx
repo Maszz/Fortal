@@ -18,9 +18,9 @@ import LinearGradient from 'react-native-linear-gradient';
 import {border} from 'native-base/lib/typescript/theme/styled-system';
 import {EventNameModal} from './createModal';
 import {ProfileScreenProps} from '../types';
-import {useGetSearchItemUserByUsernameQuery} from '../redux/apis';
+import {useGetSearchItemUserByUsernameMutation} from '../redux/apis';
 import {useAuth} from '../hooks/useAuth';
-import {useEffect} from 'react';
+import {useEffect, useState} from 'react';
 import {useIsFocused} from '@react-navigation/native';
 
 const ProfileScreen: FunctionComponent<ProfileScreenProps> = ({
@@ -28,14 +28,16 @@ const ProfileScreen: FunctionComponent<ProfileScreenProps> = ({
   route,
 }) => {
   const {user} = useAuth();
-  const {data, isLoading, refetch} = useGetSearchItemUserByUsernameQuery(
-    user.username,
-  );
+  const [getData, {data}] = useGetSearchItemUserByUsernameMutation();
+  const [isMounted, setIsMounted] = useState(false);
   const isFocused = useIsFocused();
   useEffect(() => {
+    if (!isMounted) {
+      getData(user.username);
+      setIsMounted(true);
+    }
     if (isFocused) {
-      console.log('focused trigger');
-      refetch();
+      getData(user.username);
     }
   }, [isFocused]);
   return (

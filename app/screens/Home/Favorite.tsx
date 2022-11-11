@@ -12,7 +12,19 @@ import {useIsFocused} from '@react-navigation/native';
 const FavoriteScreen: FunctionComponent<
   HomeScreenTypes.FavoriteScreenProps
 > = () => {
-  const {eventList: data, refetch, loadMore, refocus} = useGetEventList('user');
+  const {
+    eventList: joinedEvents,
+    refetch: refetchJoinedEvents,
+    loadMore: loadMoreJoinedEvents,
+    refocus: refocusJoinedEvents,
+  } = useGetEventList('joined');
+  const {
+    eventList: createdEvents,
+    refetch: refetchCreated,
+    loadMore: loadMoreCreated,
+    refocus: refocusCreated,
+  } = useGetEventList('created');
+
   const [refreshing, setRefreshing] = useState(false);
   const {stackNavigation} = useSelector<RootState, RootState['navigation']>(
     (state: RootState) => state.navigation,
@@ -22,7 +34,8 @@ const FavoriteScreen: FunctionComponent<
   useEffect(() => {
     if (isFocused) {
       console.log('focused trigger');
-      refocus();
+      refocusJoinedEvents();
+      refocusCreated();
     }
   }, [isFocused]);
   return (
@@ -34,7 +47,8 @@ const FavoriteScreen: FunctionComponent<
           refreshing={refreshing}
           onRefresh={() => {
             setRefreshing(true);
-            refetch();
+            refetchCreated();
+            refetchJoinedEvents();
             setRefreshing(false);
           }}
         />
@@ -60,12 +74,12 @@ const FavoriteScreen: FunctionComponent<
             // console.log('contentoffset', contentoffset);
             // console.log('contentSize', contentSize);
             if (width + contentoffset >= contentSize - paddingToRight) {
-              loadMore();
+              loadMoreJoinedEvents();
             }
           }}
           pagingEnabled={false}>
           <Box flexDirection={'row'} justifyContent={'space-between'}>
-            {data.map((item, index) => {
+            {joinedEvents.map((item, index) => {
               return (
                 <TouchableOpacity key={index}>
                   <EventCard
@@ -93,6 +107,45 @@ const FavoriteScreen: FunctionComponent<
         <Divider my={4} />
         {/* this column, activities component is simila to "Activities near me" in home.tsx */}
         {/* Do not forget to add activities component */}
+        <ScrollView
+          horizontal={true}
+          height={230}
+          showsHorizontalScrollIndicator={false}
+          scrollEventThrottle={400}
+          onScroll={({nativeEvent}) => {
+            const paddingToRight = 40;
+            const width = nativeEvent.layoutMeasurement.width;
+            const contentoffset = nativeEvent.contentOffset.x;
+            const contentSize = nativeEvent.contentSize.width;
+            // console.log('width', width);
+            // console.log('contentoffset', contentoffset);
+            // console.log('contentSize', contentSize);
+            if (width + contentoffset >= contentSize - paddingToRight) {
+              loadMoreCreated();
+            }
+          }}
+          pagingEnabled={false}>
+          <Box flexDirection={'row'} justifyContent={'space-between'}>
+            {createdEvents.map((item, index) => {
+              return (
+                <TouchableOpacity key={index}>
+                  <EventCard
+                    onPress={() => {
+                      stackNavigation.navigate('EventScreen', {
+                        eventChatId: item?.eventChat.id,
+                      });
+                    }}
+                    title={item.name}
+                    date={item.startDate}
+                    description={item.description}
+                    colors={[item.eventColors.c1, item.eventColors.c2]}
+                    style={{marginRight: 10}}
+                  />
+                </TouchableOpacity>
+              );
+            })}
+          </Box>
+        </ScrollView>
       </Box>
     </ScrollView>
   );

@@ -108,6 +108,13 @@ export interface GetEventByIdResponse {
     id: string;
   };
 }
+export type EventListType = 'created' | 'joined' | 'home';
+export interface getEventListPayload {
+  offset: number;
+  limit: number;
+  u: string;
+  t: EventListType;
+}
 
 export const eventApi = createApi({
   reducerPath: 'eventApi',
@@ -136,28 +143,10 @@ export const eventApi = createApi({
         };
       },
     }),
-    getEventList: builder.query<
-      GetEventResponse[],
-      {offset: number; limit: number; u: string}
-    >({
+    getEventList: builder.query<GetEventResponse[], getEventListPayload>({
       query: params => {
         return {
           url: 'getEventList',
-          params: {
-            offset: params.offset,
-            limit: params.limit,
-            u: params.u,
-          },
-        };
-      },
-    }),
-    getEventUserList: builder.query<
-      GetEventResponse[],
-      {offset: number; limit: number; u: string; t: string}
-    >({
-      query: params => {
-        return {
-          url: 'getEventUserList',
           params: {
             offset: params.offset,
             limit: params.limit,
@@ -167,6 +156,22 @@ export const eventApi = createApi({
         };
       },
     }),
+    // getEventUserList: builder.query<
+    //   GetEventResponse[],
+    //   getEventUserListPayload
+    // >({
+    //   query: params => {
+    //     return {
+    //       url: 'getEventUserList',
+    //       params: {
+    //         offset: params.offset,
+    //         limit: params.limit,
+    //         u: params.u,
+    //         t: params.t,
+    //       },
+    //     };
+    //   },
+    // }),
 
     getEventById: builder.query<GetEventByIdResponse, string>({
       query: eventId => {
@@ -197,6 +202,6 @@ export const {
   useLazyGetEventListQuery,
   useGetEventByIdQuery,
   useJoinedEventMutation,
-  useGetEventUserListQuery,
-  useLazyGetEventUserListQuery,
+  // useGetEventUserListQuery,
+  // useLazyGetEventUserListQuery,
 } = eventApi;

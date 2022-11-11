@@ -147,6 +147,7 @@ const Home: FunctionComponent<CreateModalProps> = ({route, navigation}) => {
     };
     const request = await createEvent(eventDto).unwrap();
     console.log(request);
+    return request;
   };
   useEffect(() => {
     // call once when initial mounting the component
@@ -224,8 +225,11 @@ const Home: FunctionComponent<CreateModalProps> = ({route, navigation}) => {
                   style={{marginRight: 30}}
                   onPress={() => {
                     // navigation.goBack();
-                    onSubmit().then(() => {
-                      console.log('success');
+                    onSubmit().then(p => {
+                      navigation.navigate('HomeIndex');
+                      navigation.navigate('EventScreen', {
+                        eventChatId: p.eventChat.id,
+                      });
                     });
                   }}>
                   <Text fontSize={16} fontWeight={700} color={'white'}>
