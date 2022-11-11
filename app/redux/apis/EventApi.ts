@@ -153,7 +153,7 @@ export const eventApi = createApi({
     }),
     getEventUserList: builder.query<
       GetEventResponse[],
-      {offset: number; limit: number; u: string}
+      {offset: number; limit: number; u: string,t:string}
     >({
       query: params => {
         return {
@@ -162,6 +162,7 @@ export const eventApi = createApi({
             offset: params.offset,
             limit: params.limit,
             u: params.u,
+            t:
           },
         };
       },

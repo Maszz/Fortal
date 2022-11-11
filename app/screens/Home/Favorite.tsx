@@ -88,7 +88,7 @@ const FavoriteScreen: FunctionComponent<
       </Box>
       <Box paddingX={5} paddingY={5}>
         <Text fontSize={14} fontWeight={'normal'}>
-          History
+          Created by me
         </Text>
         <Divider my={4} />
         {/* this column, activities component is simila to "Activities near me" in home.tsx */}

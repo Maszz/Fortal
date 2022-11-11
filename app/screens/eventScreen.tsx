@@ -107,15 +107,7 @@ const EventScreen: FunctionComponent<EventScreenProps> = ({
                 return (
                   <>
                     {item.senderName === user.username ? (
-                      <Box
-                        pl={['0', '4']}
-                        pr={['0', '5']}
-                        alignItems={'flex-end'}
-                        py="2">
-                        <Text>
-                          {item?.senderName}: {item?.message}
-                        </Text>
-                      </Box>
+                      <MyMessage message={item} />
                     ) : (
                       <OtherMessage message={item} />
                     )}
@@ -223,126 +215,30 @@ const OtherMessage: FunctionComponent<OtherMessageProps> = ({message}) => {
     </Box>
   );
 };
-// const OtherMessage: FunctionComponent<OtherMessageProps> = ({message}) => {
-//   const [height, setHeight] = useState<number>(0);
-//   const [isMounted, setIsMounted] = useState<boolean>(false);
-//   return (
-//     <Box
-//       // backgroundColor={'yellow.300'}
-//       height={height}
-//       maxWidth={'77%'}
-//       // pl={['0', '4']}
-//       // pr={['0', '5']}
-//       onLayout={e => {
-//         // console.log('e', e.nativeEvent.layout);
-//         if (!isMounted) {
-//           console.log('e', e.nativeEvent.layout);
-//           setHeight(e.nativeEvent.layout.height);
-//           setIsMounted(true);
-//         }
-//         // setHeight(e.nativeEvent.layout.height);
-//       }}
-//       my={8}
-//       py="2">
-//       <HStack backgroundColor={'amber.600'}>
-//         <Image source={require('../assets/human_icon.png')} mt={2} />
-//         <VStack
-//           // w={'100%'}
-//           marginLeft={3}
-//           // maxWidth={'100%'}
-//           backgroundColor={'amber.200'}
-//           onLayout={v => {
-//             console.log('v', v.nativeEvent.layout);
-//           }}>
-//           <HStack
-//             // flexWrap={'wrap'}
-//             justifyContent={'space-between'}
-//             w={'100%'}
-//             onLayout={e => {
-//               console.log('er', e.nativeEvent.layout);
-//             }}>
-//             <ZStack
-//               // backgroundColor={'fuchsia.200'}
-//               borderWidth={3}
-//               // marginY={5}
-//               height={height}
-//               // maxWidth={'77%'}
-//               flexWrap={'wrap'}
-//               flex={1}>
-//               <Text ml={3} fontSize={12} fontWeight={'normal'}>
-//                 {message?.senderName} hello
-//               </Text>
-//               <Box
-//                 // maxWidth={'77%'}
-//                 borderRadius={15}
-//                 borderWidth={6}
-//                 borderColor={'black'}
-//                 opacity={0.5}
-//                 marginY={5}>
-//                 <Text
-//                   paddingLeft={3}
-//                   color={'white'}
-//                   style={{
-//                     backgroundColor: 'black',
-//                   }}>
-//                   <Text opacity={0}>{message?.message} hello</Text>
-//                 </Text>
-//               </Box>
+export interface MyMessageProps {
+  message: GetMessagesType;
+}
+const MyMessage: FunctionComponent<MyMessageProps> = ({message}) => {
+  const [height, setHeight] = useState<number>(0);
+  const [isMounted, setIsMounted] = useState<boolean>(false);
 
-//               <Text
-//                 // maxWidth={'77%'}
-//                 color={'white'}
-//                 opacity={1}
-//                 paddingX={2}
-//                 paddingY={6}
-//                 fontSize={15}
-//                 fontWeight={'normal'}>
-//                 {message?.message} hello
-//               </Text>
-//             </ZStack>
-
-//             <Text alignSelf={'flex-end'}>time</Text>
-//           </HStack>
-//         </VStack>
-//       </HStack>
-
-//       {/* <Text marginLeft={5}>User name</Text> */}
-
-//       {/* <ZStack
-//         // backgroundColor={'fuchsia.200'}
-//         borderWidth={3}
-//         // marginY={5}
-//         height={height}
-//         // maxWidth={'77%'}
-//         flexWrap={'wrap'}
-//         flex={1}>
-//         <Box
-//           borderRadius={15}
-//           borderWidth={6}
-//           borderColor={'black'}
-//           opacity={0.5}
-//           marginY={1}>
-//           <Text
-//             paddingLeft={3}
-//             color={'white'}
-//             style={{
-//               backgroundColor: 'black',
-//             }}>
-//             <Text opacity={0}>
-//               {message?.senderName}: {message?.message}{' '}
-//               gasdhjgdsajhdsagjhasdkgsdakjhgdsa
-//             </Text>
-//           </Text>
-//         </Box>
-
-//         <Text color={'white'} opacity={1} paddingX={2} paddingY={2}>
-//           {message?.senderName}: {message?.message}{' '}
-//           gasdhjgdsajhdsagjhasdkgsdakjhgdsa
-//         </Text>
-//       </ZStack> */}
-
-//       {/* <Text>time</Text> */}
-//     </Box>
-//   );
-// };
+  return (
+    <Box mb={3} alignItems={'flex-end'}>
+      <HStack>
+        <VStack maxWidth={'77%'}>
+          <VStack w={'100%'}>
+            <Box backgroundColor={'rgba(0,0,0,0.5)'} borderRadius={15}>
+              <Text color={'white'} opacity={1} paddingX={2} paddingY={2}>
+                {message?.message}
+              </Text>
+            </Box>
+          </VStack>
+          <Text alignSelf={'flex-start'}>
+            {moment(message.date).tz('Asia/Bangkok').format('hh:mm a')}
+          </Text>
+        </VStack>
+      </HStack>
+    </Box>
+  );
+};
 export default EventScreen;
