@@ -42,9 +42,9 @@ export const useMessages = ({
             return prev;
           }
           const newMessage = subscriptionData.data.messageAdded;
-          if (senderName === newMessage.senderName) {
-            return prev;
-          }
+          // if (senderName === newMessage.senderName) {
+          //   return prev;
+          // }
 
           return {
             getMessage: [

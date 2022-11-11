@@ -82,6 +82,9 @@ export interface GetEventResponse {
   description: string;
   startDate: string;
   eventColors: EventColors;
+  eventChat: {
+    id: string;
+  };
 }
 export interface GetEventByIdResponse {
   createdAt: string;
@@ -101,6 +104,9 @@ export interface GetEventByIdResponse {
   participantsId: Array<any>;
   startDate: string;
   updatedAt: string;
+  eventChat: {
+    id: string;
+  };
 }
 
 export const eventApi = createApi({

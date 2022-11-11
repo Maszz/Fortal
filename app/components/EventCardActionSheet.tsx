@@ -215,7 +215,7 @@ const EventCardActionSheet: FunctionComponent<EventCardActionsSheetProps> = ({
                   .then(v => {
                     actionSheetRef.current?.hide();
                     stackNavigation.navigate('EventScreen', {
-                      eventId: data?.id,
+                      eventChatId: data?.eventChat.id,
                     });
                     console.log(v);
                   })
@@ -237,7 +237,7 @@ const EventCardActionSheet: FunctionComponent<EventCardActionsSheetProps> = ({
 
                         actionSheetRef.current?.hide();
                         stackNavigation.navigate('EventScreen', {
-                          eventId: data?.id,
+                          eventChatId: data?.eventChat.id,
                         });
                         return;
                       }

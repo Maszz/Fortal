@@ -10,7 +10,7 @@ export type GetMessagesType = {
   id: string;
   senderName?: string | null;
   message?: string | null;
-  date: any;
+  date: string;
 };
 
 export const useChat = ({
@@ -21,6 +21,11 @@ export const useChat = ({
   eventChatId: string;
 }) => {
   const sendMessage = useSendMessage({eventChatId});
+  // const sendMessage = () => {
+  //   sendMessage({senderName, message: 'Hello World'});
+
+  //   setChatMessages([...data?.getMessage].reverse());
+  // };
   const {data, loading, fetchMore} = useMessages({
     senderName,
     eventChatId,
@@ -29,10 +34,16 @@ export const useChat = ({
   const [chatMessages, setChatMessages] = useState<GetMessagesType[]>(
     [] as GetMessagesType[],
   );
+  const [isStopFetchMore, setStopFetchMore] = useState(false);
 
   const prepareMessagesCallback = useCallback(() => {
     if (data) {
-      setChatMessages([...data?.getMessage].reverse());
+      // const formattedData = data.getMessage.map((item: GetMessagesType) => {
+      //   return {
+
+      //   };
+      // });
+      setChatMessages([...data?.getMessage]);
     }
   }, [data]);
 

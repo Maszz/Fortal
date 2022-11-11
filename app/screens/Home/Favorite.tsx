@@ -71,7 +71,7 @@ const FavoriteScreen: FunctionComponent<
                   <EventCard
                     onPress={() => {
                       stackNavigation.navigate('EventScreen', {
-                        eventId: item?.id,
+                        eventChatId: item?.eventChat.id,
                       });
                     }}
                     title={item.name}

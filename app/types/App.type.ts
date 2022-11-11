@@ -11,7 +11,7 @@ export type StackScreenParams = {
   Loading: undefined;
   CreateModal: undefined;
   SearchScreen: undefined;
-  EventScreen: {eventId: string};
+  EventScreen: {eventChatId: string};
   OtherProfileScreen: {userId: string};
   MapViewScreen: undefined;
   SettingScreen: undefined;
