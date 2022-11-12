@@ -30,7 +30,7 @@ export interface UpdateProfileMutationPayload {
   newTags: string[];
   removeTags: string[];
 }
-export default interface UpdateProfileResponseDto {
+export interface UpdateProfileResponseDto {
   profile: {
     id: string;
     createdAt: Date;
@@ -42,6 +42,11 @@ export default interface UpdateProfileResponseDto {
     categoryIDs: string[];
   };
   updateUsername: boolean;
+}
+export interface GetFollowerResponse {
+  id: true;
+  username: string;
+  displayName: string;
 }
 export const userApi = createApi({
   reducerPath: 'userApi',
@@ -90,6 +95,47 @@ export const userApi = createApi({
         body,
       }),
     }),
+
+    getFollowers: builder.mutation<GetFollowerResponse[], string>({
+      query: username => ({
+        url: `followers`,
+        method: 'GET',
+        params: {u: username},
+      }),
+    }),
+    getFollowing: builder.mutation<GetFollowerResponse[], string>({
+      query: username => ({
+        url: `following`,
+        method: 'GET',
+        params: {u: username},
+      }),
+    }),
+    followingByid: builder.mutation<
+      any,
+      {
+        userId: string;
+        followingUserId: string;
+      }
+    >({
+      query: body => ({
+        url: `followingUserByid`,
+        method: 'POST',
+        body: {userId: body.userId, followingUserId: body.followingUserId},
+      }),
+    }),
+    getFollowCount: builder.mutation<
+      {
+        followedBy: number;
+        following: number;
+      },
+      string
+    >({
+      query: username => ({
+        url: `followCount`,
+        method: 'GET',
+        params: {u: username},
+      }),
+    }),
   }),
 });
 
@@ -98,4 +144,8 @@ export const {
   useUpdateUserInterestedTagsMutation,
   useUpdateOnboardingMutation,
   useUpdateUserProfileMutation,
+  useGetFollowersMutation,
+  useGetFollowingMutation,
+  useFollowingByidMutation,
+  useGetFollowCountMutation,
 } = userApi;

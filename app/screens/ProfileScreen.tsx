@@ -119,7 +119,7 @@ const ProfileScreen: FunctionComponent<ProfileScreenProps> = ({
         <Box>
           <Center>
             <Text fontSize={16} fontWeight={'normal'}>
-              1,234
+              {data?._count.followedBy}
             </Text>
             <Text fontSize={16} fontWeight={'normal'}>
               Follower
@@ -130,7 +130,7 @@ const ProfileScreen: FunctionComponent<ProfileScreenProps> = ({
         <Box>
           <Center>
             <Text fontSize={16} fontWeight={'normal'}>
-              55
+              {data?._count.following}
             </Text>
             <Text fontSize={16} fontWeight={'normal'}>
               Following

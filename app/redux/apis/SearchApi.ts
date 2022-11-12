@@ -23,6 +23,10 @@ export interface UserProfileResponse {
     isProfilePublic?: boolean;
   };
   categories: string[];
+  _count: {
+    followedBy: number;
+    following: number;
+  };
 }
 export interface LocationSearchResponse {
   geometry: {
@@ -49,8 +53,9 @@ export const searchApi = createApi({
     getSearchItemUserByUsername: builder.mutation<UserProfileResponse, string>({
       query: username => {
         return {
-          url: `user/${username}`,
+          url: `user/getUserByUsername`,
           method: 'GET',
+          params: {username: username},
         };
       },
     }),

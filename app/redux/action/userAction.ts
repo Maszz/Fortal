@@ -6,5 +6,6 @@ export interface UserSigninPayload {
   at: string;
   rt: string;
   onboarding: boolean;
+  id: string;
 }
 export const mutate = createAction<UserSigninPayload>('user/signin');

@@ -1,26 +1,34 @@
 import {View, Text} from 'native-base';
 import {FriendScreenIndexProps} from '../../types';
-import {FunctionComponent} from 'react';
+import {FunctionComponent, useEffect} from 'react';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
-import FriendScreen from './FriendScreen';
-import RequestScreen from './Requestscreen';
+import FollowersScreen from './FollowersScreen';
+import FollowingScreen from './FollowingScreen';
+import {useGetFollowCountMutation} from '../../redux/apis';
+import {useAuth} from '../../hooks/useAuth';
 const Tab = createMaterialTopTabNavigator();
 
 const FriendScreenIndex: FunctionComponent<FriendScreenIndexProps> = () => {
+  const [getFollowCount, {data, error, isLoading}] =
+    useGetFollowCountMutation();
+  const {user} = useAuth();
+  useEffect(() => {
+    getFollowCount(user.username);
+  }, []);
   return (
     <Tab.Navigator>
       <Tab.Screen
-        name="FriendScreen"
-        component={FriendScreen}
+        name="FollowersScreen"
+        component={FollowersScreen}
         options={{
-          title: 'Friend',
+          title: `${data?.followedBy} Followers`,
         }}
       />
       <Tab.Screen
-        name="RequestScreen"
-        component={RequestScreen}
+        name="FollowingScreen"
+        component={FollowingScreen}
         options={{
-          title: 'Request',
+          title: `${data?.following} Following`,
         }}
       />
     </Tab.Navigator>

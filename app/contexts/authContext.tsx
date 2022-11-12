@@ -85,6 +85,7 @@ const useAuth = () => {
 
       // not nessary to check body from rtk query because it will throw error if not success
       if (body.access_token) {
+        console.log('body', body);
         setUser({
           // handle bad typing from backend , will fix in the future :)
           id: body.id,
@@ -197,8 +198,8 @@ const useAuth = () => {
 
   const userUpdateCallback = useCallback(() => {
     console.log('userUpdateCallback');
-    const {username, at, rt, onboarding} = user;
-    dispatch(userAction.mutate({username, at, rt, onboarding}));
+    const {username, at, rt, onboarding, id} = user;
+    dispatch(userAction.mutate({username, at, rt, onboarding, id}));
   }, [user]);
   const updateUserInterestedTags = async (tags: string[]) => {
     // const response = await fetch('http://localhost:3333/user/update/tags', {
@@ -301,8 +302,8 @@ const useAuth = () => {
 
       if (userR.username) {
         const o = userR;
-        const {username, at, rt, onboarding} = o;
-        setUser({username, at, rt, onboarding} as User);
+        const {username, at, rt, onboarding, id} = o;
+        setUser({username, at, rt, onboarding, id} as User);
         console.log('Load user from redux');
       }
       getDeviceInfo().then(() => {

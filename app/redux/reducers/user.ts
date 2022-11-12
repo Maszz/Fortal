@@ -8,6 +8,7 @@ export interface UserState {
   onboarding: boolean;
   at: string;
   rt: string;
+  id: string;
 }
 export const initialState = {} as UserState;
 
@@ -20,6 +21,7 @@ const userReducer = createReducer(initialState, builder => {
     state.at = at;
     state.rt = rt;
     state.onboarding = onboarding;
+    state.id = payload.id;
   });
 });
 export {userReducer};
