@@ -41,7 +41,7 @@
     "opencage-api-client": "^1.0.0",
     "react": "18.1.0",
     "react-i18next": "^11.18.5",
-    "react-native": "0.70.1",
+    "react-native": "0.70.5",
     "react-native-actions-sheet": "^0.8.8",
     "react-native-device-info": "^10.3.0",
     "react-native-gesture-handler": "^2.7.0",
