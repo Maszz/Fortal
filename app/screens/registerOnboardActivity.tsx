@@ -36,25 +36,7 @@ const RegisterOnboardActivity: FunctionComponent<
 > = ({navigation, route}) => {
   const {updateOnboarding, updateUserInterestedTags} = useAuth();
   const {t} = useTranslation();
-  const [tags, setTags] = useState<Tags>({
-    // Sports: false,
-    // Game: false,
-    // Music: false,
-    // Movie: false,
-    // Food: false,
-    // Travel: false,
-    // Fashion: false,
-    // Beauty: false,
-    // IT: false,
-    // Finance: false,
-    // Education: false,
-    // Politics: false,
-    // Health: false,
-    // Religion: false,
-    // Art: false,
-    // Science: false,
-    // Tech: false,
-  });
+  const [tags, setTags] = useState<Tags>({});
   const {data: tagsData, isSuccess, isLoading} = useGetTagsQuery();
   const dispatch = useDispatch();
   // const fetchTags = async () => {

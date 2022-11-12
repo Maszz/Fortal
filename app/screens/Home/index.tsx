@@ -108,7 +108,10 @@ const HomeIndex: FunctionComponent<HomeIndexScreenProps> = ({
                     style={{marginRight: 10}}
                   />
                 </TouchableOpacity>
-                <TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() => {
+                    navigation.navigate('FriendScreenIndex');
+                  }}>
                   <Ionicons
                     size={22}
                     name="person"

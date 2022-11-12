@@ -3,6 +3,7 @@ import SearchScreen from '../screens/Home/Search';
 import {Region} from 'react-native-maps';
 import {Location, LocationMarker} from '../redux/apis';
 import ProfileScreen from '../screens/ProfileScreen';
+import FriendScreen from '../screens/Friend';
 export type StackScreenParams = {
   HomeIndex: undefined;
   Login: {eventId: string};
@@ -24,6 +25,7 @@ export type StackScreenParams = {
   ProfileScreen: undefined;
   ProfileSettingScreen: undefined;
   ProfileSettingEditScreen: undefined;
+  FriendScreenIndex: undefined;
 };
 
 export type HomeIndexScreenProps = StackScreenProps<
@@ -83,4 +85,8 @@ export type ProfileSettingScreenProps = StackScreenProps<
 export type ProfileSettingEditScreenProps = StackScreenProps<
   StackScreenParams,
   'ProfileSettingEditScreen'
+>;
+export type FriendScreenIndexProps = StackScreenProps<
+  StackScreenParams,
+  'FriendScreenIndex'
 >;
