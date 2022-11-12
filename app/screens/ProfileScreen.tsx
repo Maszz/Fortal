@@ -108,7 +108,7 @@ const ProfileScreen: FunctionComponent<ProfileScreenProps> = ({
         <Box>
           <Center>
             <Text fontSize={16} fontWeight={'normal'}>
-              1
+              {data?.profile?.eventCount}
             </Text>
             <Text fontSize={16} fontWeight={'normal'}>
               Joined event

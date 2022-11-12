@@ -21,6 +21,7 @@ export interface UserProfileResponse {
     bio?: string;
     displayName?: string;
     isProfilePublic?: boolean;
+    eventCount?: number;
   };
   categories: string[];
   _count: {
