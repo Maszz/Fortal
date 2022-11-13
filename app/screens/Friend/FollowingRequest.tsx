@@ -44,9 +44,9 @@ const FollowingRequestScreen: FunctionComponent<
           return (
             <Pressable
               onPress={() => {
-                navigation.navigate('OtherProfileScreen', {
-                  userId: item.username,
-                });
+                // navigation.navigate('OtherProfileScreen', {
+                //   userId: item.username,
+                // });
               }}>
               <Box
                 height={98}

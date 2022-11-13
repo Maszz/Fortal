@@ -204,6 +204,21 @@ export const userApi = createApi({
         body: {userId: body.userId, followerId: body.followerId},
       }),
     }),
+    getNotifications: builder.mutation<
+      {
+        creator: {
+          username: string;
+        };
+        message: string;
+      }[],
+      string
+    >({
+      query: username => ({
+        url: `getNotifications`,
+        method: 'GET',
+        params: {u: username},
+      }),
+    }),
   }),
 });
 
@@ -221,4 +236,5 @@ export const {
   useHandleFollowingRequestMutation,
   useUnFollowingByIdMutation,
   useRemoveFollowerByIdMutation,
+  useGetNotificationsMutation,
 } = userApi;

@@ -20,6 +20,7 @@ import {GetFollowerResponse} from '../../redux/apis';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {useRemoveFollowerByIdMutation} from '../../redux/apis';
 import {FollowersScreenProps} from './index';
+import {Dimensions} from 'react-native';
 const FriendScreen: FunctionComponent<FollowersScreenProps> = ({route}) => {
   const {refetch} = route.params;
   const {user} = useAuth();
@@ -27,6 +28,7 @@ const FriendScreen: FunctionComponent<FollowersScreenProps> = ({route}) => {
   const [followData, setFollowData] = useState<GetFollowerResponse[]>(
     [] as GetFollowerResponse[],
   );
+  const width = Dimensions.get('window').width * 0.65;
   const [removeFollwer, args] = useRemoveFollowerByIdMutation();
   const navigation = useSelector<
     RootState,
@@ -53,10 +55,12 @@ const FriendScreen: FunctionComponent<FollowersScreenProps> = ({route}) => {
         renderItem={({item}) => {
           return (
             <Pressable
-              onPress={() => {
-                navigation.navigate('OtherProfileScreen', {
-                  userId: item.username,
-                });
+              onPress={e => {
+                if (e.nativeEvent.pageX < width) {
+                  navigation.navigate('OtherProfileScreen', {
+                    userId: item.username,
+                  });
+                }
               }}>
               <Box
                 pl={['0', '4']}
