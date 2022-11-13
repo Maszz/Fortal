@@ -10,22 +10,18 @@ import {
   Avatar,
   Divider,
 } from 'native-base';
-import {useGetFollowingMutation} from '../../redux/apis';
-import {useAuth} from '../../hooks/useAuth';
+import {useGetFollowingMutation} from '../redux/apis';
+import {useAuth} from '../hooks/useAuth';
 import {useEffect, useState, FunctionComponent} from 'react';
 import LinearGradient from 'react-native-linear-gradient';
 import {useSelector} from 'react-redux';
-import {RootState} from '../../redux';
+import {RootState} from '../redux';
 import {TouchableOpacity} from 'react-native';
-import {useUnFollowingByIdMutation} from '../../redux/apis';
-import {GetFollowerResponse} from '../../redux/apis';
+import {useUnFollowingByIdMutation} from '../redux/apis';
+import {GetFollowerResponse} from '../redux/apis';
 import {useIsFocused} from '@react-navigation/native';
-import {FollowingScreenProps} from '.';
 import {NotificationScreenProps} from '../types/App.type';
-const NotificationScreen: FunctionComponent<FollowingScreenProps> = ({
-  route,
-}) => {
-  const {refetch} = route.params;
+const NotificationScreen: FunctionComponent<any> = () => {
   const {user} = useAuth();
   const [getFollow, {data, error, isLoading}] = useGetFollowingMutation();
   const [getFollowBuffer, setGetFollowBuffer] = useState<GetFollowerResponse[]>(

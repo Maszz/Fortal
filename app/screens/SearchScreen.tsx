@@ -19,6 +19,7 @@ import Icon from 'react-native-vector-icons/AntDesign';
 import SearchBar from '../components/SearchBar';
 import {initialState} from '../redux/reducers/navigation';
 import {Query} from '../graphql/graphql';
+import {Dimensions} from 'react-native';
 import {
   useGetSearchItemQuery,
   QueryItem,
@@ -156,20 +157,28 @@ const SearchItemUser: FunctionComponent<SearchItemProps> = ({
   >(state => state.navigation.stackNavigation);
   // const [data, setData] = useState<any>();
   // const {data} = useGetSearchItemContextQuery(item, {});
-
+  const width = Dimensions.get('window').width * 0.65;
   return (
     <Pressable
       py={3}
       // height={'20'}
-      onPress={() => {
+      onPress={event => {
         console.log('item', item);
-        navigation.navigate('OtherProfileScreen', {
-          userId: item.content,
-        });
+        if (event.nativeEvent.pageX <= width) {
+          navigation.navigate('OtherProfileScreen', {
+            userId: item.content,
+          });
+        }
+        // console.log('event', event.nativeEvent.changedTouches);
+        // console.log(Dimensions.get('window').width * 0.65);
+        // navigation.navigate('OtherProfileScreen', {
+        //   userId: item.content,
+        // });
       }}>
       <HStack
         justifyContent={'space-around'}
         borderBottomWidth={1}
+        alignItems={'center'}
         borderBottomColor={'#C4C4C4'}
         paddingBottom={3}>
         <VStack w={'20%'}>
@@ -185,118 +194,78 @@ const SearchItemUser: FunctionComponent<SearchItemProps> = ({
             // }}
           />
         </VStack>
-        <VStack w={'75%'} pl={3} mx={2}>
+        <VStack w={'50%'} pl={3} mx={2}>
           <Text
-            width={'50%'}
+            width={'90%'}
             color={'#232259'}
             alignSelf={'flex-start'}
+            numberOfLines={1}
             fontSize={15}
             fontWeight={'bold'}>
             {item?.content} {/* {item?.displayName}@ */}
           </Text>
           <Text
             textAlign={'left'}
-            width={'50%'}
+            width={'90%'}
             numberOfLines={2}
             ellipsizeMode={'tail'}
             minHeight={10}
             color={'#232259'}
             fontSize={14}
             fontWeight={'normal'}>
-            {item?.bio ? item?.bio : 'No bio'}Want to add you a
-            friend.fjksdfcndsncsdjnc
+            {item?.bio ? item?.bio : 'No bio'}
           </Text>
-          <Box>
-            <HStack justifyContent={'space-between'} pr={'2%'}>
-              <Button
-                opacity={0}
-                marginTop={'-60%'}
-                height={30}
-                minWidth={110}
-                variant={'outline'}
-                rounded={'full'}
-                borderWidth={2}
-                borderColor={'#8172F7'}
-              />
-              <TouchableOpacity
-                onPress={() => {
-                  console.log(userId);
-                  followingById({
-                    userId: userId,
-                    followingUserId: item.id,
-                  })
-                    .unwrap()
-                    .then((following: any) => {
-                      console.log('following', following);
-                      refetch();
-                    });
-                }}
-                disabled={
-                  followStatus === 'pending' ||
-                  followStatus === 'following' ||
-                  followStatus === 'follow'
-                    ? true
-                    : false
-                }>
-                {followStatus === 'requested' ? (
-                  <Box
-                    backgroundColor={'white'}
-                    alignItems={'center'}
-                    justifyContent={'center'}
-                    marginTop={'-60%'}
-                    height={35}
-                    minWidth={110}
-                    variant={'outline'}
-                    rounded={'full'}
-                    borderWidth={2}
-                    borderColor={'#FFAECB'}
-                    width={75}>
-                    <Text color={'#FFAECB'} fontSize={14}>
-                      {followStatus}
-                    </Text>
-                  </Box>
-                ) : null}
-
-                {followStatus === 'following' ? (
-                  <Box
-                    backgroundColor={'white'}
-                    alignItems={'center'}
-                    justifyContent={'center'}
-                    marginTop={'-60%'}
-                    height={35}
-                    minWidth={110}
-                    variant={'outline'}
-                    rounded={'full'}
-                    borderWidth={2}
-                    borderColor={'#C2C3F3'}
-                    width={75}>
-                    <Text color={'#C2C3F3'} fontSize={14}>
-                      {followStatus}
-                    </Text>
-                  </Box>
-                ) : null}
-                {followStatus === 'follow' ? (
-                  <Box
-                    backgroundColor={'white'}
-                    alignItems={'center'}
-                    justifyContent={'center'}
-                    marginTop={'-60%'}
-                    height={35}
-                    minWidth={110}
-                    variant={'outline'}
-                    rounded={'full'}
-                    borderWidth={2}
-                    borderColor={'#8172F7'}
-                    width={75}>
-                    <Text color={'#8172F7'} fontSize={14}>
-                      {followStatus}
-                    </Text>
-                  </Box>
-                ) : null}
-              </TouchableOpacity>
-            </HStack>
-          </Box>
         </VStack>
+        <TouchableOpacity
+          onPress={() => {
+            followingById({
+              userId: userId,
+              followingUserId: item.id,
+            })
+              .unwrap()
+              .then((following: any) => {
+                console.log('following', following);
+                refetch();
+              });
+            // console.log(e.nativeEvent);
+          }}
+          style={{
+            width: 110,
+            height: 35,
+          }}
+          disabled={
+            followStatus === 'requested' || followStatus === 'following'
+          }>
+          <Box
+            backgroundColor={'white'}
+            alignItems={'center'}
+            justifyContent={'center'}
+            height={35}
+            minWidth={110}
+            variant={'outline'}
+            rounded={'full'}
+            borderWidth={2}
+            borderColor={
+              followStatus === 'follow'
+                ? '#8172F7'
+                : followStatus === 'requested'
+                ? '#FFAECB'
+                : '#C2C3F3'
+            }
+            width={75}>
+            <Text
+              fontSize={14}
+              color={
+                followStatus === 'follow'
+                  ? '#8172F7'
+                  : followStatus === 'requested'
+                  ? '#FFAECB'
+                  : '#C2C3F3'
+              }>
+              {followStatus}
+            </Text>
+          </Box>
+        </TouchableOpacity>
       </HStack>
     </Pressable>
   );
