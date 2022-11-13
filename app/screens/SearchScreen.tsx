@@ -28,7 +28,11 @@ import {useSelector} from 'react-redux';
 import {RootState} from '../redux';
 import LinearGradient from 'react-native-linear-gradient';
 import {SheetManager} from 'react-native-actions-sheet';
-import {useFollowingByidMutation, useGetFollowingMutation} from '../redux/apis';
+import {
+  useFollowingByidMutation,
+  useGetFollowingMutation,
+  useGetFollowingRequestToMutation,
+} from '../redux/apis';
 import moment from 'moment';
 import {useAuth} from '../hooks/useAuth';
 import {GetFollowerResponse} from '../redux/apis';
@@ -36,7 +40,10 @@ const SearchScreen: FunctionComponent<SearchScreenProps> = () => {
   const [searchInput, setSearchInput] = useState('');
   const {user} = useAuth();
   const [item, setItem] = useState([]);
-  const {data: searchResult} = useGetSearchItemQuery(searchInput);
+  const {data: searchResult} = useGetSearchItemQuery({
+    term: searchInput,
+    u: user.username,
+  });
   const [getFollowing, {data: following}] = useGetFollowingMutation();
   //   const [postSearchItem, result] = usePostSearchItemMutation();
   const [clearResult, setClearResult] = useState(true);
@@ -49,6 +56,9 @@ const SearchScreen: FunctionComponent<SearchScreenProps> = () => {
   const [follow, setFollow] = useState<GetFollowerResponse[]>(
     [] as GetFollowerResponse[],
   );
+  const [followingTo, setFollowingTo] = useState([]);
+  const [getFollowingReqestTo, {data: followingToData}] =
+    useGetFollowingRequestToMutation();
   useEffect(() => {
     console.log('Search Result', searchResult);
     console.log('Following', following);
@@ -56,12 +66,18 @@ const SearchScreen: FunctionComponent<SearchScreenProps> = () => {
   }, [searchResult, following]);
   useEffect(() => {
     getFollowing(user.username);
+    getFollowingReqestTo(user.username);
   }, []);
   useEffect(() => {
     if (following) {
       setFollow(following);
     }
   }, [following]);
+  useEffect(() => {
+    if (followingToData) {
+      setFollowingTo(followingToData);
+    }
+  });
   return (
     <View paddingX={4} backgroundColor={'white'} w={'100%'} h={'100%'}>
       <Text mt={5}>Search</Text>
@@ -90,12 +106,20 @@ const SearchScreen: FunctionComponent<SearchScreenProps> = () => {
                       item={item}
                       key={index}
                       userId={user.id}
-                      isFollowing={
-                        follow?.findIndex(f => f.username === item.content) !==
-                        -1
+                      followStatus={
+                        followingTo?.findIndex(
+                          (v: string) => v === item.content,
+                        ) !== -1
+                          ? 'pending'
+                          : follow.findIndex(
+                              v => v.username === item.content,
+                            ) !== -1
+                          ? 'following'
+                          : 'follow'
                       }
                       refetch={() => {
                         getFollowing(user.username);
+                        getFollowingReqestTo(user.username);
                       }}
                     />
                   );
@@ -113,13 +137,13 @@ export default SearchScreen;
 export interface SearchItemProps {
   item: SearchResponse;
   userId: string;
-  isFollowing: boolean;
+  followStatus: string;
   refetch: () => void;
 }
 const SearchItemUser: FunctionComponent<SearchItemProps> = ({
   item,
   userId,
-  isFollowing,
+  followStatus,
   refetch,
 }) => {
   const [followingById, data] = useFollowingByidMutation();
@@ -187,11 +211,13 @@ const SearchItemUser: FunctionComponent<SearchItemProps> = ({
                   refetch();
                 });
             }}
-            disabled={isFollowing}
+            disabled={
+              followStatus === 'pending' || followStatus === 'following'
+                ? true
+                : false
+            }
             width={75}>
-            <Text color={'#8172F7'}>
-              {isFollowing ? 'Following' : 'Follow'}
-            </Text>
+            <Text color={'#8172F7'}>{followStatus}</Text>
           </Button>
         </Box>
       </HStack>

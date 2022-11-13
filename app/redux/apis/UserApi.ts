@@ -127,6 +127,7 @@ export const userApi = createApi({
       {
         followedBy: number;
         following: number;
+        followingRequestBy: number;
       },
       string
     >({
@@ -134,6 +135,50 @@ export const userApi = createApi({
         url: `followCount`,
         method: 'GET',
         params: {u: username},
+      }),
+    }),
+    followingRequest: builder.mutation<
+      any,
+      {
+        followerId: string;
+        followingId: string;
+      }
+    >({
+      query: body => ({
+        url: `followingRequest`,
+        method: 'POST',
+        body: {followerId: body.followerId, followingId: body.followingId},
+      }),
+    }),
+    getFollowingRequestTo: builder.mutation<any, string>({
+      query: username => ({
+        url: `getFollowingRequestTo`,
+        method: 'GET',
+        params: {u: username},
+      }),
+    }),
+    getFollowingRequestFrom: builder.mutation<
+      {
+        username: string;
+        displayName: string;
+        id: string;
+      }[],
+      string
+    >({
+      query: username => ({
+        url: `getFollowingRequestFrom`,
+        method: 'GET',
+        params: {u: username},
+      }),
+    }),
+    handleFollowingRequest: builder.mutation<
+      any,
+      {requestId: string; status: string}
+    >({
+      query: body => ({
+        url: `handleFollowingRequest`,
+        method: 'POST',
+        body: {requestId: body.requestId, status: body.status},
       }),
     }),
   }),
@@ -148,4 +193,7 @@ export const {
   useGetFollowingMutation,
   useFollowingByidMutation,
   useGetFollowCountMutation,
+  useGetFollowingRequestToMutation,
+  useGetFollowingRequestFromMutation,
+  useHandleFollowingRequestMutation,
 } = userApi;

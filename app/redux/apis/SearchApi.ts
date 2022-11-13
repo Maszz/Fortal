@@ -46,9 +46,12 @@ export const searchApi = createApi({
   refetchOnMountOrArgChange: 10,
 
   endpoints: builder => ({
-    getSearchItem: builder.query<SearchResponse[], string>({
-      query: name => {
-        return {url: `search/keyword`, params: {term: name}};
+    getSearchItem: builder.query<SearchResponse[], {term: string; u: string}>({
+      query: params => {
+        return {
+          url: `search/keyword`,
+          params: {term: params.term, u: params.u},
+        };
       },
     }),
     getSearchItemUserByUsername: builder.mutation<UserProfileResponse, string>({

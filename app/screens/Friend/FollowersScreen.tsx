@@ -11,24 +11,40 @@ import {
 } from 'native-base';
 import {useGetFollowersMutation} from '../../redux/apis';
 import {useAuth} from '../../hooks/useAuth';
-import {useEffect} from 'react';
+import {useEffect, useState} from 'react';
 import LinearGradient from 'react-native-linear-gradient';
 import {useSelector} from 'react-redux';
 import {RootState} from '../../redux';
+import {useIsFocused} from '@react-navigation/native';
+import {GetFollowerResponse} from '../../redux/apis';
 const FriendScreen = () => {
   const {user} = useAuth();
   const [getFollowing, {data, error, isLoading}] = useGetFollowersMutation();
+  const [followData, setFollowData] = useState<GetFollowerResponse[]>(
+    [] as GetFollowerResponse[],
+  );
   const navigation = useSelector<
     RootState,
     RootState['navigation']['stackNavigation']
   >(state => state.navigation.stackNavigation);
+  const isFocused = useIsFocused();
   useEffect(() => {
     getFollowing(user.username);
   }, []);
+  useEffect(() => {
+    if (isFocused) {
+      getFollowing(user.username);
+    }
+  }, [isFocused]);
+  useEffect(() => {
+    if (data) {
+      setFollowData(data);
+    }
+  }, [data]);
   return (
     <View flex={1} backgroundColor={'white'}>
       <FlatList
-        data={data}
+        data={followData}
         renderItem={({item}) => {
           return (
             <Pressable
