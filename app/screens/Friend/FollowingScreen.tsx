@@ -64,56 +64,21 @@ const RequestScreen: FunctionComponent<FollowingScreenProps> = ({route}) => {
                 pr={['0', '5']}
                 py="4"
                 borderBottomWidth={1}
-                borderBottomColor={'#8B9093'}
-                height={105}>
+                borderBottomColor={'#8B9093'}>
                 <HStack space={[2, 3]} justifyContent="space-between">
                   <Avatar
                     borderColor={'#8172F7'}
                     borderWidth={2}
-                    size="56px"
+                    size="60px"
                     // source={{
                     //   uri: item.avatarUrl,
                     // }}
                   />
-                  <VStack marginLeft={2} w={'70%'}>
-                    <Text color="#232259" bold fontSize={12} mb={1}>
-                      {item.username}
-                    </Text>
-                    <Text
-                      color="#232259"
-                      fontSize={12}
-                      fontWeight={'normal'}
-                      numberOfLines={2}
-                      ellipsizeMode={'tail'}
-                      textAlign={'justify'}>
-                      {item.displayName}Taken from the Latin words
-                      "doloremasdasddasdsa
-                    </Text>
-                    <HStack backgroundColor={'amber.200'}>
-                      <TouchableOpacity
-                        onPress={() => {
-                          // none event happened
-                        }}
-                        style={{
-                          alignItems: 'center',
-                          alignContent: 'center',
-                          height: 27,
-                          width: 80,
-                          marginRight: '38%',
-                          borderWidth: 0,
-                          borderColor: '#8172F7',
-                          borderRadius: 20,
-                        }}>
-                        <Text
-                          opacity={0}
-                          color={'#8172F7'}
-                          fontSize={12}
-                          mx={2}
-                          my={1}
-                          bold>
-                          Confirm
-                        </Text>
-                      </TouchableOpacity>
+                  <VStack marginLeft={2} w={'75%'}>
+                    <HStack justifyContent={'space-between'}>
+                      <Text color="#232259" bold fontSize={12}>
+                        {item.username}
+                      </Text>
                       <TouchableOpacity
                         onPress={() => {
                           console.log(item.id);
@@ -128,12 +93,13 @@ const RequestScreen: FunctionComponent<FollowingScreenProps> = ({route}) => {
                             });
                         }}
                         style={{
-                          alignItems: 'center',
                           alignContent: 'center',
-                          height: 27,
-                          width: 80,
-                          marginRight: 3,
-                          borderWidth: 1,
+                          alignSelf: 'center',
+                          alignItems: 'center',
+                          height: 30,
+                          width: 100,
+                          // marginRight: 3,
+                          borderWidth: 1.5,
                           borderColor: '#99AAD4',
                           borderRadius: 20,
                         }}>
@@ -147,17 +113,20 @@ const RequestScreen: FunctionComponent<FollowingScreenProps> = ({route}) => {
                         </Text>
                       </TouchableOpacity>
                     </HStack>
+                    <Text
+                      textAlign={'left'}
+                      width={'60%'}
+                      numberOfLines={2}
+                      ellipsizeMode={'tail'}
+                      minHeight={10}
+                      mt={-2}
+                      color={'#232259'}
+                      fontSize={14}
+                      fontWeight={'normal'}>
+                      {item.bio || 'No bio'}
+                    </Text>
                   </VStack>
                   <Spacer />
-                  <Text
-                    fontSize="xs"
-                    _dark={{
-                      color: 'warmGray.50',
-                    }}
-                    color="coolGray.800"
-                    alignSelf="flex-start">
-                    {item.displayName}
-                  </Text>
                 </HStack>
               </Box>
             </Pressable>

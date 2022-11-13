@@ -10,6 +10,8 @@ import {
   Divider,
   Button,
   Pressable,
+  Image,
+  Avatar,
 } from 'native-base';
 import {FunctionComponent, useEffect, useState} from 'react';
 import {SearchScreenProps} from '../types';
@@ -36,6 +38,7 @@ import {
 import moment from 'moment';
 import {useAuth} from '../hooks/useAuth';
 import {GetFollowerResponse} from '../redux/apis';
+
 const SearchScreen: FunctionComponent<SearchScreenProps> = () => {
   const [searchInput, setSearchInput] = useState('');
   const {user} = useAuth();
@@ -79,7 +82,7 @@ const SearchScreen: FunctionComponent<SearchScreenProps> = () => {
     }
   });
   return (
-    <View paddingX={4} backgroundColor={'white'} w={'100%'} h={'100%'}>
+    <View paddingX={'5%'} backgroundColor={'white'} w={'100%'} h={'100%'}>
       <Text mt={5}>Search</Text>
       <Box>
         <SearchBar
@@ -93,7 +96,7 @@ const SearchScreen: FunctionComponent<SearchScreenProps> = () => {
       </Box>
       <Text mt={'4'}>Search</Text>
       <Divider my={2} />
-      <ScrollView showsVerticalScrollIndicator={false}>
+      <ScrollView showsVerticalScrollIndicator={false} paddingX={'1%'}>
         <VStack>
           {!clearResult
             ? searchResult?.map((item: SearchResponse, index: number) => {
@@ -110,7 +113,7 @@ const SearchScreen: FunctionComponent<SearchScreenProps> = () => {
                         followingTo?.findIndex(
                           (v: string) => v === item.content,
                         ) !== -1
-                          ? 'pending'
+                          ? 'requested'
                           : follow.findIndex(
                               v => v.username === item.content,
                             ) !== -1
@@ -156,7 +159,7 @@ const SearchItemUser: FunctionComponent<SearchItemProps> = ({
 
   return (
     <Pressable
-      py={4}
+      py={3}
       // height={'20'}
       onPress={() => {
         console.log('item', item);
@@ -164,62 +167,136 @@ const SearchItemUser: FunctionComponent<SearchItemProps> = ({
           userId: item.content,
         });
       }}>
-      <HStack justifyContent={'space-around'}>
+      <HStack
+        justifyContent={'space-around'}
+        borderBottomWidth={1}
+        borderBottomColor={'#C4C4C4'}
+        paddingBottom={3}>
         <VStack w={'20%'}>
           {/* <Text>Search</Text> */}
-          <LinearGradient
-            colors={['#FEDDE0', '#8172F7']}
-            useAngle={true}
-            angle={0}
-            angleCenter={{x: 0.5, y: 0.65}}
-            style={{
-              flex: 1,
-              paddingLeft: 15,
-              paddingRight: 15,
-              borderRadius: 10,
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}></LinearGradient>
+          <Avatar
+            alignSelf={'center'}
+            justifyContent={'center'}
+            borderColor={'#8172F7'}
+            borderWidth={2}
+            size="70px"
+            // source={{
+            //   uri: item.avatarUrl,
+            // }}
+          />
         </VStack>
-        <VStack w={'50%'}>
+        <VStack w={'75%'} pl={3} mx={2}>
           <Text
+            width={'50%'}
+            color={'#232259'}
             alignSelf={'flex-start'}
-            fontWeight={'bold'}
-            px={'1'}
-            numberOfLines={1}>
+            fontSize={15}
+            fontWeight={'bold'}>
             {item?.content} {/* {item?.displayName}@ */}
           </Text>
-          <Text numberOfLines={2} ellipsizeMode={'tail'} minHeight={10}>
-            {item?.bio ? item?.bio : 'No bio'}
+          <Text
+            textAlign={'left'}
+            width={'50%'}
+            numberOfLines={2}
+            ellipsizeMode={'tail'}
+            minHeight={10}
+            color={'#232259'}
+            fontSize={14}
+            fontWeight={'normal'}>
+            {item?.bio ? item?.bio : 'No bio'}Want to add you a
+            friend.fjksdfcndsncsdjnc
           </Text>
+          <Box>
+            <HStack justifyContent={'space-between'} pr={'2%'}>
+              <Button
+                opacity={0}
+                marginTop={'-60%'}
+                height={30}
+                minWidth={110}
+                variant={'outline'}
+                rounded={'full'}
+                borderWidth={2}
+                borderColor={'#8172F7'}
+              />
+              <TouchableOpacity
+                onPress={() => {
+                  console.log(userId);
+                  followingById({
+                    userId: userId,
+                    followingUserId: item.id,
+                  })
+                    .unwrap()
+                    .then((following: any) => {
+                      console.log('following', following);
+                      refetch();
+                    });
+                }}
+                disabled={
+                  followStatus === 'pending' ||
+                  followStatus === 'following' ||
+                  followStatus === 'follow'
+                    ? true
+                    : false
+                }>
+                {followStatus === 'requested' ? (
+                  <Box
+                    backgroundColor={'white'}
+                    alignItems={'center'}
+                    justifyContent={'center'}
+                    marginTop={'-60%'}
+                    height={35}
+                    minWidth={110}
+                    variant={'outline'}
+                    rounded={'full'}
+                    borderWidth={2}
+                    borderColor={'#FFAECB'}
+                    width={75}>
+                    <Text color={'#FFAECB'} fontSize={14}>
+                      {followStatus}
+                    </Text>
+                  </Box>
+                ) : null}
+
+                {followStatus === 'following' ? (
+                  <Box
+                    backgroundColor={'white'}
+                    alignItems={'center'}
+                    justifyContent={'center'}
+                    marginTop={'-60%'}
+                    height={35}
+                    minWidth={110}
+                    variant={'outline'}
+                    rounded={'full'}
+                    borderWidth={2}
+                    borderColor={'#C2C3F3'}
+                    width={75}>
+                    <Text color={'#C2C3F3'} fontSize={14}>
+                      {followStatus}
+                    </Text>
+                  </Box>
+                ) : null}
+                {followStatus === 'follow' ? (
+                  <Box
+                    backgroundColor={'white'}
+                    alignItems={'center'}
+                    justifyContent={'center'}
+                    marginTop={'-60%'}
+                    height={35}
+                    minWidth={110}
+                    variant={'outline'}
+                    rounded={'full'}
+                    borderWidth={2}
+                    borderColor={'#8172F7'}
+                    width={75}>
+                    <Text color={'#8172F7'} fontSize={14}>
+                      {followStatus}
+                    </Text>
+                  </Box>
+                ) : null}
+              </TouchableOpacity>
+            </HStack>
+          </Box>
         </VStack>
-        <Box justifyContent={'flex-end'} alignItems={'flex-end'}>
-          <Button
-            variant={'outline'}
-            rounded={'2xl'}
-            borderWidth={2}
-            borderColor={'#8172F7'}
-            onPress={() => {
-              console.log(userId);
-              followingById({
-                userId: userId,
-                followingUserId: item.id,
-              })
-                .unwrap()
-                .then((following: any) => {
-                  console.log('following', following);
-                  refetch();
-                });
-            }}
-            disabled={
-              followStatus === 'pending' || followStatus === 'following'
-                ? true
-                : false
-            }
-            width={75}>
-            <Text color={'#8172F7'}>{followStatus}</Text>
-          </Button>
-        </Box>
       </HStack>
     </Pressable>
   );
@@ -230,7 +307,7 @@ export interface SearchItemEventProps {
 const SearchItemEvent: FunctionComponent<SearchItemEventProps> = ({item}) => {
   return (
     <Pressable
-      py={4}
+      py={3}
       onPress={() => {
         // navigation.navigate('EventScreen', {
         //   eventId: item.id ? item.id : '',
@@ -241,7 +318,10 @@ const SearchItemEvent: FunctionComponent<SearchItemEventProps> = ({item}) => {
           },
         });
       }}>
-      <HStack>
+      <HStack
+        borderBottomWidth={1}
+        borderBottomColor={'#C4C4C4'}
+        paddingBottom={3}>
         <VStack w={'20%'}>
           {/* <Text>Search</Text> */}
           <LinearGradient
@@ -253,26 +333,60 @@ const SearchItemEvent: FunctionComponent<SearchItemEventProps> = ({item}) => {
               flex: 1,
               paddingLeft: 15,
               paddingRight: 15,
-              borderRadius: 10,
+              borderRadius: 15,
               justifyContent: 'center',
               alignItems: 'center',
             }}></LinearGradient>
         </VStack>
-        <VStack w={'75%'} pl={3}>
-          <Text alignSelf={'flex-start'} fontWeight={'bold'} px={'1'}>
+        <VStack w={'75%'} pl={3} mx={2}>
+          <Text
+            color={'#232259'}
+            alignSelf={'flex-start'}
+            fontSize={15}
+            fontWeight={'bold'}>
             {item?.content}
           </Text>
-          <Text numberOfLines={1} ellipsizeMode={'tail'}>
-            date :{' '}
+          <Text
+            color={'#232259'}
+            numberOfLines={1}
+            fontSize={14}
+            fontWeight={'normal'}
+            ellipsizeMode={'tail'}>
+            date{', '}
             {item?.date
               ? moment(item?.date)
                   .tz('Asia/Bangkok')
-                  .format('DD MMM YYYY, h:mm a')
+                  .format('DD MMM YYYY  |  h:mm a')
               : ''}
           </Text>
-          <Text numberOfLines={1} ellipsizeMode={'tail'}>
-            location: {item?.location}
-          </Text>
+          <HStack
+            marginY={1}
+            justifyContent={'space-between'}
+            marginRight={'2%'}
+            // opacity={0.8}
+          >
+            <HStack
+              width={'50%'}
+              height={6}
+              backgroundColor={'#BFBFBF'}
+              borderRadius={'full'}
+              paddingX={3}>
+              <Image
+                marginRight={2}
+                alignSelf={'center'}
+                source={require('../assets/pin_icon.png')}
+              />
+              <Text
+                alignSelf={'center'}
+                numberOfLines={1}
+                ellipsizeMode={'tail'}
+                color={'white'}
+                fontSize={14}>
+                location: {item?.location}Hello
+              </Text>
+            </HStack>
+            <Text>people/numbers</Text>
+          </HStack>
         </VStack>
       </HStack>
     </Pressable>

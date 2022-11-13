@@ -78,6 +78,7 @@ import ProfileScreen from './screens/ProfileScreen';
 import ProfileSettingScreen from './screens/ProfileSettingScreen';
 import ProfileSettingEditScreen from './screens/ProfileSettingEditScreen';
 import FriendScreen from './screens/Friend';
+import NotificatioNScreen from './screens/NotificationScreen';
 const Stack = createStackNavigator<StackScreenParams>();
 const defaultScreenOption: StackNavigationOptions = {
   headerShown: false,
@@ -334,6 +335,36 @@ const StackNavigation = () => {
             <Stack.Screen
               name="FriendScreenIndex"
               component={FriendScreen}
+              options={{
+                gestureEnabled: true,
+                headerShown: true,
+                headerTitle: () => {
+                  return (
+                    <Image source={Icon.homeScreen.logo} h={41} alt={'asdfs'} />
+                  );
+                },
+                headerLeft(props) {
+                  return (
+                    <TouchableOpacity
+                      style={{marginLeft: 30, marginBottom: 3}}
+                      onPress={props.onPress}>
+                      <Image
+                        alt="key icon"
+                        source={require('./assets/back_icon.png')}
+                      />
+                    </TouchableOpacity>
+                  );
+                },
+                headerStyle: {
+                  backgroundColor: 'white',
+                  shadowOpacity: 0,
+                  elevation: 0,
+                },
+              }}
+            />
+            <Stack.Screen
+              name="NotificationScreen"
+              component={NotificatioNScreen}
               options={{
                 gestureEnabled: true,
                 headerShown: true,

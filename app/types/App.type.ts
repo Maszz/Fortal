@@ -26,6 +26,7 @@ export type StackScreenParams = {
   ProfileSettingScreen: undefined;
   ProfileSettingEditScreen: undefined;
   FriendScreenIndex: undefined;
+  NotificationScreen: undefined;
 };
 
 export type HomeIndexScreenProps = StackScreenProps<
@@ -89,4 +90,8 @@ export type ProfileSettingEditScreenProps = StackScreenProps<
 export type FriendScreenIndexProps = StackScreenProps<
   StackScreenParams,
   'FriendScreenIndex'
+>;
+export type NotificationScreenProps = StackScreenProps<
+  StackScreenParams,
+  'NotificationScreen'
 >;

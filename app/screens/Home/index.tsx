@@ -100,7 +100,10 @@ const HomeIndex: FunctionComponent<HomeIndexScreenProps> = ({
                   alt={'fortal_logo'}
                 />
                 <Spacer />
-                <TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() => {
+                    navigation.navigate('NotificationScreen');
+                  }}>
                   <Ionicons
                     size={22}
                     name="notifications-outline"

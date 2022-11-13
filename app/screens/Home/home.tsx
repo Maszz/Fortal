@@ -178,7 +178,7 @@ const Home: FunctionComponent<HomeScreenTypes.HomeScreenProps> = ({route}) => {
         {/* copy this box to make column */}
         <Box
           flexDirection={'row'}
-          justifyContent={'space-between'}
+          justifyContent={'space-evenly'}
           flexWrap={'wrap'}
           // marginY={4}
           // marginTop={4}
@@ -193,7 +193,11 @@ const Home: FunctionComponent<HomeScreenTypes.HomeScreenProps> = ({route}) => {
                     },
                   });
                 }}
-                style={{marginVertical: 7, marginBottom: 20}}
+                style={{
+                  marginVertical: 7,
+                  marginBottom: 20,
+                  marginHorizontal: '2%',
+                }}
                 title={item.name}
                 date={moment(item.startDate).format('DD MMMM YYYY')}
                 description={item.description}
