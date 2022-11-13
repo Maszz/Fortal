@@ -9,6 +9,7 @@ import {
   Box,
   Avatar,
   Divider,
+  ScrollView,
 } from 'native-base';
 import {useGetFollowingMutation} from '../redux/apis';
 import {useAuth} from '../hooks/useAuth';
@@ -48,11 +49,46 @@ const NotificationScreen: FunctionComponent<any> = () => {
   }, [data]);
   return (
     <View flex={1} backgroundColor={'white'} paddingX={'7%'} paddingTop={3}>
-      <Text textAlign={'center'} fontSize={14} fontWeight={'normal'}>
+      <Text
+        textAlign={'center'}
+        fontSize={16}
+        fontWeight={'normal'}
+        marginTop={2}>
         Notification
       </Text>
       <Divider my={2.5} bg="#8B9093" />
-      <FlatList
+      <ScrollView variant={'vertical'}>
+        <VStack>
+          <HStack
+            paddingX={2}
+            paddingY={3}
+            borderBottomWidth={1}
+            borderBottomColor={'#8B9093'}>
+            <Avatar
+              borderColor={'#8172F7'}
+              borderWidth={2}
+              size="60px"
+              // source={{
+              //   uri: item.avatarUrl,
+              // }}
+            />
+            <VStack paddingX={5}>
+              <Text fontSize={15} fontWeight={'bold'} color={'#232259'}>
+                User anme or tittle
+              </Text>
+              <Text
+                marginTop={1}
+                fontSize={14}
+                fontWeight={'normal'}
+                color={'#232259'}>
+                information message
+              </Text>
+            </VStack>
+          </HStack>
+        </VStack>
+      </ScrollView>
+
+      {/* <FlatList
         data={getFollowBuffer}
         renderItem={({item}) => {
           return (
@@ -92,7 +128,6 @@ const NotificationScreen: FunctionComponent<any> = () => {
                             .unwrap()
                             .then(() => {
                               getFollow(user.username);
-                              refetch();
                             });
                         }}
                         style={{
@@ -135,7 +170,7 @@ const NotificationScreen: FunctionComponent<any> = () => {
             </Pressable>
           );
         }}
-      />
+      /> */}
     </View>
   );
 };
