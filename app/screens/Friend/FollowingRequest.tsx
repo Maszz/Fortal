@@ -37,7 +37,7 @@ const FollowingRequestScreen: FunctionComponent<
     getFollowing(user.username);
   }, []);
   return (
-    <View flex={1} backgroundColor={'white'}>
+    <View flex={1} backgroundColor={'white'} paddingX={'7%'} paddingTop={3}>
       <FlatList
         data={data}
         renderItem={({item}) => {
@@ -48,62 +48,97 @@ const FollowingRequestScreen: FunctionComponent<
                   userId: item.username,
                 });
               }}>
-              <Box pl={['0', '4']} pr={['0', '5']} py="2">
+              <Box
+                height={98}
+                pl={['0', '4']}
+                pr={['0', '5']}
+                py="3"
+                borderBottomWidth={1}
+                borderBottomColor={'#8B9093'}>
                 <HStack space={[2, 3]} justifyContent="space-between">
                   <Avatar
-                    size="48px"
+                    borderColor={'#8172F7'}
+                    borderWidth={2}
+                    size="56px"
                     // source={{
                     //   uri: item.avatarUrl,
                     // }}
                   />
-                  <VStack>
-                    <Text color="coolGray.800" bold>
-                      {item.username}
+                  <VStack marginLeft={2}>
+                    <Text fontSize={12} color="#232259" bold>
+                      {item.username}Title or User name
                     </Text>
-                    <Text color="coolGray.600">{item.displayName}</Text>
+
+                    <Text fontSize={12} fontWeight={'normal'} color="#232259">
+                      {item.displayName}Want to add you a friend.
+                    </Text>
+                    <HStack mt={2}>
+                      <TouchableOpacity
+                        onPress={() => {
+                          console.log('accept');
+                          handleFollowingRequest({
+                            requestId: item.id,
+                            status: 'accepted',
+                          })
+                            .unwrap()
+                            .then(() => {
+                              getFollowing(user.username);
+                              refetch();
+                            });
+                        }}
+                        style={{
+                          alignItems: 'center',
+                          alignContent: 'center',
+                          height: 30,
+                          width: 110,
+                          marginRight: 35,
+                          borderWidth: 2,
+                          borderColor: '#8172F7',
+                          borderRadius: 20,
+                        }}>
+                        <Text
+                          color={'#8172F7'}
+                          fontSize={12}
+                          mx={2}
+                          my={1}
+                          bold>
+                          Confirm
+                        </Text>
+                      </TouchableOpacity>
+                      <TouchableOpacity
+                        onPress={() => {
+                          handleFollowingRequest({
+                            requestId: item.id,
+                            status: 'rejected',
+                          })
+                            .unwrap()
+                            .then(() => {
+                              getFollowing(user.username);
+                              refetch();
+                            });
+                        }}
+                        style={{
+                          alignItems: 'center',
+                          alignContent: 'center',
+                          height: 30,
+                          width: 110,
+                          marginRight: 3,
+                          borderWidth: 2,
+                          borderColor: '#8B9093',
+                          borderRadius: 20,
+                        }}>
+                        <Text
+                          color={'#8B9093'}
+                          fontSize={12}
+                          mx={2}
+                          my={1}
+                          bold>
+                          Delete
+                        </Text>
+                      </TouchableOpacity>
+                    </HStack>
                   </VStack>
                   <Spacer />
-                  <HStack alignSelf="center" mr={3}>
-                    <TouchableOpacity
-                      onPress={() => {
-                        console.log('accept');
-                        handleFollowingRequest({
-                          requestId: item.id,
-                          status: 'accepted',
-                        })
-                          .unwrap()
-                          .then(() => {
-                            getFollowing(user.username);
-                            refetch();
-                          });
-                      }}
-                      style={{
-                        marginRight: 3,
-                        backgroundColor: '#458eff',
-                        borderRadius: 10,
-                      }}>
-                      <Text color={'white'} mx={2} my={1} bold>
-                        Confirm
-                      </Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                      onPress={() => {
-                        handleFollowingRequest({
-                          requestId: item.id,
-                          status: 'rejected',
-                        })
-                          .unwrap()
-                          .then(() => {
-                            getFollowing(user.username);
-                            refetch();
-                          });
-                      }}
-                      style={{backgroundColor: '#5A5A5A', borderRadius: 10}}>
-                      <Text color={'white'} mx={2} my={1} bold>
-                        Delete
-                      </Text>
-                    </TouchableOpacity>
-                  </HStack>
                 </HStack>
               </Box>
             </Pressable>
