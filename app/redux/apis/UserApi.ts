@@ -44,9 +44,15 @@ export interface UpdateProfileResponseDto {
   updateUsername: boolean;
 }
 export interface GetFollowerResponse {
-  id: true;
+  id: string;
   username: string;
   displayName: string;
+  bio: string;
+}
+export interface CountRes {
+  followedBy: number;
+  following: number;
+  followingRequestBy: number;
 }
 export const userApi = createApi({
   reducerPath: 'userApi',
@@ -123,14 +129,7 @@ export const userApi = createApi({
         body: {userId: body.userId, followingUserId: body.followingUserId},
       }),
     }),
-    getFollowCount: builder.mutation<
-      {
-        followedBy: number;
-        following: number;
-        followingRequestBy: number;
-      },
-      string
-    >({
+    getFollowCount: builder.mutation<CountRes, string>({
       query: username => ({
         url: `followCount`,
         method: 'GET',
@@ -181,6 +180,30 @@ export const userApi = createApi({
         body: {requestId: body.requestId, status: body.status},
       }),
     }),
+
+    unFollowingById: builder.mutation<
+      any,
+      {
+        followerId: string;
+        unfollowingId: string;
+      }
+    >({
+      query: body => ({
+        url: `unFollowingById`,
+        method: 'POST',
+        body: {followerId: body.followerId, unfollowingId: body.unfollowingId},
+      }),
+    }),
+    removeFollowerById: builder.mutation<
+      any,
+      {userId: string; followerId: string}
+    >({
+      query: body => ({
+        url: `removeFollowerById`,
+        method: 'POST',
+        body: {userId: body.userId, followerId: body.followerId},
+      }),
+    }),
   }),
 });
 
@@ -196,4 +219,6 @@ export const {
   useGetFollowingRequestToMutation,
   useGetFollowingRequestFromMutation,
   useHandleFollowingRequestMutation,
+  useUnFollowingByIdMutation,
+  useRemoveFollowerByIdMutation,
 } = userApi;

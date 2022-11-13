@@ -11,19 +11,23 @@ import {
 } from 'native-base';
 import {useGetFollowersMutation} from '../../redux/apis';
 import {useAuth} from '../../hooks/useAuth';
-import {useEffect, useState} from 'react';
+import {FunctionComponent, useEffect, useState} from 'react';
 import LinearGradient from 'react-native-linear-gradient';
 import {useSelector} from 'react-redux';
 import {RootState} from '../../redux';
 import {useIsFocused} from '@react-navigation/native';
 import {GetFollowerResponse} from '../../redux/apis';
 import {TouchableOpacity} from 'react-native-gesture-handler';
-const FriendScreen = () => {
+import {useRemoveFollowerByIdMutation} from '../../redux/apis';
+import {FollowersScreenProps} from './index';
+const FriendScreen: FunctionComponent<FollowersScreenProps> = ({route}) => {
+  const {refetch} = route.params;
   const {user} = useAuth();
   const [getFollowing, {data, error, isLoading}] = useGetFollowersMutation();
   const [followData, setFollowData] = useState<GetFollowerResponse[]>(
     [] as GetFollowerResponse[],
   );
+  const [removeFollwer, args] = useRemoveFollowerByIdMutation();
   const navigation = useSelector<
     RootState,
     RootState['navigation']['stackNavigation']
@@ -81,8 +85,7 @@ const FriendScreen = () => {
                       numberOfLines={2}
                       ellipsizeMode={'tail'}
                       textAlign={'justify'}>
-                      {item.displayName}Taken from the Latin words "dolorem
-                      ipsum", which
+                      {item.bio}
                     </Text>
                     <HStack mt={-1.5}>
                       <TouchableOpacity
@@ -110,7 +113,14 @@ const FriendScreen = () => {
                         </Text>
                       </TouchableOpacity>
                       <TouchableOpacity
-                        onPress={() => {}}
+                        onPress={() => {
+                          console.log(user.id, item.id);
+                          removeFollwer({userId: user.id, followerId: item.id})
+                            .unwrap()
+                            .then(() => {
+                              refetch();
+                            });
+                        }}
                         style={{
                           alignItems: 'center',
                           alignContent: 'center',
@@ -140,7 +150,7 @@ const FriendScreen = () => {
                     }}
                     color="coolGray.800"
                     alignSelf="flex-start">
-                    {item.displayName}
+                    {item.bio}
                   </Text>
                 </HStack>
               </Box>

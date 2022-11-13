@@ -11,14 +11,25 @@ import {
 } from 'native-base';
 import {useGetFollowingMutation} from '../../redux/apis';
 import {useAuth} from '../../hooks/useAuth';
-import {useEffect} from 'react';
+import {useEffect, useState, FunctionComponent} from 'react';
 import LinearGradient from 'react-native-linear-gradient';
 import {useSelector} from 'react-redux';
 import {RootState} from '../../redux';
 import {TouchableOpacity} from 'react-native';
-const RequestScreen = () => {
+import {useUnFollowingByIdMutation} from '../../redux/apis';
+import {GetFollowerResponse} from '../../redux/apis';
+import {useIsFocused} from '@react-navigation/native';
+import {FollowingScreenProps} from '.';
+
+const RequestScreen: FunctionComponent<FollowingScreenProps> = ({route}) => {
+  const {refetch} = route.params;
   const {user} = useAuth();
   const [getFollow, {data, error, isLoading}] = useGetFollowingMutation();
+  const [getFollowBuffer, setGetFollowBuffer] = useState<GetFollowerResponse[]>(
+    [] as GetFollowerResponse[],
+  );
+  const [unFollowingById, arg] = useUnFollowingByIdMutation();
+  const isFocused = useIsFocused();
   const navigation = useSelector<
     RootState,
     RootState['navigation']['stackNavigation']
@@ -26,10 +37,20 @@ const RequestScreen = () => {
   useEffect(() => {
     getFollow(user.username);
   }, []);
+  useEffect(() => {
+    if (isFocused) {
+      getFollow(user.username);
+    }
+  }, [isFocused]);
+  useEffect(() => {
+    if (data) {
+      setGetFollowBuffer(data);
+    }
+  }, [data]);
   return (
     <View flex={1} backgroundColor={'white'} paddingX={'7%'} paddingTop={3}>
       <FlatList
-        data={data}
+        data={getFollowBuffer}
         renderItem={({item}) => {
           return (
             <Pressable
@@ -65,10 +86,10 @@ const RequestScreen = () => {
                       numberOfLines={2}
                       ellipsizeMode={'tail'}
                       textAlign={'justify'}>
-                      {item.displayName}Taken from the Latin words "dolorem
-                      ipsum", which
+                      {item.displayName}Taken from the Latin words
+                      "doloremasdasddasdsa
                     </Text>
-                    <HStack mt={-1.5}>
+                    <HStack backgroundColor={'amber.200'}>
                       <TouchableOpacity
                         onPress={() => {
                           // none event happened
@@ -94,7 +115,18 @@ const RequestScreen = () => {
                         </Text>
                       </TouchableOpacity>
                       <TouchableOpacity
-                        onPress={() => {}}
+                        onPress={() => {
+                          console.log(item.id);
+                          unFollowingById({
+                            followerId: user.id,
+                            unfollowingId: item.id,
+                          })
+                            .unwrap()
+                            .then(() => {
+                              getFollow(user.username);
+                              refetch();
+                            });
+                        }}
                         style={{
                           alignItems: 'center',
                           alignContent: 'center',
