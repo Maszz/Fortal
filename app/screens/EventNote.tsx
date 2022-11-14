@@ -183,8 +183,8 @@ const EventPost: FunctionComponent<EventPostProps> = ({
   return (
     <Box
       mt={5}
-      borderBottomWidth={1}
-      paddingBottom={5}
+      // borderBottomWidth={1}
+      // paddingBottom={1}
       borderBottomColor={'#8B9093'}>
       <HStack>
         <Image
@@ -216,31 +216,51 @@ const EventPost: FunctionComponent<EventPostProps> = ({
       </Text>
       <Divider my={3} opacity={0} />
       <HStack
-        // marginTop={3}
-        alignSelf={'center'}
-        width={'90%'}
-        justifyItems={'center'}
+        flex={1}
         alignItems={'center'}
-        paddingX={'4%'}
-        backgroundColor={'white'}
-        borderRadius={'full'}
-        borderColor={'#8172F7'}
-        borderWidth={2}>
-        <Image source={require('../assets/smile_icon.png')} alt={'smile'} />
-        <Input
-          width={'80%'}
-          marginLeft={2}
-          placeholder="Text hear!"
-          variant={'unstyle'}
-          // value={userInput}
-          onChangeText={text => setUserInput(text)}
+        paddingX={'5%'}
+        height={35}
+        width={'100%'}
+        backgroundColor={'#E1E1F9'}
+        borderRadius={15}>
+        <HStack flex={1}>
+          <Image
+            source={require('../assets/smile_icon.png')}
+            alt={'smile'}
+            tintColor={'#9488F7'}
+          />
+
+          <Text
+            fontSize={15}
+            color={'#8172F7'}
+            fontWeight={'normal'}
+            marginLeft={'10%'}>
+            1
+          </Text>
+        </HStack>
+
+        <Divider
+          justifyContent={'center'}
+          orientation={'vertical'}
+          height={5}
+          bg="#9488F7"
+          width={0.5}
+          rounded={'full'}
         />
-        <TouchableOpacity
-          onPress={() => {
-            //
-          }}>
-          <Image source={require('../assets/send_icon.png')} alt={'send'} />
-        </TouchableOpacity>
+        <Box flex={1} justifyContent={'flex-end'}>
+          <TouchableOpacity
+            onPress={() => {
+              //
+            }}>
+            <Text
+              textAlign={'center'}
+              fontSize={15}
+              color={'#8172F7'}
+              fontWeight={'normal'}>
+              Comment
+            </Text>
+          </TouchableOpacity>
+        </Box>
       </HStack>
     </Box>
   );
