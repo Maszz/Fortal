@@ -27,7 +27,7 @@ export type StackScreenParams = {
   ProfileSettingEditScreen: undefined;
   FriendScreenIndex: undefined;
   NotificationScreen: undefined;
-  EventNoteScreen: undefined;
+  EventNoteScreen: {eventChatId: string; eventId: string};
 };
 
 export type HomeIndexScreenProps = StackScreenProps<

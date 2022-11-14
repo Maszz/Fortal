@@ -18,11 +18,19 @@ import {
   Easing,
 } from 'react-native';
 import {Divider, Input} from 'native-base';
-const EventNote: FunctionComponent<EventNoteScreenProps> = ({navigation}) => {
+import {useGetPostListQuery} from '../redux/apis';
+
+import moment from 'moment';
+const EventNote: FunctionComponent<EventNoteScreenProps> = ({
+  navigation,
+  route,
+}) => {
+  const {eventId, eventChatId} = route.params;
   const [pinPostProps, setPinPostProps] = useState<{
     height: string;
   }>({height: 'auto'});
   const fadeAnim = useRef(new Animated.Value(1)).current;
+  const {data} = useGetPostListQuery({eventId: eventId, offset: 0, limit: 10});
   return (
     <View flex={1} backgroundColor={'white'}>
       {/* head */}
@@ -159,7 +167,17 @@ const EventNote: FunctionComponent<EventNoteScreenProps> = ({navigation}) => {
           <Divider my={2} />
           <ScrollView variant={'vertical'} height={'100%'}>
             {/* this Box is triger component of member group post */}
-            <EventPost />
+            {data?.map((item, index) => {
+              return (
+                <EventPost
+                  name={item.creator}
+                  message={item.content}
+                  date={moment(item.createdAt).tz('Asia/Bangkok').format('ll')}
+                  time={moment(item.createdAt).tz('Asia/Bangkok').format('LT')}
+                  key={item.id}
+                />
+              );
+            })}
           </ScrollView>
         </Box>
       </VStack>
@@ -194,13 +212,13 @@ const EventPost: FunctionComponent<EventPostProps> = ({
         />
         <VStack width={'100%'} marginX={5}>
           <Text fontSize={16} color={'#232259'} fontWeight={'bold'}>
-            Poster name{name}
+            {name}
           </Text>
           <Text fontSize={14} color={'#232259'} fontWeight={'normal'}>
-            13:15{time}
+            {time}
           </Text>
           <Text fontSize={14} color={'#232259'} fontWeight={'normal'}>
-            Tue, 10 Aug{date}
+            {date}
           </Text>
         </VStack>
       </HStack>
@@ -209,9 +227,8 @@ const EventPost: FunctionComponent<EventPostProps> = ({
         paddingX={'5%'}
         fontSize={16}
         fontWeight={'normal'}
+        numberOfLines={4}
         color={'#232259'}>
-        Taken from the Latin words "dolorem ipsum", which translates to "pain
-        itself", Lorem Ipsum text saw a revival in the mid-20th century as
         {message}
       </Text>
       <Divider my={3} opacity={0} />
