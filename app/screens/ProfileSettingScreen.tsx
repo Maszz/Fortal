@@ -2,9 +2,12 @@ import {View, Text, Box, HStack, Image, Divider, VStack} from 'native-base';
 import {FunctionComponent} from 'react';
 import {ProfileSettingScreenProps} from '../types';
 import {TouchableOpacity} from 'react-native';
+import {useAuth} from '../hooks/useAuth';
 const ProfileSettingScreen: FunctionComponent<ProfileSettingScreenProps> = ({
   navigation,
 }) => {
+  const {logout, user} = useAuth();
+
   return (
     <View flex={10} backgroundColor={'white'}>
       <Box
@@ -69,6 +72,25 @@ const ProfileSettingScreen: FunctionComponent<ProfileSettingScreenProps> = ({
               source={require('../assets/closedBell_icon.png')}
             />
           </Box>
+          <Divider my={2} />
+          <TouchableOpacity
+            onPress={() => {
+              logout();
+            }}>
+            <Box
+              flexDirection={'row'}
+              justifyContent={'space-between'}
+              marginTop={5}>
+              <Text fontSize={16} color={'rose.400'} fontWeight={'normal'}>
+                Logout
+              </Text>
+              <Image
+                alignSelf={'center'}
+                alt="key icon"
+                source={require('../assets/closedBell_icon.png')}
+              />
+            </Box>
+          </TouchableOpacity>
           <Divider my={2} />
         </VStack>
       </Box>
