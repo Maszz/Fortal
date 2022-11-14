@@ -13,7 +13,7 @@ import {
   Pressable,
   FlatList,
 } from 'native-base';
-import {FunctionComponent, useState, useRef} from 'react';
+import {FunctionComponent, useState, useRef, useCallback} from 'react';
 import {EventScreenProps} from '../types';
 import {useChat} from '../hooks/useChat';
 import {useAuth} from '../hooks/useAuth';
@@ -31,6 +31,9 @@ import {VStack} from 'native-base';
 import 'moment-timezone';
 import moment from 'moment';
 import {useGetEventByIdQuery} from '../redux/apis';
+import {useIsFocused} from '@react-navigation/native';
+import {useFocusEffect} from '@react-navigation/native';
+
 const EventScreen: FunctionComponent<EventScreenProps> = ({
   navigation,
   route,
@@ -50,28 +53,39 @@ const EventScreen: FunctionComponent<EventScreenProps> = ({
   //   setBottom(e.);
   // };
   const [height, setHeight] = useState<number>(0);
+  useFocusEffect(
+    useCallback(() => {
+      const keyboardShowListener = Keyboard.addListener(
+        'keyboardWillShow',
+        e => {
+          LayoutAnimation.easeInEaseOut();
+          setHeight(e.endCoordinates.height);
+          // setHeight(e.endCoordinates.height);
+          setBottom(e.endCoordinates.height);
+        },
+      );
+
+      const keyboardHideListener = Keyboard.addListener(
+        'keyboardWillHide',
+        e => {
+          console.log('e', e);
+          LayoutAnimation.easeInEaseOut();
+          // setHeight('86%');
+          setBottom('4%');
+        },
+      );
+
+      return () => {
+        keyboardShowListener.remove();
+        keyboardHideListener.remove();
+      };
+    }, []),
+  );
   // const [width, setWidth] = useState<number>(0);
   const CONSTANCT = ['90%', '6%', '4%'];
-  useEffect(() => {
-    // console.log('chatMessages', chatMessages);
-    const keyboardShowListener = Keyboard.addListener('keyboardWillShow', e => {
-      LayoutAnimation.easeInEaseOut();
-      setHeight(e.endCoordinates.height);
-      // setHeight(e.endCoordinates.height);
-      setBottom(e.endCoordinates.height);
-    });
-
-    const keyboardHideListener = Keyboard.addListener('keyboardWillHide', e => {
-      console.log('e', e);
-      LayoutAnimation.easeInEaseOut();
-      // setHeight('86%');
-      setBottom('4%');
-    });
-    return () => {
-      keyboardShowListener.remove();
-      keyboardHideListener.remove();
-    };
-  }, []);
+  // useEffect(() => {
+  //   // console.log('chatMessages', chatMessages);
+  // }, []);
 
   return (
     <View h={'100%'} backgroundColor={'white'}>

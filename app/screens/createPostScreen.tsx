@@ -8,6 +8,7 @@ import {
   TextArea,
   Spacer,
   Divider,
+  KeyboardAvoidingView,
 } from 'native-base';
 import {FunctionComponent} from 'react';
 import {CreatePostScreenProps} from '../types';
@@ -19,7 +20,7 @@ import {
 } from 'react-native';
 const CreatePostScreen: FunctionComponent<CreatePostScreenProps> = () => {
   return (
-    <View flex={1} backgroundColor={'white'}>
+    <KeyboardAvoidingView flex={1} behavior={'padding'}>
       <Box
         flex={0.12}
         backgroundColor={'white'}
@@ -139,7 +140,7 @@ const CreatePostScreen: FunctionComponent<CreatePostScreenProps> = () => {
           backgroundColor={'#E1E1F9'}
           borderRadius={15}></Box>
       </TouchableOpacity> */}
-    </View>
+    </KeyboardAvoidingView>
   );
 };
 export default CreatePostScreen;
