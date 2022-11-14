@@ -92,7 +92,10 @@ const EventScreen: FunctionComponent<EventScreenProps> = ({
             <TouchableOpacity
               style={{marginRight: '7%'}}
               onPress={() => {
-                navigation.navigate('EventNoteScreen');
+                navigation.navigate('EventNoteScreen', {
+                  eventId: eventId,
+                  eventChatId: eventChatId,
+                });
               }}>
               <Text>Note</Text>
             </TouchableOpacity>

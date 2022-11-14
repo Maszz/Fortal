@@ -193,6 +193,46 @@ export const eventApi = createApi({
         };
       },
     }),
+    createPost: builder.mutation<
+      any,
+      {
+        eventId: string;
+        content: string;
+        creatorUsername: string;
+      }
+    >({
+      query: params => {
+        return {
+          url: 'createPost',
+          method: 'POST',
+          body: {
+            eventId: params.eventId,
+            content: params.content,
+            creatorUsername: params.creatorUsername,
+          },
+        };
+      },
+    }),
+    getPostList: builder.query<
+      {
+        id: string;
+        content: string;
+        creator: string;
+        createdAt: Date;
+      }[],
+      {eventId: string; offset: number; limit: number}
+    >({
+      query: params => {
+        return {
+          url: 'getEventPostList',
+          params: {
+            eventId: params.eventId,
+            offset: params.offset,
+            limit: params.limit,
+          },
+        };
+      },
+    }),
   }),
 });
 
@@ -204,4 +244,5 @@ export const {
   useJoinedEventMutation,
   // useGetEventUserListQuery,
   // useLazyGetEventUserListQuery,
+  useGetPostListQuery,
 } = eventApi;
