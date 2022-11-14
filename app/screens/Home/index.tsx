@@ -119,10 +119,10 @@ const HomeIndex: FunctionComponent<HomeIndexScreenProps> = ({
                     size={22}
                     name="person"
                     color={'black'}
-                    style={{marginRight: 10}}
+                    style={{marginRight: 30}}
                   />
                 </TouchableOpacity>
-                <TouchableOpacity
+                {/* <TouchableOpacity
                   onPress={() => {
                     navigation.navigate('SettingScreen');
                   }}>
@@ -132,7 +132,7 @@ const HomeIndex: FunctionComponent<HomeIndexScreenProps> = ({
                     color={'black'}
                     style={{marginRight: 30}}
                   />
-                </TouchableOpacity>
+                </TouchableOpacity> */}
               </HStack>
             </Box>
           );

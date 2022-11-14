@@ -97,7 +97,7 @@ const Home: FunctionComponent<CreateModalProps> = ({route, navigation}) => {
     memberType: 'UNLIMITED',
     isPublic: true,
     eventColors: ['#FEDDE0', '#8C84D4'],
-    eventName: 'Location name',
+    eventName: 'Event name',
     eventDescription: 'event description',
   } as CreateEventForm);
   const getStartDateTime = useCallback(() => {
@@ -187,7 +187,7 @@ const Home: FunctionComponent<CreateModalProps> = ({route, navigation}) => {
   }, []);
   return (
     <Pressable onPress={Keyboard.dismiss}>
-      <KeyboardAvoidingView behavior={undefined}>
+      <KeyboardAvoidingView behavior={'padding'}>
         <View w={'100%'} backgroundColor={'white'} h={'100%'}>
           <VStack mx={4} flex={1} h={height}>
             <LinearGradient
@@ -205,8 +205,6 @@ const Home: FunctionComponent<CreateModalProps> = ({route, navigation}) => {
                 w={'100%'}
                 paddingBottom={3}
                 marginTop={10}
-                // alignItems={'center'}
-
                 justifyContent={'space-between'}>
                 <TouchableOpacity
                   onPress={() => {
@@ -217,7 +215,7 @@ const Home: FunctionComponent<CreateModalProps> = ({route, navigation}) => {
                     marginBottom={3}
                     alt="key icon"
                     source={require('../assets/back_icon.png')}
-                    style={{tintColor: 'white'}}
+                    style={{tintColor: 'white', alignSelf: 'flex-start'}}
                   />
                 </TouchableOpacity>
                 {/* <Spacer /> */}
@@ -229,6 +227,7 @@ const Home: FunctionComponent<CreateModalProps> = ({route, navigation}) => {
                       navigation.navigate('HomeIndex');
                       navigation.navigate('EventScreen', {
                         eventChatId: p.eventChat.id,
+                        eventId: p.event.id,
                       });
                     });
                   }}>
@@ -257,18 +256,20 @@ const Home: FunctionComponent<CreateModalProps> = ({route, navigation}) => {
                       opacity={20}
                       borderRadius={'3xl'}
                     />
-                    <HStack>
+                    <HStack alignItems={'flex-start'} w={'100%'}>
                       <Image
                         source={require('../assets/map_pin_icon.png')}
-                        style={{marginLeft: 1}}
+                        style={{marginLeft: 12}}
                         alt={'map pin icon'}
                       />
                       <Text
                         fontSize={13}
+                        w={'85%'}
                         fontWeight={400}
                         color={'white'}
+                        numberOfLines={1}
                         ml={1}>
-                        tap to choose location
+                        {location.addressName || 'tap to choose location'}
                       </Text>
                     </HStack>
                   </ZStack>
@@ -395,6 +396,12 @@ const Home: FunctionComponent<CreateModalProps> = ({route, navigation}) => {
                           .utcOffset('+07:00')
                           .format('MMMM Do YYYY, h:mm:ss a'),
                       );
+                      console.log(
+                        'end time',
+                        moment(v.nativeEvent.timestamp)
+                          .tz('Asia/Bangkok')
+                          .isSame(eventData.startDate, 'days'),
+                      );
                     }}
                   />
                 </HStack>
@@ -438,7 +445,7 @@ const Home: FunctionComponent<CreateModalProps> = ({route, navigation}) => {
                     value={eventData.memberLimit}
                     isDisabled={eventData.memberType === 'UNLIMITED'}
                     onChangeText={v => {
-                      setEventData({...eventData, memberType: v});
+                      setEventData({...eventData, memberLimit: v});
                     }}
                     w={20}
                     keyboardType={'numeric'}

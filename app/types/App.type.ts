@@ -12,7 +12,7 @@ export type StackScreenParams = {
   Loading: undefined;
   CreateModal: undefined;
   SearchScreen: undefined;
-  EventScreen: {eventChatId: string};
+  EventScreen: {eventChatId: string; eventId: string};
   OtherProfileScreen: {userId: string};
   MapViewScreen: undefined;
   SettingScreen: undefined;
@@ -27,6 +27,7 @@ export type StackScreenParams = {
   ProfileSettingEditScreen: undefined;
   FriendScreenIndex: undefined;
   NotificationScreen: undefined;
+  EventNoteScreen: undefined;
 };
 
 export type HomeIndexScreenProps = StackScreenProps<
@@ -94,4 +95,8 @@ export type FriendScreenIndexProps = StackScreenProps<
 export type NotificationScreenProps = StackScreenProps<
   StackScreenParams,
   'NotificationScreen'
+>;
+export type EventNoteScreenProps = StackScreenProps<
+  StackScreenParams,
+  'EventNoteScreen'
 >;

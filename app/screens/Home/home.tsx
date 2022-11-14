@@ -70,41 +70,7 @@ const Home: FunctionComponent<HomeScreenTypes.HomeScreenProps> = ({route}) => {
       // pagingEnabled={true}
       style={{flex: 10, backgroundColor: 'white'}}>
       {/* portion 1 == > story */}
-      <Box
-        style={{
-          flex: 1.5,
 
-          paddingTop: 15,
-          paddingHorizontal: 20,
-          marginVertical: 10,
-        }}>
-        <Text fontSize={14} fontWeight={'medium'}>
-          Random activities
-        </Text>
-        <Divider my={2.5} bg="black" />
-        <ScrollView
-          horizontal={true}
-          showsHorizontalScrollIndicator={false}
-          pagingEnabled={true}>
-          <Box
-            style={{
-              flex: 0.5,
-              flexDirection: 'row',
-            }}>
-            {/* add this many box */}
-            <Box
-              style={{
-                borderRadius: 100,
-                backgroundColor: 'white',
-                width: 60,
-                height: 60,
-                borderWidth: 3,
-                borderColor: '#8C84D4',
-              }}
-            />
-          </Box>
-        </ScrollView>
-      </Box>
       {/* portion 2 ==> type or hash tag */}
       <Box
         style={{
@@ -178,7 +144,7 @@ const Home: FunctionComponent<HomeScreenTypes.HomeScreenProps> = ({route}) => {
         {/* copy this box to make column */}
         <Box
           flexDirection={'row'}
-          justifyContent={'space-evenly'}
+          justifyContent={'space-between'}
           flexWrap={'wrap'}
           // marginY={4}
           // marginTop={4}
@@ -196,7 +162,6 @@ const Home: FunctionComponent<HomeScreenTypes.HomeScreenProps> = ({route}) => {
                 style={{
                   marginVertical: 7,
                   marginBottom: 20,
-                  marginHorizontal: '2%',
                 }}
                 title={item.name}
                 date={moment(item.startDate).format('DD MMMM YYYY')}

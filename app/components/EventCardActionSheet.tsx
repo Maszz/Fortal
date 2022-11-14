@@ -84,7 +84,7 @@ const EventCardActionSheet: FunctionComponent<EventCardActionsSheetProps> = ({
       containerStyle={{
         borderTopLeftRadius: 45,
         borderTopRightRadius: 45,
-        height: '80%',
+        height: '84%',
         paddingHorizontal: 10,
       }}
       useBottomSafeAreaPadding={true}>
@@ -97,7 +97,7 @@ const EventCardActionSheet: FunctionComponent<EventCardActionsSheetProps> = ({
           style={{
             borderRadius: 25,
             display: 'flex',
-            height: '45%',
+            height: '42%',
             justifyContent: 'flex-end',
           }}>
           <Box ml={5} mb={5}>
@@ -186,6 +186,16 @@ const EventCardActionSheet: FunctionComponent<EventCardActionsSheetProps> = ({
                 {data ? moment(data?.endDate).format('h:mm a') : ''}
               </Text>
             </HStack>
+            <HStack justifyContent={'space-between'} mt={5}>
+              <Text fontSize={14} fontWeight={700} color={'#232259'}>
+                Member
+              </Text>
+              <Text fontSize={14} fontWeight={400} color={'#232259'}>
+                {data?.memberType === 'UNLIMITED'
+                  ? 'Unlimited'
+                  : `${data?.memberLimit}/${data?.participantsId.length}`}
+              </Text>
+            </HStack>
             <HStack mt={5} alignItems={'center'}>
               <Image
                 source={require('../assets/eye_icon.png')}
@@ -216,6 +226,7 @@ const EventCardActionSheet: FunctionComponent<EventCardActionsSheetProps> = ({
                     actionSheetRef.current?.hide();
                     stackNavigation.navigate('EventScreen', {
                       eventChatId: data?.eventChat.id,
+                      eventId: data?.id,
                     });
                     console.log(v);
                   })
@@ -238,6 +249,7 @@ const EventCardActionSheet: FunctionComponent<EventCardActionsSheetProps> = ({
                         actionSheetRef.current?.hide();
                         stackNavigation.navigate('EventScreen', {
                           eventChatId: data?.eventChat.id,
+                          eventId: data?.id,
                         });
                         return;
                       }

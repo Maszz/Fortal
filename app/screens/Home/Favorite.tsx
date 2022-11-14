@@ -86,6 +86,7 @@ const FavoriteScreen: FunctionComponent<
                     onPress={() => {
                       stackNavigation.navigate('EventScreen', {
                         eventChatId: item?.eventChat.id,
+                        eventId: item?.id,
                       });
                     }}
                     title={item.name}
@@ -133,6 +134,7 @@ const FavoriteScreen: FunctionComponent<
                     onPress={() => {
                       stackNavigation.navigate('EventScreen', {
                         eventChatId: item?.eventChat.id,
+                        eventId: item?.id,
                       });
                     }}
                     title={item.name}

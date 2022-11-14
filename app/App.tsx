@@ -79,6 +79,7 @@ import ProfileSettingScreen from './screens/ProfileSettingScreen';
 import ProfileSettingEditScreen from './screens/ProfileSettingEditScreen';
 import FriendScreen from './screens/Friend';
 import NotificatioNScreen from './screens/NotificationScreen';
+import EventNote from './screens/EventNote';
 const Stack = createStackNavigator<StackScreenParams>();
 const defaultScreenOption: StackNavigationOptions = {
   headerShown: false,
@@ -157,43 +158,7 @@ const StackNavigation = () => {
               component={SearchScreenStack}
               options={{
                 headerShown: true,
-                // header: (props: StackHeaderProps) => {
-                //   return (
-                //     <Box safeAreaTop w={'100%'} backgroundColor={'white'}>
-                //       <HStack
-                //         w={'100%'}
-                //         paddingBottom={3}
-                //         marginTop={3}
-                //         // alignItems={'center'}
 
-                //         justifyContent={'space-between'}>
-                //         <TouchableOpacity
-                //           onPress={() => {
-                //             props.navigation.goBack();
-                //           }}>
-                //           <Image
-                //             marginLeft={10}
-                //             marginBottom={3}
-                //             alt="key icon"
-                //             source={require('./assets/back_icon.png')}
-                //           />
-                //         </TouchableOpacity>
-                //         {/* <Box
-                //           justifyContent={'center'}
-                //           alignItems="center"
-                //           // position={'absolute'}
-                //           bottom={6}
-                //           right={42}>
-                // <Image
-                //   source={Icon.homeScreen.logo}
-                //   h={41}
-                //   alt={'asdfs'}
-                // />
-                //         </Box> */}
-                //       </HStack>
-                //     </Box>
-                //   );
-                // },
                 headerTitle: () => {
                   return (
                     <Image source={Icon.homeScreen.logo} h={41} alt={'asdfs'} />
@@ -223,7 +188,7 @@ const StackNavigation = () => {
               component={EventScreen}
               options={{
                 gestureEnabled: true,
-                headerShown: true,
+                headerShown: false,
               }}
             />
             <Stack.Screen
@@ -390,6 +355,14 @@ const StackNavigation = () => {
                   shadowOpacity: 0,
                   elevation: 0,
                 },
+              }}
+            />
+            <Stack.Screen
+              name="EventNoteScreen"
+              component={EventNote}
+              options={{
+                gestureEnabled: true,
+                headerShown: false,
               }}
             />
           </>
