@@ -29,7 +29,7 @@ const EventNote: FunctionComponent<EventNoteScreenProps> = () => {
           justifyContent={'space-between'}>
           <TouchableOpacity
             onPress={() => {
-              navigation.goBack();
+              // navigation.goBack();
             }}>
             <Image
               width={30}
@@ -45,7 +45,7 @@ const EventNote: FunctionComponent<EventNoteScreenProps> = () => {
           <Image alt="key icon" source={require('../assets/paper_icon.png')} />
         </Box>
       </Box>
-      <VStack paddingX={'7%'} marginTop={'5%'}>
+      <VStack flex={1} paddingX={'7%'} marginTop={'5%'}>
         <Box>
           <HStack justifyContent={'space-between'} marginBottom={3}>
             <Text fontSize={16} color={'#232259'} fontWeight={'normal'}>
@@ -96,41 +96,77 @@ const EventNote: FunctionComponent<EventNoteScreenProps> = () => {
         <Text fontSize={16} color={'#232259'} fontWeight={'normal'}>
           Post
         </Text>
-        <Divider my={2} mb={5} />
+        <Divider my={2} />
         <ScrollView variant={'vertical'} height={'100%'}>
-          <HStack>
-            <Image
-              source={require('../assets/profileGroupPost_icon.png')}
-              // borderWidth={3}
+          {/* this Box is triger component of member group post */}
+          <Box
+            mt={5}
+            borderBottomWidth={1}
+            paddingBottom={5}
+            borderBottomColor={'#8B9093'}>
+            <HStack>
+              <Image
+                source={require('../assets/profileGroupPost_icon.png')}
+                // borderWidth={3}
+                borderColor={'#8172F7'}
+              />
+              <VStack width={'100%'} marginX={5}>
+                <Text fontSize={16} color={'#232259'} fontWeight={'bold'}>
+                  Poster name
+                </Text>
+                <Text fontSize={14} color={'#232259'} fontWeight={'normal'}>
+                  13:15
+                </Text>
+                <Text fontSize={14} color={'#232259'} fontWeight={'normal'}>
+                  Tue, 10 Aug
+                </Text>
+              </VStack>
+            </HStack>
+            <Divider my={2} opacity={0} />
+            <Text
+              paddingX={'5%'}
+              fontSize={16}
+              fontWeight={'normal'}
+              color={'#232259'}>
+              Taken from the Latin words "dolorem ipsum", which translates to
+              "pain itself", Lorem Ipsum text saw a revival in the mid-20th
+              century as
+            </Text>
+            <Divider my={3} opacity={0} />
+            <HStack
+              // marginTop={3}
+              alignSelf={'center'}
+              width={'90%'}
+              justifyItems={'center'}
+              alignItems={'center'}
+              paddingX={'4%'}
+              backgroundColor={'white'}
+              borderRadius={'full'}
               borderColor={'#8172F7'}
-            />
-            <VStack width={'100%'} marginX={5}>
-              <Text fontSize={16} color={'#232259'} fontWeight={'bold'}>
-                Poster name
-              </Text>
-              <Text fontSize={14} color={'#232259'} fontWeight={'normal'}>
-                13:15
-              </Text>
-              <Text fontSize={14} color={'#232259'} fontWeight={'normal'}>
-                Tue, 10 Aug
-              </Text>
-            </VStack>
-          </HStack>
-          <Divider my={2} opacity={0} />
-          <Text
-            paddingX={'5%'}
-            fontSize={16}
-            fontWeight={'normal'}
-            color={'#232259'}>
-            Taken from the Latin words "dolorem ipsum", which translates to
-            "pain itself", Lorem Ipsum text saw a revival in the mid-20th
-            century as
-          </Text>
-          <Divider my={3} opacity={0} />
-          <Input variant={'rounded'}>
-            {' '}
-            <Text>Hello</Text>
-          </Input>
+              borderWidth={2}>
+              <Image
+                source={require('../assets/smile_icon.png')}
+                alt={'smile'}
+              />
+              <Input
+                width={'80%'}
+                marginLeft={2}
+                placeholder="Text hear!"
+                variant={'unstyle'}
+                // value={userInput}
+                onChangeText={text => setUserInput(text)}
+              />
+              <TouchableOpacity
+                onPress={() => {
+                  //
+                }}>
+                <Image
+                  source={require('../assets/send_icon.png')}
+                  alt={'send'}
+                />
+              </TouchableOpacity>
+            </HStack>
+          </Box>
         </ScrollView>
       </VStack>
     </View>
