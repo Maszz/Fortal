@@ -157,8 +157,14 @@ const EventNote: FunctionComponent<EventNoteScreenProps> = ({navigation}) => {
             Post
           </Text>
           <Divider my={2} />
+          <Box>
+            <Text fontSize={16} color={'#232259'} fontWeight={'normal'}>
+              Crate Post
+            </Text>
+          </Box>
           <ScrollView variant={'vertical'} height={'100%'}>
             {/* this Box is triger component of member group post */}
+
             <EventPost />
           </ScrollView>
         </Box>
