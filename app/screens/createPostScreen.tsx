@@ -18,7 +18,9 @@ import {
   Animated,
   Easing,
 } from 'react-native';
-const CreatePostScreen: FunctionComponent<CreatePostScreenProps> = () => {
+const CreatePostScreen: FunctionComponent<CreatePostScreenProps> = ({
+  navigation,
+}) => {
   return (
     <KeyboardAvoidingView flex={1} behavior={'padding'}>
       <Box
@@ -33,7 +35,7 @@ const CreatePostScreen: FunctionComponent<CreatePostScreenProps> = () => {
           justifyContent={'space-between'}>
           <TouchableOpacity
             onPress={() => {
-              //   navigation.goBack();
+              navigation.goBack();
             }}>
             <Image
               width={30}
@@ -66,15 +68,16 @@ const CreatePostScreen: FunctionComponent<CreatePostScreenProps> = () => {
         </VStack>
       </HStack>
       <TextArea
-        flex={0.8}
+        flex={0.85}
         alignSelf={'center'}
         justifyItems={'center'}
         marginTop={3}
         borderWidth={1}
-        borderColor={'#8C84D4'}
-        borderRadius={20}
+        borderColor={'#99AAD4'}
+        borderTopRadius={20}
+        borderBottomRadius={0}
         autoCompleteType={'off'}
-        width={'87%'}
+        width={'90%'}
         textAlign={'left'}
         paddingX={3}
         paddingY={2}
@@ -87,22 +90,22 @@ const CreatePostScreen: FunctionComponent<CreatePostScreenProps> = () => {
         //   'What is your mind?  message Taken from the Latin words message Taken from the Latin words message Taken from the Latin words message Taken from the Latin words message Taken from the Latin words'
         // }
       />
-      <Divider my={'5%'} opacity={0} />
+      {/* <Divider my={'5%'} opacity={0} /> */}
       <HStack
         // flex={1}
-
+        borderBottomRadius={15}
         alignItems={'center'}
-        justifyContent={'space-between'}
-        width={'100%'}
+        // justifyContent={'space-between'}
+        justifyContent={'center'}
+        // width={'90%'}
         height={35}
         backgroundColor={'#E1E1F9'}
-        borderRadius={15}
         style={{
-          width: '87%',
+          width: '90%',
           height: 35,
           alignSelf: 'center',
         }}>
-        <TouchableOpacity style={{width: '50%'}}>
+        {/* <TouchableOpacity style={{width: '50%'}}>
           <Text
             textAlign={'center'}
             color={'#8172F7'}
@@ -116,14 +119,14 @@ const CreatePostScreen: FunctionComponent<CreatePostScreenProps> = () => {
           height={5}
           backgroundColor={'#9488F7'}
           rounded={'full'}
-        />
+        /> */}
         <TouchableOpacity style={{width: '50%'}}>
           <Text
             textAlign={'center'}
             color={'#8172F7'}
             fontWeight={'medium'}
             fontSize={15}>
-            Post
+            Save
           </Text>
         </TouchableOpacity>
       </HStack>
