@@ -245,4 +245,5 @@ export const {
   // useGetEventUserListQuery,
   // useLazyGetEventUserListQuery,
   useGetPostListQuery,
+  useCreatePostMutation,
 } = eventApi;

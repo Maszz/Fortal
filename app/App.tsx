@@ -81,6 +81,7 @@ import FriendScreen from './screens/Friend';
 import NotificatioNScreen from './screens/NotificationScreen';
 import EventNote from './screens/EventNote';
 import CreatePostScreen from './screens/createPostScreen';
+import CommentScreen from './screens/CommentScreen';
 const Stack = createStackNavigator<StackScreenParams>();
 const defaultScreenOption: StackNavigationOptions = {
   headerShown: false,
@@ -372,6 +373,15 @@ const StackNavigation = () => {
               options={{
                 gestureEnabled: true,
                 headerShown: false,
+              }}
+            />
+            <Stack.Screen
+              name="CommentScreen"
+              component={CommentScreen}
+              options={{
+                gestureEnabled: true,
+                headerShown: false,
+                presentation: 'modal',
               }}
             />
           </>

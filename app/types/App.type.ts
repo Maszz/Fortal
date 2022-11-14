@@ -29,6 +29,7 @@ export type StackScreenParams = {
   NotificationScreen: undefined;
   EventNoteScreen: {eventChatId: string; eventId: string};
   CreatePostScreen: {eventChatId: string; eventId: string};
+  CommentScreen: {postId: string};
 };
 
 export type HomeIndexScreenProps = StackScreenProps<
@@ -104,4 +105,8 @@ export type EventNoteScreenProps = StackScreenProps<
 export type CreatePostScreenProps = StackScreenProps<
   StackScreenParams,
   'CreatePostScreen'
+>;
+export type CommentScreenProps = StackScreenProps<
+  StackScreenParams,
+  'CommentScreen'
 >;

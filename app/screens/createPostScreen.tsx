@@ -10,7 +10,7 @@ import {
   Divider,
   KeyboardAvoidingView,
 } from 'native-base';
-import {FunctionComponent} from 'react';
+import {FunctionComponent, useState} from 'react';
 import {CreatePostScreenProps} from '../types';
 import {
   TouchableOpacity,
@@ -18,13 +18,20 @@ import {
   Animated,
   Easing,
 } from 'react-native';
+import {useAuth} from '../hooks/useAuth';
+import {useCreatePostMutation} from '../redux/apis';
 const CreatePostScreen: FunctionComponent<CreatePostScreenProps> = ({
   navigation,
+  route,
 }) => {
+  const {user} = useAuth();
+  const {eventId, eventChatId} = route.params;
+  const [userInput, setUserInput] = useState<string>('');
+  const [createPost] = useCreatePostMutation();
   return (
-    <KeyboardAvoidingView flex={1} behavior={'padding'}>
+    <View flex={1} backgroundColor={'white'}>
       <Box
-        flex={0.12}
+        h={'12%'}
         backgroundColor={'white'}
         shadow={2}
         justifyContent={'flex-end'}>
@@ -60,15 +67,12 @@ const CreatePostScreen: FunctionComponent<CreatePostScreenProps> = ({
         />
         <VStack width={'100%'} marginX={5}>
           <Text fontSize={16} color={'#232259'} fontWeight={'bold'}>
-            Header name
-          </Text>
-          <Text fontSize={14} color={'#232259'} fontWeight={'normal'}>
-            date : time
+            {user?.username}
           </Text>
         </VStack>
       </HStack>
       <TextArea
-        flex={0.85}
+        flex={1}
         alignSelf={'center'}
         justifyItems={'center'}
         marginTop={3}
@@ -86,26 +90,32 @@ const CreatePostScreen: FunctionComponent<CreatePostScreenProps> = ({
         fontWeight={'normal'}
         focusOutlineColor={'#8C84D4'}
         placeholder={'What is on your mind?'}
-        // value={
-        //   'What is your mind?  message Taken from the Latin words message Taken from the Latin words message Taken from the Latin words message Taken from the Latin words message Taken from the Latin words'
-        // }
+        value={userInput}
+        onChangeText={text => {
+          setUserInput(text);
+        }}
       />
-      {/* <Divider my={'5%'} opacity={0} /> */}
-      <HStack
-        // flex={1}
-        borderBottomRadius={15}
-        alignItems={'center'}
-        // justifyContent={'space-between'}
-        justifyContent={'center'}
-        // width={'90%'}
-        height={35}
-        backgroundColor={'#E1E1F9'}
-        style={{
-          width: '90%',
-          height: 35,
-          alignSelf: 'center',
-        }}>
-        {/* <TouchableOpacity style={{width: '50%'}}>
+      <KeyboardAvoidingView
+        // flex={0.95}
+        behavior={'padding'}
+        keyboardVerticalOffset={0}>
+        {/* <Divider my={'5%'} opacity={0} /> */}
+        <HStack
+          // flex={1}
+
+          borderBottomRadius={15}
+          alignItems={'center'}
+          // justifyContent={'space-between'}
+          justifyContent={'center'}
+          // width={'90%'}
+          height={35}
+          backgroundColor={'#E1E1F9'}
+          style={{
+            width: '90%',
+            height: 35,
+            alignSelf: 'center',
+          }}>
+          {/* <TouchableOpacity style={{width: '50%'}}>
           <Text
             textAlign={'center'}
             color={'#8172F7'}
@@ -120,17 +130,30 @@ const CreatePostScreen: FunctionComponent<CreatePostScreenProps> = ({
           backgroundColor={'#9488F7'}
           rounded={'full'}
         /> */}
-        <TouchableOpacity style={{width: '50%'}}>
-          <Text
-            textAlign={'center'}
-            color={'#8172F7'}
-            fontWeight={'medium'}
-            fontSize={15}>
-            Save
-          </Text>
-        </TouchableOpacity>
-      </HStack>
-      {/* <TouchableOpacity
+          <TouchableOpacity
+            style={{width: '50%'}}
+            onPress={() => {
+              console.log('post');
+              createPost({
+                eventId: eventId,
+                content: userInput,
+                creatorUsername: user?.username,
+              })
+                .unwrap()
+                .then(() => {
+                  navigation.goBack();
+                });
+            }}>
+            <Text
+              textAlign={'center'}
+              color={'#8172F7'}
+              fontWeight={'medium'}
+              fontSize={15}>
+              Save
+            </Text>
+          </TouchableOpacity>
+        </HStack>
+        {/* <TouchableOpacity
         style={{
           width: '87%',
           height: 35,
@@ -143,7 +166,9 @@ const CreatePostScreen: FunctionComponent<CreatePostScreenProps> = ({
           backgroundColor={'#E1E1F9'}
           borderRadius={15}></Box>
       </TouchableOpacity> */}
-    </KeyboardAvoidingView>
+      </KeyboardAvoidingView>
+      <Divider my={'5%'} opacity={0} />
+    </View>
   );
 };
 export default CreatePostScreen;

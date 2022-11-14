@@ -19,7 +19,7 @@ import {
 } from 'react-native';
 import {Divider, Input} from 'native-base';
 import {useGetPostListQuery} from '../redux/apis';
-
+import {useIsFocused} from '@react-navigation/native';
 import moment from 'moment';
 const EventNote: FunctionComponent<EventNoteScreenProps> = ({
   navigation,
@@ -30,7 +30,17 @@ const EventNote: FunctionComponent<EventNoteScreenProps> = ({
     height: string;
   }>({height: 'auto'});
   const fadeAnim = useRef(new Animated.Value(1)).current;
-  const {data} = useGetPostListQuery({eventId: eventId, offset: 0, limit: 10});
+  const {data, refetch} = useGetPostListQuery({
+    eventId: eventId,
+    offset: 0,
+    limit: 10,
+  });
+  const isFocused = useIsFocused();
+  useEffect(() => {
+    if (isFocused) {
+      refetch();
+    }
+  }, [isFocused]);
   return (
     <View flex={1} backgroundColor={'white'}>
       {/* head */}
@@ -277,16 +287,25 @@ const EventNote: FunctionComponent<EventNoteScreenProps> = ({
             </HStack>
           </HStack> */}
 
-          <ScrollView variant={'vertical'} height={'100%'}>
+          <ScrollView
+            variant={'vertical'}
+            height={pinPostProps.height === 'auto' ? '50%' : '75%'}
+            mt={4}
+            showsVerticalScrollIndicator={false}>
             {/* this Box is triger component of member group post */}
             {data?.map((item, index) => {
               return (
                 <EventPost
                   name={item.creator}
                   message={item.content}
-                  date={moment(item.createdAt).tz('Asia/Bangkok').format('ll')}
-                  time={moment(item.createdAt).tz('Asia/Bangkok').format('LT')}
+                  date={moment(item.createdAt).tz('Asia/Bangkok').format('LT')}
+                  time={moment(item.createdAt).tz('Asia/Bangkok').format('ll')}
                   key={item.id}
+                  onPress={() => {
+                    navigation.navigate('CommentScreen', {
+                      postId: item.id,
+                    });
+                  }}
                 />
               );
             })}
@@ -303,12 +322,14 @@ export interface EventPostProps {
   date: string;
   time: string;
   message: string;
+  onPress?: () => void;
 }
 const EventPost: FunctionComponent<EventPostProps> = ({
   name,
   time,
   date,
   message,
+  onPress,
 }) => {
   return (
     <Box
@@ -379,6 +400,10 @@ const EventPost: FunctionComponent<EventPostProps> = ({
         <Box flex={1} justifyContent={'flex-end'}>
           <TouchableOpacity
             onPress={() => {
+              if (onPress) {
+                onPress();
+              }
+
               //
             }}>
             <Text
