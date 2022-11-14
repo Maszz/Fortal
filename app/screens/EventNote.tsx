@@ -66,7 +66,7 @@ const EventNote: FunctionComponent<EventNoteScreenProps> = ({
         <Box>
           <HStack justifyContent={'space-between'} marginBottom={3}>
             <Text fontSize={16} color={'#232259'} fontWeight={'normal'}>
-              ประกาศ
+              announce
             </Text>
             <TouchableOpacity
               onPress={() => {
@@ -165,11 +165,118 @@ const EventNote: FunctionComponent<EventNoteScreenProps> = ({
             Post
           </Text>
           <Divider my={2} />
-          <Box>
-            <Text fontSize={16} color={'#232259'} fontWeight={'normal'}>
-              Crate Post
-            </Text>
-          </Box>
+          {/* for Header Hstack */}
+          <HStack
+            // width={'100%'}
+            height={35}
+            justifyContent={'space-between'}
+            paddingX={'2%'}>
+            <TouchableOpacity
+              onPress={() => {
+                navigation.navigate('CreatePostScreen', {
+                  eventId: eventId,
+                  eventChatId: eventChatId,
+                });
+              }}
+              style={{
+                width: '45%',
+                height: '100%',
+              }}>
+              <HStack
+                marginTop={2}
+                paddingX={'5%'}
+                alignItems={'center'}
+                justifyContent={'space-between'}
+                height={'100%'}
+                backgroundColor={'#FFEAE5'}
+                borderRadius={15}>
+                <Text fontSize={16} color={'#FFAECB'} fontWeight={'medium'}>
+                  announce
+                </Text>
+                <Image
+                  source={require('../assets/plus2_icon.png')}
+                  alt={'plus2'}
+                  tintColor={'#FFAECB'}
+                />
+              </HStack>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => {
+                navigation.navigate('CreatePostScreen', {
+                  eventId: eventId,
+                  eventChatId: eventChatId,
+                });
+              }}
+              style={{width: '45%', height: '100%'}}>
+              <HStack
+                marginTop={2}
+                paddingX={'5%'}
+                alignItems={'center'}
+                justifyContent={'space-between'}
+                height={'100%'}
+                backgroundColor={'#D3F1FF'}
+                borderRadius={15}>
+                <Text fontSize={16} color={'#72D8FF'} fontWeight={'medium'}>
+                  Post
+                </Text>
+                <Image
+                  source={require('../assets/plus2_icon.png')}
+                  alt={'plus2'}
+                  tintColor={'#72D8FF'}
+                />
+              </HStack>
+            </TouchableOpacity>
+            {/* <TouchableOpacity
+              onPress={() => {
+                navigation.navigate('CreatePostScreen', {
+                  eventId: eventId,
+                  eventChatId: eventChatId,
+                });
+              }}
+              style={{width: '100%', height: '100%'}}>
+              <HStack
+                width={'45%'}
+                alignItems={'center'}
+                justifyContent={'space-between'}
+                marginX={2}
+                backgroundColor={'#D3F1FF'}
+                borderRadius={15}>
+                <Text fontSize={16} color={'#72D8FF'} fontWeight={'medium'}>
+                  Post
+                </Text>
+                <Image
+                  source={require('../assets/plus2_icon.png')}
+                  alt={'plus2'}
+                />
+              </HStack>
+            </TouchableOpacity> */}
+          </HStack>
+          {/* non-Header view */}
+          {/* <HStack
+            width={'100%'}
+            height={'4%'}
+            justifyContent={'space-between'}
+            paddingX={'2%'}>
+            <HStack
+              marginTop={2}
+              paddingX={'5%'}
+              alignItems={'center'}
+              justifyContent={'space-between'}
+              // width={'45%'}
+              width={'100%'}
+              height={'100%'}
+              backgroundColor={'#D3F1FF'}
+              borderRadius={15}>
+              <Text fontSize={16} color={'#72D8FF'} fontWeight={'medium'}>
+                Post
+              </Text>
+              <Image
+                source={require('../assets/plus2_icon.png')}
+                alt={'plus2'}
+              />
+            </HStack>
+          </HStack> */}
+
           <ScrollView variant={'vertical'} height={'100%'}>
             {/* this Box is triger component of member group post */}
             {data?.map((item, index) => {

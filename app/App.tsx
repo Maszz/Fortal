@@ -80,6 +80,7 @@ import ProfileSettingEditScreen from './screens/ProfileSettingEditScreen';
 import FriendScreen from './screens/Friend';
 import NotificatioNScreen from './screens/NotificationScreen';
 import EventNote from './screens/EventNote';
+import CreatePostScreen from './screens/createPostScreen';
 const Stack = createStackNavigator<StackScreenParams>();
 const defaultScreenOption: StackNavigationOptions = {
   headerShown: false,
@@ -360,6 +361,14 @@ const StackNavigation = () => {
             <Stack.Screen
               name="EventNoteScreen"
               component={EventNote}
+              options={{
+                gestureEnabled: true,
+                headerShown: false,
+              }}
+            />
+            <Stack.Screen
+              name="CreatePostScreen"
+              component={CreatePostScreen}
               options={{
                 gestureEnabled: true,
                 headerShown: false,
