@@ -26,7 +26,11 @@ const CommentScreen: FunctionComponent<CommentScreenProps> = () => {
       <Divider my={3} opacity={0} />
       <ScrollView variant={'vertical'} paddingX={'6%'}>
         <HStack borderBottomWidth={1} borderBottomColor={'#D9D9D9'}>
-          <Image source={require('../assets/profileGroupPost_icon.png')} />
+          <Avatar
+            source={require('../assets/profileGroupPost_icon.png')}
+            size={'lg'}>
+            <Avatar.Badge bg="green.500" />
+          </Avatar>
           <VStack flex={1} marginLeft={5} paddingTop={1} paddingRight={'5%'}>
             <Text fontSize={16} bold color={'#232259'}>
               John Doe

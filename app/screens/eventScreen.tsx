@@ -156,20 +156,31 @@ const EventScreen: FunctionComponent<EventScreenProps> = ({
                   }}
                   keyExtractor={item => item?.id}
                 />
-                <Box
+                <HStack
                   mt={2}
                   backgroundColor={'rgba(0,0,0,0.5)'}
                   position={'absolute'}
-                  alignItems={'center'}
+                  alignItems={'flex-start'}
                   alignSelf={'center'}
-                  // h={10}
+                  paddingLeft={'5%'}
                   borderRadius={15}
-                  w={'90%'}
-                  justifyContent={'center'}>
-                  <Text my={2} fontSize={12} fontWeight={400} color={'white'}>
-                    dasdsadsa
+                  w={'90%'}>
+                  <Image
+                    alignSelf={'center'}
+                    style={{transform: [{scale: 0.8}]}}
+                    alt="speaker_icon"
+                    source={require('../assets/speaker_icon.png')}
+                  />
+                  <Text
+                    paddingLeft={'5%'}
+                    textAlign={'left'}
+                    my={2}
+                    fontSize={14}
+                    fontWeight={400}
+                    color={'white'}>
+                    dasdsadsahjbjbjbj
                   </Text>
-                </Box>
+                </HStack>
               </View>
             </Box>
           </LinearGradient>
@@ -241,12 +252,16 @@ const OtherMessage: FunctionComponent<OtherMessageProps> = ({message}) => {
       mb={3}
       alignItems={'flex-start'}>
       <HStack>
-        <Image
+        <Avatar
+          style={{borderColor: 'white', borderWidth: 2}}
+          size={'md'}
           source={require('../assets/human_icon.png')}
           mt={3}
           mr={2}
-          alt={'human-icon'}
-        />
+          // alt={'human-icon'}
+        >
+          <Avatar.Badge mb={-0.5} mr={8} color={'green.100'} />
+        </Avatar>
         <VStack maxWidth={'77%'}>
           <Text ml={1} fontSize={12} fontWeight={'normal'}>
             {message?.senderName}

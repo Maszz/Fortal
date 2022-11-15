@@ -133,12 +133,15 @@ const EventNote: FunctionComponent<EventNoteScreenProps> = ({
           </HStack>
           <Animated.View style={{opacity: fadeAnim}}>
             <HStack h={pinPostProps.height}>
-              <Image
+              <Avatar
+                style={{borderColor: '#8172F7', borderWidth: 2}}
+                size={'lg'}
                 source={require('../assets/groupAlert_icon.png')}
                 // borderWidth={3}
-                alt={'group alert'}
-                borderColor={'#8172F7'}
-              />
+                // alt={'group alert'}
+              >
+                <Avatar.Badge marginRight={10} mb={-1} color={'green.500'} />
+              </Avatar>
               <VStack width={'100%'} marginX={5}>
                 <Text fontSize={16} color={'#232259'} fontWeight={'bold'}>
                   Header name
@@ -332,17 +335,16 @@ const EventPost: FunctionComponent<EventPostProps> = ({
   onPress,
 }) => {
   return (
-    <Box
-      mt={5}
-      // borderBottomWidth={1}
-      // paddingBottom={1}
-      borderBottomColor={'#8B9093'}>
+    <Box mt={5}>
       <HStack>
-        <Image
+        <Avatar
+          style={{borderColor: '#8172F7', borderWidth: 1}}
+          size={'md'}
           source={require('../assets/profileGroupPost_icon.png')}
           // borderWidth={3}
-          borderColor={'#8172F7'}
-        />
+        >
+          <Avatar.Badge marginRight={8} mb={-1} color={'green.500'} />
+        </Avatar>
         <VStack width={'100%'} marginX={5}>
           <Text fontSize={16} color={'#232259'} fontWeight={'bold'}>
             {name}
