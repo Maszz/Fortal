@@ -233,6 +233,46 @@ export const eventApi = createApi({
         };
       },
     }),
+    getCommentList: builder.query<
+      {
+        id: string;
+        content: string;
+        creator: string;
+        createdAt: Date;
+      }[],
+      {offset: number; limit: number; postId: string}
+    >({
+      query: params => {
+        return {
+          url: 'getCommentList',
+          params: {
+            offset: params.offset,
+            limit: params.limit,
+            postId: params.postId,
+          },
+        };
+      },
+    }),
+    createComment: builder.mutation<
+      any,
+      {
+        postId: string;
+        content: string;
+        creatorUsername: string;
+      }
+    >({
+      query: params => {
+        return {
+          url: 'createComment',
+          method: 'POST',
+          body: {
+            postId: params.postId,
+            content: params.content,
+            creatorUsername: params.creatorUsername,
+          },
+        };
+      },
+    }),
   }),
 });
 
@@ -246,4 +286,6 @@ export const {
   // useLazyGetEventUserListQuery,
   useGetPostListQuery,
   useCreatePostMutation,
+  useGetCommentListQuery,
+  useCreateCommentMutation,
 } = eventApi;
