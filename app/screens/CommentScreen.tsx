@@ -76,16 +76,17 @@ const CommentScreen: FunctionComponent<CommentScreenProps> = () => {
           <Image alt="key icon" source={require('../assets/smile_icon.png')} />
           <TextArea
             // flex={1}
-            marginX={'3%'}
+            variant={'unstyled'}
+            // marginX={'1%'}
             alignSelf={'center'}
             justifyItems={'center'}
             borderColor={'white'}
-            width={'70%'}
-            maxWidth={'90%'}
+            width={'80%'}
+            // maxWidth={'90%'}
             // height={height}
             // height={'5%'}
             textAlign={'left'}
-            paddingX={3}
+            // paddingX={2}
             paddingY={2}
             fontSize={16}
             fontWeight={'normal'}
