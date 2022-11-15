@@ -21,6 +21,9 @@ import {Divider, Input} from 'native-base';
 import {useGetPostListQuery} from '../redux/apis';
 import {useIsFocused} from '@react-navigation/native';
 import moment from 'moment';
+import {useGetEventByIdQuery} from '../redux/apis';
+import {useAuth} from '../hooks/useAuth';
+import {useCreatePinPostMutation, useGetPinedPostQuery} from '../redux/apis';
 const EventNote: FunctionComponent<EventNoteScreenProps> = ({
   navigation,
   route,
@@ -30,17 +33,27 @@ const EventNote: FunctionComponent<EventNoteScreenProps> = ({
     height: string;
   }>({height: 'auto'});
   const fadeAnim = useRef(new Animated.Value(1)).current;
+  const {data: pinPostData, isSuccess: pinPostIsSuccess} = useGetPinedPostQuery(
+    {eventId: eventId},
+  );
+  const [createPinPost] = useCreatePinPostMutation();
   const {data, refetch} = useGetPostListQuery({
     eventId: eventId,
     offset: 0,
     limit: 10,
   });
+  const {data: eventData, isSuccess: eventSuccess} =
+    useGetEventByIdQuery(eventId);
   const isFocused = useIsFocused();
+  const {user} = useAuth();
   useEffect(() => {
     if (isFocused) {
       refetch();
     }
   }, [isFocused]);
+  useEffect(() => {
+    console.log('dasjhkasddasghj', pinPostData);
+  }, [pinPostData]);
   return (
     <View flex={1} backgroundColor={'white'}>
       {/* head */}
@@ -131,6 +144,7 @@ const EventNote: FunctionComponent<EventNoteScreenProps> = ({
               />
             </TouchableOpacity>
           </HStack>
+
           <Animated.View style={{opacity: fadeAnim}}>
             <HStack h={pinPostProps.height}>
               <Image
@@ -141,10 +155,14 @@ const EventNote: FunctionComponent<EventNoteScreenProps> = ({
               />
               <VStack width={'100%'} marginX={5}>
                 <Text fontSize={16} color={'#232259'} fontWeight={'bold'}>
-                  Header name
+                  {pinPostData ? pinPostData?.creator.username : 'username'}
                 </Text>
                 <Text fontSize={14} color={'#232259'} fontWeight={'normal'}>
-                  date : time
+                  {pinPostData?.EventPinedPost !== null
+                    ? moment(pinPostData?.EventPinedPost.createdAt)
+                        .tz('Asia/Bangkok')
+                        .format('LL')
+                    : 'date'}
                 </Text>
                 <Box
                   justifyItems={'center'}
@@ -160,9 +178,9 @@ const EventNote: FunctionComponent<EventNoteScreenProps> = ({
                     fontSize={16}
                     fontWeight={'normal'}
                     style={{backgroundColor: '#8C84D4'}}>
-                    message Taken from the Latin words "dolorem ipsum", which
-                    translates to "pain itself", Lorem Ipsum text saw a revival
-                    in the mid-20th century as
+                    {pinPostData?.EventPinedPost !== null
+                      ? pinPostData?.EventPinedPost.content
+                      : 'no content'}
                   </Text>
                 </Box>
               </VStack>
@@ -176,91 +194,112 @@ const EventNote: FunctionComponent<EventNoteScreenProps> = ({
           </Text>
           <Divider my={2} />
           {/* for Header Hstack */}
-          <HStack
-            // width={'100%'}
-            height={35}
-            justifyContent={'space-between'}
-            paddingX={'2%'}>
-            <TouchableOpacity
-              onPress={() => {
-                navigation.navigate('CreatePostScreen', {
-                  eventId: eventId,
-                  eventChatId: eventChatId,
-                });
-              }}
-              style={{
-                width: '45%',
-                height: '100%',
-              }}>
-              <HStack
-                marginTop={2}
-                paddingX={'5%'}
-                alignItems={'center'}
-                justifyContent={'space-between'}
-                height={'100%'}
-                backgroundColor={'#FFEAE5'}
-                borderRadius={15}>
-                <Text fontSize={16} color={'#FFAECB'} fontWeight={'medium'}>
-                  announce
-                </Text>
-                <Image
-                  source={require('../assets/plus2_icon.png')}
-                  alt={'plus2'}
-                  tintColor={'#FFAECB'}
-                />
-              </HStack>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => {
-                navigation.navigate('CreatePostScreen', {
-                  eventId: eventId,
-                  eventChatId: eventChatId,
-                });
-              }}
-              style={{width: '45%', height: '100%'}}>
-              <HStack
-                marginTop={2}
-                paddingX={'5%'}
-                alignItems={'center'}
-                justifyContent={'space-between'}
-                height={'100%'}
-                backgroundColor={'#D3F1FF'}
-                borderRadius={15}>
-                <Text fontSize={16} color={'#72D8FF'} fontWeight={'medium'}>
-                  Post
-                </Text>
-                <Image
-                  source={require('../assets/plus2_icon.png')}
-                  alt={'plus2'}
-                  tintColor={'#72D8FF'}
-                />
-              </HStack>
-            </TouchableOpacity>
-            {/* <TouchableOpacity
-              onPress={() => {
-                navigation.navigate('CreatePostScreen', {
-                  eventId: eventId,
-                  eventChatId: eventChatId,
-                });
-              }}
-              style={{width: '100%', height: '100%'}}>
-              <HStack
-                width={'45%'}
-                alignItems={'center'}
-                justifyContent={'space-between'}
-                marginX={2}
-                backgroundColor={'#D3F1FF'}
-                borderRadius={15}>
-                <Text fontSize={16} color={'#72D8FF'} fontWeight={'medium'}>
-                  Post
-                </Text>
-                <Image
-                  source={require('../assets/plus2_icon.png')}
-                  alt={'plus2'}
-                />
-              </HStack>
-            </TouchableOpacity> */}
-          </HStack>
+          {eventData?.creatorId === user?.username ? (
+            <HStack
+              // width={'100%'}
+              height={35}
+              justifyContent={'space-between'}
+              paddingX={'2%'}>
+              <TouchableOpacity
+                onPress={() => {
+                  // createPinPost({
+                  //   eventId: eventId,
+                  //   creatorUsername: user.username,
+                  //   content: 'dasdasjkhdaskj',
+                  // })
+                  //   .unwrap()
+                  //   .then(() => {
+                  //     console.log('create pin post');
+                  //   });
+                  navigation.navigate('CreatePinPostScreen', {
+                    eventChatId: eventChatId,
+                    eventId: eventId,
+                  });
+                }}
+                style={{
+                  width: '45%',
+                  height: '100%',
+                }}>
+                <HStack
+                  marginTop={2}
+                  paddingX={'5%'}
+                  alignItems={'center'}
+                  justifyContent={'space-between'}
+                  height={'100%'}
+                  backgroundColor={'#FFEAE5'}
+                  borderRadius={15}>
+                  <Text fontSize={16} color={'#FFAECB'} fontWeight={'medium'}>
+                    announce
+                  </Text>
+                  <Image
+                    source={require('../assets/plus2_icon.png')}
+                    alt={'plus2'}
+                    tintColor={'#FFAECB'}
+                  />
+                </HStack>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => {
+                  navigation.navigate('CreatePostScreen', {
+                    eventId: eventId,
+                    eventChatId: eventChatId,
+                  });
+                }}
+                style={{width: '45%', height: '100%'}}>
+                <HStack
+                  marginTop={2}
+                  paddingX={'5%'}
+                  alignItems={'center'}
+                  justifyContent={'space-between'}
+                  height={'100%'}
+                  backgroundColor={'#D3F1FF'}
+                  borderRadius={15}>
+                  <Text fontSize={16} color={'#72D8FF'} fontWeight={'medium'}>
+                    Post
+                  </Text>
+                  <Image
+                    source={require('../assets/plus2_icon.png')}
+                    alt={'plus2'}
+                    tintColor={'#72D8FF'}
+                  />
+                </HStack>
+              </TouchableOpacity>
+            </HStack>
+          ) : (
+            <HStack
+              // width={'100%'}
+              height={35}
+              justifyContent={'space-between'}
+              paddingX={'2%'}>
+              <TouchableOpacity
+                onPress={() => {
+                  navigation.navigate('CreatePostScreen', {
+                    eventId: eventId,
+                    eventChatId: eventChatId,
+                  });
+                }}
+                style={{width: '100%', height: '100%'}}>
+                <HStack
+                  marginTop={2}
+                  paddingX={'5%'}
+                  alignItems={'center'}
+                  justifyContent={'space-between'}
+                  height={'100%'}
+                  backgroundColor={'#D3F1FF'}
+                  borderRadius={15}>
+                  <Text fontSize={16} color={'#72D8FF'} fontWeight={'medium'}>
+                    Post
+                  </Text>
+                  <Image
+                    source={require('../assets/plus2_icon.png')}
+                    alt={'plus2'}
+                    tintColor={'#72D8FF'}
+                  />
+                </HStack>
+              </TouchableOpacity>
+            </HStack>
+          )}
+
           {/* non-Header view */}
           {/* <HStack
             width={'100%'}

@@ -273,6 +273,49 @@ export const eventApi = createApi({
         };
       },
     }),
+    getPinedPost: builder.query<
+      {
+        creator: {
+          username: string;
+        };
+        EventPinedPost: {
+          id: string;
+          createdAt: Date;
+          content: string;
+        };
+      },
+      {eventId: string}
+    >({
+      query: params => {
+        return {
+          method: 'GET',
+          url: 'getEventPinedPost',
+          params: {
+            eventId: params.eventId,
+          },
+        };
+      },
+    }),
+    createPinPost: builder.mutation<
+      any,
+      {
+        eventId: string;
+        creatorUsername: string;
+        content: string;
+      }
+    >({
+      query: params => {
+        return {
+          url: 'createPinPost',
+          method: 'POST',
+          body: {
+            eventId: params.eventId,
+            creatorUsername: params.creatorUsername,
+            content: params.content,
+          },
+        };
+      },
+    }),
   }),
 });
 
@@ -288,4 +331,6 @@ export const {
   useCreatePostMutation,
   useGetCommentListQuery,
   useCreateCommentMutation,
+  useGetPinedPostQuery,
+  useCreatePinPostMutation,
 } = eventApi;
