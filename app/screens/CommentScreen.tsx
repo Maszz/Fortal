@@ -11,6 +11,7 @@ import {
   Avatar,
   KeyboardAvoidingView,
   FlatList,
+  Center,
 } from 'native-base';
 import {FunctionComponent, useState} from 'react';
 import {CommentScreenProps} from '../types';
@@ -26,6 +27,8 @@ const CommentScreen: FunctionComponent<CommentScreenProps> = ({
   navigation,
 }) => {
   const [height, setHeight] = useState(30);
+  const [isMount, setIsMount] = useState(false);
+
   const {postId} = route.params;
   const {data, isSuccess, refetch} = useGetCommentListQuery({
     postId: postId,
@@ -39,7 +42,7 @@ const CommentScreen: FunctionComponent<CommentScreenProps> = ({
     <KeyboardAvoidingView
       flex={1}
       behavior={'padding'}
-      keyboardVerticalOffset={20}>
+      keyboardVerticalOffset={height}>
       <View flex={1} backgroundColor={'white'}>
         <HStack paddingTop={'7%'} paddingX={'6%'}>
           <TouchableOpacity
@@ -48,13 +51,20 @@ const CommentScreen: FunctionComponent<CommentScreenProps> = ({
             }}>
             <Image alt="key icon" source={require('../assets/exit_icon.png')} />
           </TouchableOpacity>
-          <Text alignSelf={'center'}>Comments</Text>
+
+          <Text marginLeft={'34%'} fontSize={16} bold color={'#232259'}>
+            Comments
+          </Text>
         </HStack>
         <Divider my={3} opacity={0} />
         <FlatList
           data={data}
           renderItem={({item}) => (
-            <HStack borderBottomWidth={1} borderBottomColor={'#D9D9D9'}>
+            <HStack
+              paddingTop={3}
+              borderBottomWidth={1}
+              borderBottomColor={'#D9D9D9'}
+              marginX={'7%'}>
               <Image source={require('../assets/profileGroupPost_icon.png')} />
               <VStack
                 flex={1}
@@ -71,7 +81,7 @@ const CommentScreen: FunctionComponent<CommentScreenProps> = ({
                 <Text fontSize={16} fontWeight={'normal'} color={'#232259'}>
                   {item.content}
                 </Text>
-                <Divider my={1.5} opacity={0} />
+                <Divider my={0.3} opacity={0} />
                 <HStack justifyContent={'flex-end'}>
                   <Text>1</Text>
                   <Image
@@ -120,6 +130,12 @@ const CommentScreen: FunctionComponent<CommentScreenProps> = ({
 
         <Box
           // height={'auto'}
+          onLayout={e => {
+            if (!isMount) {
+              setHeight(e.nativeEvent.layout.height);
+              setIsMount(true);
+            }
+          }}
           width={'100%'}
           backgroundColor={'white'}
           shadow={2}
@@ -128,13 +144,13 @@ const CommentScreen: FunctionComponent<CommentScreenProps> = ({
             // height={'auto'}
             marginTop={'3%'}
             marginBottom={'10%'}
-            paddingTop={'2%'}
-            paddingBottom={'1%'}
-            paddingX={'4%'}
+            paddingTop={'1.5%'}
+            paddingBottom={1}
+            paddingX={'3%'}
             alignSelf={'center'}
             justifyContent={'space-between'}
             width={'90%'}
-            borderRadius={20}
+            borderRadius={'3xl'}
             borderWidth={2}
             borderColor={'#8172F7'}>
             <TouchableOpacity>
