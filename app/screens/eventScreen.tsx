@@ -34,11 +34,8 @@ import moment from 'moment';
 import {useGetEventByIdQuery} from '../redux/apis';
 import {useIsFocused} from '@react-navigation/native';
 import {useFocusEffect} from '@react-navigation/native';
-<<<<<<< HEAD
 import {useGetPinedPostQuery} from '../redux/apis';
-=======
 import {Config} from '../env';
->>>>>>> 97170beac47e66fb09b66097b1cc4b0aed314872
 const EventScreen: FunctionComponent<EventScreenProps> = ({
   navigation,
   route,

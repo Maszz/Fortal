@@ -245,4 +245,5 @@ export const {
   useRemoveFollowerByIdMutation,
   useGetNotificationsMutation,
   useGetUserAvatarQuery,
+  useLazyGetUserAvatarQuery,
 } = userApi;
