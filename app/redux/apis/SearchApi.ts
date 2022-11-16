@@ -13,6 +13,7 @@ export interface SearchResponse {
   bio?: string;
   date?: string;
   location?: string;
+  avarar?: string;
 }
 export interface UserProfileResponse {
   username: string;
@@ -22,6 +23,7 @@ export interface UserProfileResponse {
     displayName?: string;
     isProfilePublic?: boolean;
     eventCount?: number;
+    avarar: string;
   };
   categories: string[];
   _count: {

@@ -25,6 +25,8 @@ import {useGetSearchItemUserByUsernameMutation} from '../redux/apis/SearchApi';
 import {setLoadingAction} from '../redux/reducers/navigation';
 import {useDispatch} from 'react-redux';
 import {StyleSheet, TouchableOpacity, TouchableHighlight} from 'react-native';
+import {Config} from '../env';
+
 const OtherProfileScreen: FunctionComponent<OtherProfileScreenProps> = ({
   route,
   navigation,
@@ -35,6 +37,7 @@ const OtherProfileScreen: FunctionComponent<OtherProfileScreenProps> = ({
   const [getUser, {data, isSuccess}] = useGetSearchItemUserByUsernameMutation();
   const dispatch = useDispatch();
   const [isMounted, setIsMounted] = useState(false);
+  const [image, setImage] = useState<string | undefined>(undefined);
 
   useEffect(() => {
     // console.log('User', user);
@@ -45,6 +48,10 @@ const OtherProfileScreen: FunctionComponent<OtherProfileScreenProps> = ({
     }
     if (isSuccess) {
       dispatch(setLoadingAction(false));
+      if (data?.profile?.avarar === null) {
+        setImage(undefined);
+      }
+      setImage(Config.apiBaseUrl + data?.profile?.avarar);
     }
   }, [isSuccess]);
   return (
@@ -85,10 +92,11 @@ const OtherProfileScreen: FunctionComponent<OtherProfileScreenProps> = ({
           borderRadius={'full'}
           marginLeft={4}
           alt="key icon"
-          source={require('../assets/wonyoung_icon.png')}
-          style={{
-            transform: [{rotate: '-90deg'}],
-          }}
+          // source={require('../assets/wonyoung_icon.png')}
+          source={image ? {uri: image} : require('../assets/wonyoung_icon.png')}
+          w={120}
+          h={120}
+          resizeMode={'cover'}
         />
       </Box>
       <Box

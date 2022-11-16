@@ -22,15 +22,17 @@ import {useGetSearchItemUserByUsernameMutation} from '../redux/apis';
 import {useAuth} from '../hooks/useAuth';
 import {useEffect, useState} from 'react';
 import {useIsFocused} from '@react-navigation/native';
-
+import {Config} from '../env';
 const ProfileScreen: FunctionComponent<ProfileScreenProps> = ({
   navigation,
   route,
 }) => {
   const {user} = useAuth();
-  const [getData, {data}] = useGetSearchItemUserByUsernameMutation();
+  const [getData, {data, isSuccess}] = useGetSearchItemUserByUsernameMutation();
   const [isMounted, setIsMounted] = useState(false);
   const isFocused = useIsFocused();
+  const [image, setImage] = useState<string | undefined>(undefined);
+
   useEffect(() => {
     if (!isMounted) {
       getData(user.username);
@@ -40,6 +42,18 @@ const ProfileScreen: FunctionComponent<ProfileScreenProps> = ({
       getData(user.username);
     }
   }, [isFocused]);
+  useEffect(() => {
+    if (isSuccess) {
+      console.log(data?.profile?.avarar);
+      if (data?.profile?.avarar === null) {
+        setImage(undefined);
+      } else {
+        setImage(Config.apiBaseUrl + data?.profile?.avarar);
+      }
+
+      // setImage(Config.apiBaseUrl + data?.profile?.avarar);
+    }
+  }, [isSuccess]);
   return (
     <View flex={10} backgroundColor={'white'} paddingX={5}>
       <Box flex={3} paddingY={5}>
@@ -89,11 +103,29 @@ const ProfileScreen: FunctionComponent<ProfileScreenProps> = ({
           borderRadius={'full'}
           marginLeft={4}
           alt="key icon"
-          source={require('../assets/wonyoung_icon.png')}
+          // source={require('../assets/wonyoung_icon.png')}
+          source={image ? {uri: image} : require('../assets/wonyoung_icon.png')}
+          w={120}
+          h={120}
+          resizeMode={'cover'}
+        />
+
+        {/* <Image
+          borderColor={'#8172F7'}
+          borderWidth={4}
+          borderRadius={'full'}
+          marginLeft={4}
+          alt="key icon"
+          // source={require('../assets/wonyoung_icon.png')}
+          source={{
+            uri:
+              'data:image/jpeg;base64,' +
+              Buffer.from(data?.profile?.avarar?.data).toString('base64'), //data.data in your case
+          }}
           style={{
             transform: [{rotate: '-90deg'}],
           }}
-        />
+        /> */}
       </Box>
       <Box
         paddingTop={5}

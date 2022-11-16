@@ -5,6 +5,7 @@
     /* Visit https://aka.ms/tsconfig.json to read more about this file */
 
     /* Completeness */
+    "types": ["react-native", "jest","node"],                       /* Type declaration files to be included in compilation. */
     "skipLibCheck": true                                 /* Skip type checking all .d.ts files. */
   }
 }

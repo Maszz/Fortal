@@ -15,7 +15,7 @@ const devConfig = {
 };
 
 /**
- * defalut value same as no debugger attached
+ * defalut value same as fno debugger attached
  */
 const prodConfig = {
   graphqlHttp: 'http://localhost:3333/graphql',

@@ -39,7 +39,7 @@ import {
 import moment from 'moment';
 import {useAuth} from '../hooks/useAuth';
 import {GetFollowerResponse} from '../redux/apis';
-
+import {Config} from '../env';
 const SearchScreen: FunctionComponent<SearchScreenProps> = () => {
   const [searchInput, setSearchInput] = useState('');
   const {user} = useAuth();
@@ -189,9 +189,13 @@ const SearchItemUser: FunctionComponent<SearchItemProps> = ({
             borderColor={'#8172F7'}
             borderWidth={2}
             size="70px"
-            // source={{
-            //   uri: item.avatarUrl,
-            // }}
+            source={
+              item.avarar === null
+                ? require('../assets/wonyoung_icon.png')
+                : {
+                    uri: Config.apiBaseUrl + item.avarar,
+                  }
+            }
           />
         </VStack>
         <VStack w={'50%'} pl={3} mx={2}>
