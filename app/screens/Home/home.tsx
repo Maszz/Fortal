@@ -177,8 +177,8 @@ const Home: FunctionComponent<HomeScreenTypes.HomeScreenProps> = ({route}) => {
         {/* row 2 */}
       </HStack>
 
-      <Button onPress={() => logout()}>btn</Button>
-      <TouchableOpacity
+      {/* <Button onPress={() => logout()}>btn</Button> */}
+      {/* <TouchableOpacity
         onPress={() => {
           var options = {
             title: 'Select Image',
@@ -224,9 +224,7 @@ const Home: FunctionComponent<HomeScreenTypes.HomeScreenProps> = ({route}) => {
               }
             },
           );
-        }}>
-        <Text>adsdasddas</Text>
-      </TouchableOpacity>
+        }}></TouchableOpacity> */}
     </ScrollView>
   );
 };
