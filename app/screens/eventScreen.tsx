@@ -19,6 +19,7 @@ import {useChat} from '../hooks/useChat';
 import {useAuth} from '../hooks/useAuth';
 import {GetMessagesType} from '../hooks/useChat';
 import {useEffect} from 'react';
+import {useGetUserAvatarQuery} from '../redux/apis';
 import {
   Platform,
   Keyboard,
@@ -33,7 +34,11 @@ import moment from 'moment';
 import {useGetEventByIdQuery} from '../redux/apis';
 import {useIsFocused} from '@react-navigation/native';
 import {useFocusEffect} from '@react-navigation/native';
+<<<<<<< HEAD
 import {useGetPinedPostQuery} from '../redux/apis';
+=======
+import {Config} from '../env';
+>>>>>>> 97170beac47e66fb09b66097b1cc4b0aed314872
 const EventScreen: FunctionComponent<EventScreenProps> = ({
   navigation,
   route,
@@ -244,7 +249,19 @@ export interface OtherMessageProps {
 const OtherMessage: FunctionComponent<OtherMessageProps> = ({message}) => {
   const [height, setHeight] = useState<number>(0);
   const [isMounted, setIsMounted] = useState<boolean>(false);
+  const {data, isLoading} = useGetUserAvatarQuery(message?.senderName || '');
+  const [image, setImage] = useState<string | undefined>(undefined);
+  useEffect(() => {
+    console.log('data', data);
 
+    if (!isLoading) {
+      if (data?.avarar === null) {
+        setImage(undefined);
+      } else {
+        setImage(Config.apiBaseUrl + data?.avarar);
+      }
+    }
+  }, [isLoading]);
   return (
     <Box
       // backgroundColor={'yellow.300'}
@@ -258,11 +275,9 @@ const OtherMessage: FunctionComponent<OtherMessageProps> = ({message}) => {
         <Avatar
           style={{borderColor: 'white', borderWidth: 2}}
           size={'md'}
-          source={require('../assets/human_icon.png')}
+          source={image ? {uri: image} : require('../assets/wonyoung_icon.png')}
           mt={3}
-          mr={2}
-          // alt={'human-icon'}
-        >
+          mr={2}>
           <Avatar.Badge mb={-0.5} mr={8} color={'green.100'} />
         </Avatar>
         <VStack maxWidth={'77%'}>

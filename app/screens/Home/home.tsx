@@ -24,6 +24,7 @@ import 'moment-timezone';
 import moment from 'moment';
 import {SheetManager} from 'react-native-actions-sheet';
 import {useIsFocused} from '@react-navigation/native';
+import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 
 const Home: FunctionComponent<HomeScreenTypes.HomeScreenProps> = ({route}) => {
   const {logout, user} = useAuth();
@@ -176,7 +177,54 @@ const Home: FunctionComponent<HomeScreenTypes.HomeScreenProps> = ({route}) => {
         {/* row 2 */}
       </HStack>
 
-      <Button onPress={() => logout()}>btn</Button>
+      {/* <Button onPress={() => logout()}>btn</Button> */}
+      {/* <TouchableOpacity
+        onPress={() => {
+          var options = {
+            title: 'Select Image',
+          };
+          launchImageLibrary(
+            {mediaType: 'photo', selectionLimit: 1, quality: 0.4},
+            response => {
+              console.log('Response = ', response);
+
+              if (response.didCancel) {
+                console.log('User cancelled image picker');
+              } else if (response.errorMessage) {
+                console.log('ImagePicker Error: ', response.errorMessage);
+              } else {
+                console.log(
+                  'User selected a file form camera or gallery',
+                  response,
+                );
+                const data = new FormData();
+                data.append('userId', 'Sdadfssdf');
+                if (response.assets) {
+                  data.append('fileData', {
+                    uri: response?.assets[0].uri || '',
+                    type: response?.assets[0]?.type || '',
+                    name: response?.assets[0]?.fileName || '',
+                  });
+                }
+                const config = {
+                  method: 'POST',
+                  headers: {
+                    Accept: 'application/json',
+                    'Content-Type': 'multipart/form-data',
+                  },
+                  body: data,
+                };
+                fetch('http://localhost:3333/firebase/' + 'upload', config)
+                  .then(checkStatusAndGetJSONResponse => {
+                    console.log(checkStatusAndGetJSONResponse);
+                  })
+                  .catch(err => {
+                    console.log(err);
+                  });
+              }
+            },
+          );
+        }}></TouchableOpacity> */}
     </ScrollView>
   );
 };

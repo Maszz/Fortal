@@ -219,6 +219,13 @@ export const userApi = createApi({
         params: {u: username},
       }),
     }),
+    getUserAvatar: builder.query<{avarar: string}, string>({
+      query: username => ({
+        url: `getAvatar`,
+        method: 'GET',
+        params: {u: username},
+      }),
+    }),
   }),
 });
 
@@ -237,4 +244,5 @@ export const {
   useUnFollowingByIdMutation,
   useRemoveFollowerByIdMutation,
   useGetNotificationsMutation,
+  useGetUserAvatarQuery,
 } = userApi;

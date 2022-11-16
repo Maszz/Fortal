@@ -25,7 +25,8 @@ import {useUpdateUserProfileMutation, ErrorResponse} from '../redux/apis';
 import {useEffect} from 'react';
 import {useDispatch} from 'react-redux';
 import {setLoadingAction} from '../redux/reducers/navigation';
-
+import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
+import {Config} from '../env';
 export interface UserEditFormInput {
   displayName: string;
   bio: string;
@@ -36,7 +37,7 @@ const ProfileSettingEditScreen: FunctionComponent<
   ProfileSettingEditScreenProps
 > = ({navigation}) => {
   const {user, updateUsername} = useAuth();
-  const [getData, {data, isSuccess}] = useGetSearchItemUserByUsernameMutation();
+  const [getData, {data, isLoading}] = useGetSearchItemUserByUsernameMutation();
 
   const [updateUserProfile, resultUpdateUserProfile] =
     useUpdateUserProfileMutation();
@@ -50,6 +51,15 @@ const ProfileSettingEditScreen: FunctionComponent<
   const [tags, setTags] = useState<string[]>(data?.categories || []);
   const [newTags, setNewTags] = useState<string[]>([]);
   const [deletedTags, setDeletedTags] = useState<string[]>([]);
+  const [image, setImage] = useState<string | undefined>(undefined);
+  const [imageBuff, setImageBuff] = useState<
+    | {
+        uri: string;
+        type: string;
+        name: string;
+      }
+    | undefined
+  >(undefined);
   const [isMounted, setIsMounted] = useState(false);
   const dispatch = useDispatch();
 
@@ -58,7 +68,7 @@ const ProfileSettingEditScreen: FunctionComponent<
     console.log('data', data);
     if (!isMounted) {
       dispatch(setLoadingAction(true));
-
+      console.log('user', user);
       setIsMounted(true);
       getData(user?.username)
         .unwrap()
@@ -70,17 +80,23 @@ const ProfileSettingEditScreen: FunctionComponent<
             isProfilePublic: res.profile?.isProfilePublic,
           } as UserEditFormInput);
           setTags(res.categories || []);
+          console.log('res', res);
+
+          if (res?.profile?.avarar === null) {
+            setImage(undefined);
+          } else {
+            setImage(Config.apiBaseUrl + res?.profile?.avarar);
+          }
+          console.log(data);
+          dispatch(setLoadingAction(false));
         });
-    }
-    if (isSuccess) {
-      dispatch(setLoadingAction(false));
     }
 
     // console.log('tags: ', tags);
     // console.log('newTags: ', newTags);
     // console.log('deletedTags: ', deletedTags);
     // console.log('isProfilePublic: ', userFormInput.isProfilePublic);
-  }, [isSuccess]);
+  }, []);
 
   return (
     <View flex={10} backgroundColor={'white'} paddingX={5}>
@@ -118,6 +134,31 @@ const ProfileSettingEditScreen: FunctionComponent<
                   .then(v => {
                     console.log('update success');
                     console.log(v);
+                    const data = new FormData();
+                    data.append('userId', user.username);
+                    if (imageBuff) {
+                      data.append('fileData', {
+                        uri: imageBuff?.uri || '',
+                        type: imageBuff?.type || '',
+                        name: imageBuff?.name || '',
+                      });
+                    }
+                    const config = {
+                      method: 'POST',
+                      headers: {
+                        Accept: 'application/json',
+                        'Content-Type': 'multipart/form-data',
+                      },
+                      body: data,
+                    };
+                    fetch('http://localhost:3333/firebase/' + 'upload', config)
+                      .then(checkStatusAndGetJSONResponse => {
+                        console.log(checkStatusAndGetJSONResponse);
+                      })
+                      .catch(err => {
+                        console.log(err);
+                      });
+
                     if (v.updateUsername) {
                       console.log('update username success');
                       updateUsername(v.profile.username);
@@ -152,17 +193,50 @@ const ProfileSettingEditScreen: FunctionComponent<
         </ZStack>
       </Box>
       <Box flex={1.5} marginTop={'-30%'} opacity={1} flexDirection={'row'}>
-        <Image
-          borderColor={'#8172F7'}
-          borderWidth={4}
-          borderRadius={'full'}
-          marginLeft={4}
-          alt="key icon"
-          source={require('../assets/wonyoung_icon.png')}
-          style={{
-            transform: [{rotate: '-90deg'}],
-          }}
-        />
+        <TouchableOpacity
+          onPress={() => {
+            launchImageLibrary(
+              {mediaType: 'photo', selectionLimit: 1, quality: 0.4},
+              response => {
+                console.log('Response = ', response);
+
+                if (response.didCancel) {
+                  console.log('User cancelled image picker');
+                } else if (response.errorMessage) {
+                  console.log('ImagePicker Error: ', response.errorMessage);
+                } else {
+                  console.log(
+                    'User selected a file form camera or gallery',
+                    response,
+                  );
+                  if (response.assets) {
+                    setImageBuff({
+                      uri: response?.assets[0].uri || '',
+                      type: response?.assets[0].type || '',
+                      name: response?.assets[0].fileName || '',
+                    });
+                    setImage(response?.assets[0].uri);
+                  }
+                }
+              },
+            );
+          }}>
+          <Image
+            borderColor={'#8172F7'}
+            borderWidth={4}
+            borderRadius={'full'}
+            marginLeft={4}
+            w={120}
+            h={120}
+            alt="key icon"
+            source={
+              image ? {uri: image} : require('../assets/wonyoung_icon.png')
+            }
+            style={{
+              transform: [{rotate: '-90deg'}],
+            }}
+          />
+        </TouchableOpacity>
         <HStack
           flex={1}
           alignSelf={'flex-end'}
