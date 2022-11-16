@@ -85,7 +85,7 @@ const EventCardActionSheet: FunctionComponent<EventCardActionsSheetProps> = ({
         borderTopLeftRadius: 45,
         borderTopRightRadius: 45,
         height: '84%',
-        paddingHorizontal: 10,
+        paddingHorizontal: '4%',
       }}
       useBottomSafeAreaPadding={true}>
       <View flex={1}>
@@ -95,12 +95,15 @@ const EventCardActionSheet: FunctionComponent<EventCardActionsSheetProps> = ({
           angle={0}
           angleCenter={{x: 0.5, y: 0.5}}
           style={{
-            borderRadius: 25,
+            borderRadius: 50,
             display: 'flex',
-            height: '42%',
+            height: '47%',
+            width: '100%',
             justifyContent: 'flex-end',
+            paddingHorizontal: '7%',
+            paddingBottom: '7%',
           }}>
-          <Box ml={5} mb={5}>
+          <Box>
             <TouchableOpacity
               onPress={() => {
                 actionSheetRef.current?.hide();
@@ -117,24 +120,25 @@ const EventCardActionSheet: FunctionComponent<EventCardActionsSheetProps> = ({
               }}>
               <ZStack
                 bgColor={'warning.200'}
-                width={'47%'}
+                maxWidth={'50%'}
                 borderRadius={'3xl'}
                 mb={5}>
                 <Box
                   backgroundColor={'white'}
                   w={'100%'}
-                  h={5}
-                  opacity={20}
+                  h={7}
+                  opacity={0.2}
                   borderRadius={'3xl'}
                 />
-                <HStack>
+                <HStack width={'100%'} height={7} alignItems={'center'}>
                   <Image
                     source={require('../assets/map_pin_icon.png')}
                     style={{marginHorizontal: 8}}
                     alt={'map pin icon'}
                   />
                   <Text
-                    fontSize={13}
+                    paddingRight={2}
+                    fontSize={14}
                     fontWeight={400}
                     width={'85%'}
                     color={'white'}
@@ -146,51 +150,54 @@ const EventCardActionSheet: FunctionComponent<EventCardActionsSheetProps> = ({
             </TouchableOpacity>
 
             <Text
+              mt={3}
+              width={'50%'}
               color={'#232259'}
               fontSize={32}
-              fontWeight={700}
+              fontWeight={'bold'}
               numberOfLines={2}
               ellipsizeMode={'tail'}>
               {data?.name}
             </Text>
           </Box>
         </LinearGradient>
-        <View paddingX={4} mt={4}>
-          <Text fontSize={14} fontWeight={700} mb={2} color={'#232259'}>
+        <View paddingX={'7%'} mt={'5%'}>
+          <Text fontSize={15} fontWeight={'bold'} color={'#232259'}>
             About the activity
           </Text>
           <Text
+            marginY={'3%'}
             color={'#232259'}
-            fontSize={14}
-            fontWeight={400}
+            fontSize={15}
+            fontWeight={'normal'}
             numberOfLines={4}
             ellipsizeMode={'tail'}>
             {data?.description}
           </Text>
           <VStack>
             <HStack justifyContent={'space-between'} mt={5}>
-              <Text fontSize={14} fontWeight={700} color={'#232259'}>
+              <Text fontSize={15} fontWeight={'bold'} color={'#232259'}>
                 Start
               </Text>
-              <Text fontSize={14} fontWeight={400} color={'#232259'}>
+              <Text fontSize={15} fontWeight={'normal'} color={'#232259'}>
                 {data
                   ? moment(data?.startDate).format('DD MMM YYYY, h:mm a')
                   : ''}
               </Text>
             </HStack>
             <HStack justifyContent={'space-between'} mt={5}>
-              <Text fontSize={14} fontWeight={700} color={'#232259'}>
+              <Text fontSize={15} fontWeight={'bold'} color={'#232259'}>
                 End
               </Text>
-              <Text fontSize={14} fontWeight={400} color={'#232259'}>
+              <Text fontSize={15} fontWeight={'normal'} color={'#232259'}>
                 {data ? moment(data?.endDate).format('h:mm a') : ''}
               </Text>
             </HStack>
             <HStack justifyContent={'space-between'} mt={5}>
-              <Text fontSize={14} fontWeight={700} color={'#232259'}>
+              <Text fontSize={15} fontWeight={'bold'} color={'#232259'}>
                 Member
               </Text>
-              <Text fontSize={14} fontWeight={400} color={'#232259'}>
+              <Text fontSize={15} fontWeight={'normal'} color={'#232259'}>
                 {data?.memberType === 'UNLIMITED'
                   ? 'Unlimited'
                   : `${data?.memberLimit}/${data?.participantsId.length}`}

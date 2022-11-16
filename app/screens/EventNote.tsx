@@ -24,6 +24,8 @@ import moment from 'moment';
 import {useGetEventByIdQuery} from '../redux/apis';
 import {useAuth} from '../hooks/useAuth';
 import {useCreatePinPostMutation, useGetPinedPostQuery} from '../redux/apis';
+import {useLazyGetUserAvatarQuery} from '../redux/apis';
+import {Config} from '../env';
 const EventNote: FunctionComponent<EventNoteScreenProps> = ({
   navigation,
   route,
@@ -36,6 +38,8 @@ const EventNote: FunctionComponent<EventNoteScreenProps> = ({
   const {data: pinPostData, isSuccess: pinPostIsSuccess} = useGetPinedPostQuery(
     {eventId: eventId},
   );
+  const [getAvatar, {data: avatarData}] = useLazyGetUserAvatarQuery();
+  const [image, setImage] = useState<string | undefined>(undefined);
   const [createPinPost] = useCreatePinPostMutation();
   const {data, refetch} = useGetPostListQuery({
     eventId: eventId,
@@ -54,6 +58,19 @@ const EventNote: FunctionComponent<EventNoteScreenProps> = ({
   useEffect(() => {
     console.log('dasjhkasddasghj', pinPostData);
   }, [pinPostData]);
+  useEffect(() => {
+    if (pinPostIsSuccess) {
+      getAvatar(pinPostData?.creator.username)
+        .unwrap()
+        .then(res => {
+          if (res?.avarar === null) {
+            setImage(undefined);
+          } else {
+            setImage(Config.apiBaseUrl + res?.avarar);
+          }
+        });
+    }
+  }, [pinPostIsSuccess]);
   return (
     <View flex={1} backgroundColor={'white'}>
       {/* head */}
@@ -72,8 +89,8 @@ const EventNote: FunctionComponent<EventNoteScreenProps> = ({
               navigation.goBack();
             }}>
             <Image
-              width={30}
-              height={24.36}
+              // width={30}
+              // height={24.36}
               alt="key icon"
               source={require('../assets/back_icon.png')}
               tintColor={'#232259'}
@@ -82,7 +99,15 @@ const EventNote: FunctionComponent<EventNoteScreenProps> = ({
           <Text fontSize={16} color={'#232259'} fontWeight={'bold'}>
             Group note
           </Text>
-          <Image alt="key icon" source={require('../assets/paper_icon.png')} />
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate('EventDescriptionScreen', {eventId: eventId});
+            }}>
+            <Image
+              alt="key icon"
+              source={require('../assets/paper_icon.png')}
+            />
+          </TouchableOpacity>
         </Box>
       </Box>
       <VStack flex={1} paddingX={'7%'} marginTop={'5%'}>
@@ -150,7 +175,11 @@ const EventNote: FunctionComponent<EventNoteScreenProps> = ({
               <Avatar
                 style={{borderColor: '#8172F7', borderWidth: 2}}
                 size={'lg'}
-                source={require('../assets/groupAlert_icon.png')}
+                source={
+                  image
+                    ? {uri: image}
+                    : require('../assets/groupAlert_icon.png')
+                }
                 // borderWidth={3}
                 // alt={'group alert'}
               >
@@ -176,14 +205,14 @@ const EventNote: FunctionComponent<EventNoteScreenProps> = ({
                   width={'75%'}>
                   <Text
                     textAlign={'left'}
-                    paddingX={1}
+                    paddingX={2}
                     color={'white'}
                     fontSize={16}
                     fontWeight={'normal'}
                     style={{backgroundColor: '#8C84D4'}}>
                     {pinPostData?.EventPinedPost !== null
                       ? pinPostData?.EventPinedPost.content
-                      : 'no content'}
+                      : 'no announcement now'}
                   </Text>
                 </Box>
               </VStack>
