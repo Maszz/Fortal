@@ -26,6 +26,7 @@ import {useAuth} from '../hooks/useAuth';
 import {useCreatePinPostMutation, useGetPinedPostQuery} from '../redux/apis';
 import {useLazyGetUserAvatarQuery} from '../redux/apis';
 import {Config} from '../env';
+import {useGetUserAvatarQuery} from '../redux/apis';
 const EventNote: FunctionComponent<EventNoteScreenProps> = ({
   navigation,
   route,
@@ -35,9 +36,11 @@ const EventNote: FunctionComponent<EventNoteScreenProps> = ({
     height: string;
   }>({height: 'auto'});
   const fadeAnim = useRef(new Animated.Value(1)).current;
-  const {data: pinPostData, isSuccess: pinPostIsSuccess} = useGetPinedPostQuery(
-    {eventId: eventId},
-  );
+  const {
+    data: pinPostData,
+    isSuccess: pinPostIsSuccess,
+    refetch: pinedRefetch,
+  } = useGetPinedPostQuery({eventId: eventId});
   const [getAvatar, {data: avatarData}] = useLazyGetUserAvatarQuery();
   const [image, setImage] = useState<string | undefined>(undefined);
   const [createPinPost] = useCreatePinPostMutation();
@@ -53,6 +56,7 @@ const EventNote: FunctionComponent<EventNoteScreenProps> = ({
   useEffect(() => {
     if (isFocused) {
       refetch();
+      pinedRefetch();
     }
   }, [isFocused]);
   useEffect(() => {
@@ -60,6 +64,7 @@ const EventNote: FunctionComponent<EventNoteScreenProps> = ({
   }, [pinPostData]);
   useEffect(() => {
     if (pinPostIsSuccess) {
+      console.log('pinPostIsSuccess');
       getAvatar(pinPostData?.creator.username)
         .unwrap()
         .then(res => {
@@ -193,8 +198,15 @@ const EventNote: FunctionComponent<EventNoteScreenProps> = ({
                   {pinPostData?.EventPinedPost !== null
                     ? moment(pinPostData?.EventPinedPost.createdAt)
                         .tz('Asia/Bangkok')
-                        .format('LL')
+                        .format('ll')
                     : 'date'}
+                </Text>
+                <Text fontSize={14} color={'#232259'} fontWeight={'normal'}>
+                  {pinPostData?.EventPinedPost !== null
+                    ? moment(pinPostData?.EventPinedPost.createdAt)
+                        .tz('Asia/Bangkok')
+                        .format('LT')
+                    : ''}
                 </Text>
                 <Box
                   justifyItems={'center'}
@@ -402,13 +414,28 @@ const EventPost: FunctionComponent<EventPostProps> = ({
   message,
   onPress,
 }) => {
+  const {data, isLoading} = useGetUserAvatarQuery(name);
+  const [avatar, setAvatar] = useState<string | undefined>(undefined);
+  useEffect(() => {
+    if (!isLoading) {
+      if (data?.avarar === null) {
+        setAvatar(undefined);
+      } else {
+        setAvatar(Config.apiBaseUrl + data?.avarar);
+      }
+    }
+  }, [data]);
   return (
     <Box mt={5}>
       <HStack>
         <Avatar
           style={{borderColor: '#8172F7', borderWidth: 1}}
           size={'md'}
-          source={require('../assets/profileGroupPost_icon.png')}
+          source={
+            avatar
+              ? {uri: avatar}
+              : require('../assets/profileGroupPost_icon.png')
+          }
           // borderWidth={3}
         >
           <Avatar.Badge marginRight={8} mb={-1} color={'green.500'} />

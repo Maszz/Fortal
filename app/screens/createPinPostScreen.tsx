@@ -20,14 +20,17 @@ import {
 } from 'react-native';
 import {useAuth} from '../hooks/useAuth';
 import {useCreatePostMutation} from '../redux/apis';
-const CreatePostScreen: FunctionComponent<CreatePostScreenProps> = ({
+import {CreatePinPostProps} from '../types/App.type';
+import {useCreatePinPostMutation} from '../redux/apis';
+const CreatePinPostScreen: FunctionComponent<CreatePinPostProps> = ({
   navigation,
   route,
 }) => {
   const {user} = useAuth();
   const {eventId, eventChatId} = route.params;
   const [userInput, setUserInput] = useState<string>('');
-  const [createPost] = useCreatePostMutation();
+  const [createPinPost] = useCreatePinPostMutation();
+
   return (
     <View flex={1} backgroundColor={'white'}>
       <Box
@@ -134,7 +137,7 @@ const CreatePostScreen: FunctionComponent<CreatePostScreenProps> = ({
             style={{width: '50%'}}
             onPress={() => {
               console.log('post');
-              createPost({
+              createPinPost({
                 eventId: eventId,
                 content: userInput,
                 creatorUsername: user?.username,
@@ -171,4 +174,4 @@ const CreatePostScreen: FunctionComponent<CreatePostScreenProps> = ({
     </View>
   );
 };
-export default CreatePostScreen;
+export default CreatePinPostScreen;
