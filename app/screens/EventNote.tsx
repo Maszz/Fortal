@@ -72,8 +72,8 @@ const EventNote: FunctionComponent<EventNoteScreenProps> = ({
               navigation.goBack();
             }}>
             <Image
-              width={30}
-              height={24.36}
+              // width={30}
+              // height={24.36}
               alt="key icon"
               source={require('../assets/back_icon.png')}
               tintColor={'#232259'}
@@ -176,14 +176,14 @@ const EventNote: FunctionComponent<EventNoteScreenProps> = ({
                   width={'75%'}>
                   <Text
                     textAlign={'left'}
-                    paddingX={1}
+                    paddingX={2}
                     color={'white'}
                     fontSize={16}
                     fontWeight={'normal'}
                     style={{backgroundColor: '#8C84D4'}}>
                     {pinPostData?.EventPinedPost !== null
                       ? pinPostData?.EventPinedPost.content
-                      : 'no content'}
+                      : 'no announcement now'}
                   </Text>
                 </Box>
               </VStack>

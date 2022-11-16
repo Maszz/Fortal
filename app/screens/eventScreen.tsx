@@ -33,7 +33,7 @@ import moment from 'moment';
 import {useGetEventByIdQuery} from '../redux/apis';
 import {useIsFocused} from '@react-navigation/native';
 import {useFocusEffect} from '@react-navigation/native';
-
+import {useGetPinedPostQuery} from '../redux/apis';
 const EventScreen: FunctionComponent<EventScreenProps> = ({
   navigation,
   route,
@@ -45,6 +45,7 @@ const EventScreen: FunctionComponent<EventScreenProps> = ({
     senderName: user.username,
     eventChatId: eventChatId,
   });
+  const {data: pinedPost} = useGetPinedPostQuery({eventId: eventId});
   const flatListRef = useRef<any>(null);
 
   const [bottom, setBottom] = useState<number | string>('4%');
@@ -178,7 +179,9 @@ const EventScreen: FunctionComponent<EventScreenProps> = ({
                     fontSize={14}
                     fontWeight={400}
                     color={'white'}>
-                    dasdsadsahjbjbjbj
+                    {pinedPost?.EventPinedPost
+                      ? pinedPost?.EventPinedPost.content
+                      : 'No pinned post'}
                   </Text>
                 </HStack>
               </View>

@@ -44,7 +44,7 @@ const CommentScreen: FunctionComponent<CommentScreenProps> = ({
       behavior={'padding'}
       keyboardVerticalOffset={height}>
       <View flex={1} backgroundColor={'white'}>
-        <HStack paddingTop={'7%'} paddingX={'6%'}>
+        <HStack paddingTop={'5%'} paddingX={'6%'}>
           <TouchableOpacity
             onPress={() => {
               navigation.goBack();
@@ -52,11 +52,11 @@ const CommentScreen: FunctionComponent<CommentScreenProps> = ({
             <Image alt="key icon" source={require('../assets/exit_icon.png')} />
           </TouchableOpacity>
 
-          <Text marginLeft={'34%'} fontSize={16} bold color={'#232259'}>
+          <Text marginLeft={'33%'} fontSize={16} bold color={'#232259'}>
             Comments
           </Text>
         </HStack>
-        <Divider my={3} opacity={0} />
+        <Divider my={1.2} opacity={0} />
         <FlatList
           data={data}
           renderItem={({item}) => (
@@ -130,23 +130,26 @@ const CommentScreen: FunctionComponent<CommentScreenProps> = ({
 
         <Box
           // height={'auto'}
-          onLayout={e => {
-            if (!isMount) {
-              setHeight(e.nativeEvent.layout.height);
-              setIsMount(true);
-            }
-          }}
+
+          // minHeight={'10%'}
+          // maxHeight={'95%'}
           width={'100%'}
           backgroundColor={'white'}
           shadow={2}
-          justifyContent={'flex-end'}>
+          position={'absolute'}
+          bottom={0}>
           <HStack
-            // height={'auto'}
+            onLayout={e => {
+              if (!isMount) {
+                setHeight(e.nativeEvent.layout.height);
+                setIsMount(true);
+              }
+            }}
             marginTop={'3%'}
-            marginBottom={'10%'}
-            paddingTop={'1.5%'}
+            paddingTop={2}
             paddingBottom={1}
             paddingX={'3%'}
+            marginBottom={10}
             alignSelf={'center'}
             justifyContent={'space-between'}
             width={'90%'}
@@ -160,6 +163,9 @@ const CommentScreen: FunctionComponent<CommentScreenProps> = ({
               />
             </TouchableOpacity>
             <Input
+              color={'#232259'}
+              fontSize={15}
+              fontWeight={'normal'}
               height={height}
               w={'85%'}
               value={userInput}
@@ -169,7 +175,7 @@ const CommentScreen: FunctionComponent<CommentScreenProps> = ({
                 setUserInput(text);
               }}
               onContentSizeChange={e => {
-                if (e.nativeEvent.contentSize.height < 80) {
+                if (e.nativeEvent.contentSize.height < 85) {
                   setHeight(Math.max(35, e.nativeEvent.contentSize.height));
                   console.log(e.nativeEvent);
                 }
