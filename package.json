@@ -29,7 +29,6 @@
     "@react-navigation/stack": "^6.3.2",
     "@reduxjs/toolkit": "^1.8.5",
     "apollo-link-ws": "^1.0.20",
-    "buffer": "^6.0.3",
     "got": "^12.5.1",
     "graphql": "^16.6.0",
     "graphql-ws": "^5.10.2",
