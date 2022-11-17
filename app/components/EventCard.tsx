@@ -8,6 +8,7 @@ import {
   Box,
   View,
   ScrollView,
+  Avatar,
 } from 'native-base';
 import LinearGradient from 'react-native-linear-gradient';
 import {RootState} from '../redux';
@@ -23,6 +24,9 @@ export interface EventCardProps {
   colors: string[];
   style?: StyleProp<ViewStyle>;
   onPress?: () => void;
+  avatarList: Array<{
+    avatar: string | undefined;
+  }>;
 }
 const EventCard: FunctionComponent<EventCardProps> = ({
   title,
@@ -31,6 +35,7 @@ const EventCard: FunctionComponent<EventCardProps> = ({
   colors,
   style,
   onPress,
+  avatarList,
 }) => {
   const navigation = useSelector<
     RootState,
@@ -127,17 +132,61 @@ const EventCard: FunctionComponent<EventCardProps> = ({
             justifyContent={'space-between'}
             alignItems={'center'}>
             <Text>start</Text>
-            <Box
-              justifyContent={'center'}
-              alignItems={'center'}
-              style={{
-                backgroundColor: 'white',
-                borderRadius: 20,
-                width: 35,
-                height: 35,
-              }}>
-              <Text fontSize={12}>10+</Text>
-            </Box>
+            <HStack
+              justifyContent={'space-between'}
+              paddingLeft={'3%'}
+              marginX={'1%'}
+              marginY={'2%'}>
+              <Avatar.Group
+                _avatar={{
+                  size: 'sm',
+                  marginX: 0.5,
+                  borderColor: '#8C84D4',
+                  borderWidth: 1,
+                }}
+                max={3}>
+                {avatarList.map((avatar, index) => (
+                  <Avatar
+                    source={
+                      avatar.avatar
+                        ? {uri: avatar.avatar}
+                        : require('../assets/profileGroupPost_icon.png')
+                    }
+                  />
+                ))}
+                {/* <Avatar
+                  source={require('../assets/profileGroupPost_icon.png')}
+                />
+                <Avatar
+                  source={require('../assets/profileGroupPost_icon.png')}
+                />
+                <Avatar
+                  source={require('../assets/profileGroupPost_icon.png')}
+                />
+                <Avatar
+                  source={require('../assets/profileGroupPost_icon.png')}
+                />
+                <Avatar
+                  source={require('../assets/profileGroupPost_icon.png')}
+                />
+                <Avatar
+                  source={require('../assets/profileGroupPost_icon.png')}
+                /> */}
+              </Avatar.Group>
+              {/* <Box
+                backgroundColor={'#8C84D4'}
+                maxWidth={'30%'}
+                height={'80%'}
+                borderRadius={'full'}>
+                <Text
+                  paddingX={2}
+                  paddingTop={1}
+                  textAlign={'center'}
+                  fontSize={12}
+                  fontWeight={'light'}
+                  color={'white'}></Text>
+              </Box> */}
+            </HStack>
           </Box>
         </LinearGradient>
       </TouchableOpacity>

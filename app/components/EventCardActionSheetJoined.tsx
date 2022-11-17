@@ -38,10 +38,10 @@ import {useAuth} from '../hooks/useAuth';
 import {ErrorResponse} from '../redux/apis';
 import {Alert} from 'react-native';
 import {Config} from '../env';
-const EventCardActionSheet: FunctionComponent<EventCardActionsSheetProps> = ({
-  sheetId,
-  payload,
-}) => {
+import {EventCardActionsSheetJoinedProps} from '../types';
+const EventCardActionSheetJoined: FunctionComponent<
+  EventCardActionsSheetJoinedProps
+> = ({payload, sheetId}) => {
   const actionSheetRef = useRef<ActionSheetRef>(null);
   const {t} = useTranslation();
   const [isKeyboardVisible, setKeyboardVisible] = useState(false);
@@ -216,15 +216,15 @@ const EventCardActionSheet: FunctionComponent<EventCardActionsSheetProps> = ({
               </Text>
             </HStack>
             {/* <HStack justifyContent={'space-between'} mt={5}>
-              <Text fontSize={15} fontWeight={'bold'} color={'#232259'}>
-                Member
-              </Text>
-              <Text fontSize={15} fontWeight={'normal'} color={'#232259'}>
-                {data?.memberType === 'UNLIMITED'
-                  ? 'Unlimited'
-                  : `${data?.memberLimit}/${data?.participantsId.length}`}
-              </Text>
-            </HStack> */}
+                <Text fontSize={15} fontWeight={'bold'} color={'#232259'}>
+                  Member
+                </Text>
+                <Text fontSize={15} fontWeight={'normal'} color={'#232259'}>
+                  {data?.memberType === 'UNLIMITED'
+                    ? 'Unlimited'
+                    : `${data?.memberLimit}/${data?.participantsId.length}`}
+                </Text>
+              </HStack> */}
 
             <HStack
               justifyContent={'space-between'}
@@ -250,21 +250,6 @@ const EventCardActionSheet: FunctionComponent<EventCardActionsSheetProps> = ({
                     />
                   );
                 })}
-                {/* <Avatar
-                  source={require('../assets/profileGroupPost_icon.png')}
-                /> */}
-                {/* <Avatar
-                  source={require('../assets/profileGroupPost_icon.png')}
-                />
-                <Avatar
-                  source={require('../assets/profileGroupPost_icon.png')}
-                />
-                <Avatar
-                  source={require('../assets/profileGroupPost_icon.png')}
-                /> */}
-                {/* <Avatar
-                  source={require('../assets/profileGroupPost_icon.png')}
-                /> */}
               </Avatar.Group>
               <Box
                 backgroundColor={'#8C84D4'}
@@ -307,46 +292,11 @@ const EventCardActionSheet: FunctionComponent<EventCardActionsSheetProps> = ({
         <Box position={'absolute'} bottom={2} alignSelf={'center'}>
           <TouchableOpacity
             onPress={() => {
-              if (data) {
-                joinedEvent({
-                  eventId: data?.id,
-                  userName: user?.username,
-                })
-                  .unwrap()
-                  .then(v => {
-                    actionSheetRef.current?.hide();
-                    stackNavigation.navigate('EventScreen', {
-                      eventChatId: data?.eventChat.id,
-                      eventId: data?.id,
-                    });
-                    console.log(v);
-                  })
-                  .catch(err => {
-                    const res = err as ErrorResponse;
-                    if (res.data?.message) {
-                      if (res.data.message === 'Event is full') {
-                        Alert.alert('Event is full');
-                        return;
-                      }
-                      if (res.data.message === 'creator cannot join event') {
-                        Alert.alert('creator cannot join event');
-                        return;
-                      }
-                      if (
-                        res.data.message === 'You are already a participant'
-                      ) {
-                        // Alert.alert('User already joined');
-
-                        actionSheetRef.current?.hide();
-                        stackNavigation.navigate('EventScreen', {
-                          eventChatId: data?.eventChat.id,
-                          eventId: data?.id,
-                        });
-                        return;
-                      }
-                    }
-                  });
-              }
+              stackNavigation.navigate('EventScreen', {
+                eventChatId: payload?.eventChatId ? payload?.eventChatId : '',
+                eventId: payload?.eventId ? payload?.eventId : '',
+              });
+              actionSheetRef.current?.hide();
             }}>
             <ZStack
               w={310}
@@ -360,15 +310,17 @@ const EventCardActionSheet: FunctionComponent<EventCardActionsSheetProps> = ({
                 // angleCenter={{x: 0.5, y: 0.5}}
                 style={{width: 310, height: 45, borderRadius: 20}}
               />
-              <Text color={'white'} fontSize={16} fontWeight={'bold'}>
-                Join
-              </Text>
-              {/* <Box
+
+              <Box
                 w={300}
                 h={35}
                 borderRadius={20}
                 alignItems={'center'}
-                justifyContent={'center'}></Box> */}
+                backgroundColor={'white'}
+                justifyContent={'center'}></Box>
+              <Text color={'#8C84D4'} fontSize={16} fontWeight={'bold'}>
+                Chat
+              </Text>
             </ZStack>
           </TouchableOpacity>
         </Box>
@@ -376,4 +328,4 @@ const EventCardActionSheet: FunctionComponent<EventCardActionsSheetProps> = ({
     </ActionSheet>
   );
 };
-export default EventCardActionSheet;
+export default EventCardActionSheetJoined;

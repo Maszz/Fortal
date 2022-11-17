@@ -199,7 +199,7 @@ const EventNote: FunctionComponent<EventNoteScreenProps> = ({
                     ? moment(pinPostData?.EventPinedPost.createdAt)
                         .tz('Asia/Bangkok')
                         .format('ll')
-                    : 'date'}
+                    : ''}
                 </Text>
                 <Text fontSize={14} color={'#232259'} fontWeight={'normal'}>
                   {pinPostData?.EventPinedPost !== null

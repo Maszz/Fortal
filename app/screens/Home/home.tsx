@@ -25,12 +25,17 @@ import moment from 'moment';
 import {SheetManager} from 'react-native-actions-sheet';
 import {useIsFocused} from '@react-navigation/native';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
-
 const Home: FunctionComponent<HomeScreenTypes.HomeScreenProps> = ({route}) => {
   const {logout, user} = useAuth();
   // const {data, refetch} = useGetEventListQuery({offset: 0, limit: 10});
   const [refreshing, setRefreshing] = useState(false);
-  const {eventList: data, refetch, loadMore, refocus} = useGetEventList('home');
+  const {
+    eventList: data,
+    refetch,
+    loadMore,
+    refocus,
+    isLoading,
+  } = useGetEventList('home');
   const onRefresh = () => {
     setRefreshing(true);
     refetch();
@@ -55,6 +60,11 @@ const Home: FunctionComponent<HomeScreenTypes.HomeScreenProps> = ({route}) => {
       refocus();
     }
   }, [isFocused]);
+  // useEffect(() => {
+  //   if(!isLoading) {
+
+  //   }
+  // }, [isLoading]);
   return (
     <ScrollView
       refreshControl={
@@ -151,6 +161,16 @@ const Home: FunctionComponent<HomeScreenTypes.HomeScreenProps> = ({route}) => {
           // marginTop={4}
           w={'100%'}>
           {data?.map((item, index: number) => {
+            const avarar =
+              item?.creator?.profile?.avarar === null
+                ? {avatar: undefined}
+                : {avatar: Config.apiBaseUrl + item?.creator?.profile?.avarar};
+            const paticipant = item?.participants.map(item => {
+              if (item?.profile?.avarar === null) {
+                return {avatar: undefined};
+              }
+              return {avatar: Config.apiBaseUrl + item?.profile?.avarar};
+            });
             return (
               <EventCard
                 onPress={() => {
@@ -168,6 +188,7 @@ const Home: FunctionComponent<HomeScreenTypes.HomeScreenProps> = ({route}) => {
                 date={moment(item.startDate).format('DD MMMM YYYY')}
                 description={item.description}
                 colors={[item.eventColors.c1, item.eventColors.c2]}
+                avatarList={[avarar, ...paticipant]}
                 key={index}
               />
             );

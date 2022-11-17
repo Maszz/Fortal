@@ -85,6 +85,16 @@ export interface GetEventResponse {
   eventChat: {
     id: string;
   };
+  participants: Array<{
+    profile: {
+      avarar: string;
+    };
+  }>;
+  creator: {
+    profile: {
+      avarar: string;
+    };
+  };
 }
 export interface GetEventByIdResponse {
   createdAt: string;
@@ -106,6 +116,16 @@ export interface GetEventByIdResponse {
   updatedAt: string;
   eventChat: {
     id: string;
+  };
+  participants: Array<{
+    profile: {
+      avarar: string;
+    };
+  }>;
+  creator: {
+    profile: {
+      avarar: string;
+    };
   };
 }
 export type EventListType = 'created' | 'joined' | 'home';

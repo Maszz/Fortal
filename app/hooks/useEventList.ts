@@ -120,7 +120,7 @@ const useGetEventList = (t: EventListType) => {
       });
   };
 
-  return {loadMore, eventList, refetch, refocus};
+  return {loadMore, eventList, refetch, refocus, isLoading};
 };
 
 export {useGetEventList};

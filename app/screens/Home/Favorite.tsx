@@ -8,7 +8,8 @@ import {useGetEventList} from '../../hooks/useEventList';
 import {RootState} from '../../redux';
 import {useSelector} from 'react-redux';
 import {useIsFocused} from '@react-navigation/native';
-
+import {SheetManager} from 'react-native-actions-sheet';
+import {Config} from '../../env';
 const FavoriteScreen: FunctionComponent<
   HomeScreenTypes.FavoriteScreenProps
 > = () => {
@@ -80,15 +81,36 @@ const FavoriteScreen: FunctionComponent<
           pagingEnabled={false}>
           <Box flexDirection={'row'} justifyContent={'space-between'}>
             {joinedEvents.map((item, index) => {
+              const avarar =
+                item?.creator?.profile?.avarar === null
+                  ? {avatar: undefined}
+                  : {
+                      avatar:
+                        Config.apiBaseUrl + item?.creator?.profile?.avarar,
+                    };
+              const paticipant = item?.participants.map(item => {
+                if (item?.profile?.avarar === null) {
+                  return {avatar: undefined};
+                }
+                return {avatar: Config.apiBaseUrl + item?.profile?.avarar};
+              });
               return (
                 <TouchableOpacity key={index}>
                   <EventCard
                     onPress={() => {
-                      stackNavigation.navigate('EventScreen', {
-                        eventChatId: item?.eventChat.id,
-                        eventId: item?.id,
+                      // stackNavigation.navigate('EventScreen', {
+                      //   eventChatId: item?.eventChat.id,
+                      //   eventId: item?.id,
+                      // });
+
+                      SheetManager.show('eventCardJoined-sheet', {
+                        payload: {
+                          eventChatId: item?.eventChat.id,
+                          eventId: item?.id,
+                        },
                       });
                     }}
+                    avatarList={[avarar, ...paticipant]}
                     title={item.name}
                     date={item.startDate}
                     description={item.description}
@@ -128,19 +150,39 @@ const FavoriteScreen: FunctionComponent<
           pagingEnabled={false}>
           <Box flexDirection={'row'} justifyContent={'space-between'}>
             {createdEvents.map((item, index) => {
+              const avarar =
+                item?.creator?.profile?.avarar === null
+                  ? {avatar: undefined}
+                  : {
+                      avatar:
+                        Config.apiBaseUrl + item?.creator?.profile?.avarar,
+                    };
+              const paticipant = item?.participants.map(item => {
+                if (item?.profile?.avarar === null) {
+                  return {avatar: undefined};
+                }
+                return {avatar: Config.apiBaseUrl + item?.profile?.avarar};
+              });
               return (
                 <TouchableOpacity key={index}>
                   <EventCard
                     onPress={() => {
-                      stackNavigation.navigate('EventScreen', {
-                        eventChatId: item?.eventChat.id,
-                        eventId: item?.id,
+                      // stackNavigation.navigate('EventScreen', {
+                      //   eventChatId: item?.eventChat.id,
+                      //   eventId: item?.id,
+                      // });
+                      SheetManager.show('eventCardJoined-sheet', {
+                        payload: {
+                          eventChatId: item?.eventChat.id,
+                          eventId: item?.id,
+                        },
                       });
                     }}
                     title={item.name}
                     date={item.startDate}
                     description={item.description}
                     colors={[item.eventColors.c1, item.eventColors.c2]}
+                    avatarList={[avarar, ...paticipant]}
                     style={{marginRight: 10}}
                   />
                 </TouchableOpacity>

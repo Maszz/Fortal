@@ -31,6 +31,7 @@ export interface UserProfileResponse {
     following: number;
   };
 }
+
 export interface LocationSearchResponse {
   geometry: {
     lat: number;

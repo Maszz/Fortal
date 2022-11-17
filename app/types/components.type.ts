@@ -38,6 +38,10 @@ interface RegisterActionsSheetPayload {
 interface EventCardActionsSheetPayload {
   eventId: string;
 }
+interface EventCardActionsSheetJoinedPayload {
+  eventId: string;
+  eventChatId: string;
+}
 export interface EventCardActionsSheetProps
   extends SheetProps<EventCardActionsSheetPayload> {}
 
@@ -48,3 +52,6 @@ export interface RegisterActionsSheetProps
 
 export interface ForgotPasswordActionsSheetProps
   extends SheetProps<ForgotPasswordActionsSheetPayload> {}
+
+export interface EventCardActionsSheetJoinedProps
+  extends SheetProps<EventCardActionsSheetJoinedPayload> {}
