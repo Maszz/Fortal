@@ -12,6 +12,8 @@ import {
   KeyboardAvoidingView,
   ZStack,
   Button,
+  Avatar,
+  Divider,
 } from 'native-base';
 import ActionSheet, {
   useScrollHandlers,
@@ -84,7 +86,7 @@ const EventCardActionSheet: FunctionComponent<EventCardActionsSheetProps> = ({
       containerStyle={{
         borderTopLeftRadius: 45,
         borderTopRightRadius: 45,
-        height: '84%',
+        height: '92 %',
         paddingHorizontal: '4%',
       }}
       useBottomSafeAreaPadding={true}>
@@ -97,7 +99,7 @@ const EventCardActionSheet: FunctionComponent<EventCardActionsSheetProps> = ({
           style={{
             borderRadius: 50,
             display: 'flex',
-            height: '47%',
+            height: '45%',
             width: '100%',
             justifyContent: 'flex-end',
             paddingHorizontal: '7%',
@@ -166,16 +168,17 @@ const EventCardActionSheet: FunctionComponent<EventCardActionsSheetProps> = ({
             About the activity
           </Text>
           <Text
-            marginY={'3%'}
+            textAlign={'left'}
+            marginY={'3.5%'}
             color={'#232259'}
-            fontSize={15}
+            fontSize={14}
             fontWeight={'normal'}
             numberOfLines={4}
             ellipsizeMode={'tail'}>
             {data?.description}
           </Text>
           <VStack>
-            <HStack justifyContent={'space-between'} mt={5}>
+            <HStack justifyContent={'space-between'}>
               <Text fontSize={15} fontWeight={'bold'} color={'#232259'}>
                 Start
               </Text>
@@ -193,7 +196,7 @@ const EventCardActionSheet: FunctionComponent<EventCardActionsSheetProps> = ({
                 {data ? moment(data?.endDate).format('h:mm a') : ''}
               </Text>
             </HStack>
-            <HStack justifyContent={'space-between'} mt={5}>
+            {/* <HStack justifyContent={'space-between'} mt={5}>
               <Text fontSize={15} fontWeight={'bold'} color={'#232259'}>
                 Member
               </Text>
@@ -202,8 +205,54 @@ const EventCardActionSheet: FunctionComponent<EventCardActionsSheetProps> = ({
                   ? 'Unlimited'
                   : `${data?.memberLimit}/${data?.participantsId.length}`}
               </Text>
+            </HStack> */}
+            <HStack
+              justifyContent={'space-between'}
+              paddingLeft={'3%'}
+              marginX={'1%'}
+              marginY={'5%'}>
+              <Avatar.Group
+                _avatar={{
+                  size: 'sm',
+                  marginX: 0.5,
+                  borderColor: '#8C84D4',
+                  borderWidth: 1,
+                }}
+                max={5}>
+                <Avatar
+                  source={require('../assets/profileGroupPost_icon.png')}
+                />
+                <Avatar
+                  source={require('../assets/profileGroupPost_icon.png')}
+                />
+                <Avatar
+                  source={require('../assets/profileGroupPost_icon.png')}
+                />
+                <Avatar
+                  source={require('../assets/profileGroupPost_icon.png')}
+                />
+                <Avatar
+                  source={require('../assets/profileGroupPost_icon.png')}
+                />
+              </Avatar.Group>
+              <Box
+                backgroundColor={'#8C84D4'}
+                maxWidth={'30%'}
+                height={'80%'}
+                borderRadius={'full'}>
+                <Text
+                  paddingX={2}
+                  paddingTop={1}
+                  textAlign={'center'}
+                  fontSize={12}
+                  fontWeight={'light'}
+                  color={'white'}>
+                  4/10
+                </Text>
+              </Box>
             </HStack>
-            <HStack mt={5} alignItems={'center'}>
+
+            <HStack alignItems={'center'}>
               <Image
                 source={require('../assets/eye_icon.png')}
                 alt={'eye-icon'}
@@ -272,21 +321,19 @@ const EventCardActionSheet: FunctionComponent<EventCardActionsSheetProps> = ({
               <LinearGradient
                 colors={['#FEDDE0', '#8C84D4']}
                 useAngle={true}
-                angle={0}
-                angleCenter={{x: 0.5, y: 0.5}}
+                angle={-50}
+                // angleCenter={{x: 0.5, y: 0.5}}
                 style={{width: 310, height: 45, borderRadius: 20}}
               />
-              <Box
-                backgroundColor={'white'}
+              <Text color={'white'} fontSize={16} fontWeight={'bold'}>
+                Join
+              </Text>
+              {/* <Box
                 w={300}
                 h={35}
                 borderRadius={20}
                 alignItems={'center'}
-                justifyContent={'center'}>
-                <Text color={'#8172F7'} fontSize={16} fontWeight={600}>
-                  Join
-                </Text>
-              </Box>
+                justifyContent={'center'}></Box> */}
             </ZStack>
           </TouchableOpacity>
         </Box>
