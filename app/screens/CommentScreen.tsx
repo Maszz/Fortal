@@ -22,6 +22,9 @@ import {useGetCommentListQuery} from '../redux/apis';
 import moment from 'moment';
 import {useCreateCommentMutation} from '../redux/apis';
 import {useAuth} from '../hooks/useAuth';
+import {useGetUserAvatarQuery} from '../redux/apis';
+import {useEffect} from 'react';
+import {Config} from '../env';
 const CommentScreen: FunctionComponent<CommentScreenProps> = ({
   route,
   navigation,
@@ -59,74 +62,8 @@ const CommentScreen: FunctionComponent<CommentScreenProps> = ({
         <Divider my={1.2} opacity={0} />
         <FlatList
           data={data}
-          renderItem={({item}) => (
-            <HStack
-              paddingTop={3}
-              borderBottomWidth={1}
-              borderBottomColor={'#D9D9D9'}
-              marginX={'7%'}>
-              <Image source={require('../assets/profileGroupPost_icon.png')} />
-              <VStack
-                flex={1}
-                marginLeft={5}
-                paddingTop={1}
-                paddingRight={'5%'}>
-                <Text fontSize={16} bold color={'#232259'}>
-                  {item.creator}
-                </Text>
-                <Text color={'#232259'} fontWeight={'light'} fontSize={14}>
-                  {moment(item.createdAt).format('YYYY-MM-DD HH:mm')}
-                </Text>
-                <Divider my={1} opacity={0} />
-                <Text fontSize={16} fontWeight={'normal'} color={'#232259'}>
-                  {item.content}
-                </Text>
-                <Divider my={0.3} opacity={0} />
-                <HStack justifyContent={'flex-end'}>
-                  <Text>1</Text>
-                  <Image
-                    marginLeft={'10%'}
-                    alt="key icon"
-                    tintColor={'#99AAD4'}
-                    style={{transform: [{scale: 0.9}]}}
-                    source={require('../assets/smile_icon.png')}
-                  />
-                </HStack>
-                <Divider my={2} opacity={0} />
-              </VStack>
-            </HStack>
-          )}
+          renderItem={({item}) => <CommentCard item={item} />}
         />
-        {/* <ScrollView variant={'vertical'} paddingX={'6%'}>
-          <HStack borderBottomWidth={1} borderBottomColor={'#D9D9D9'}>
-            <Image source={require('../assets/profileGroupPost_icon.png')} />
-            <VStack flex={1} marginLeft={5} paddingTop={1} paddingRight={'5%'}>
-              <Text fontSize={16} bold color={'#232259'}>
-                John Doe
-              </Text>
-              <Text color={'#232259'} fontWeight={'light'} fontSize={14}>
-                Date | time
-              </Text>
-              <Divider my={1} opacity={0} />
-              <Text fontSize={16} fontWeight={'normal'} color={'#232259'}>
-                Comments fjnsdkjfnkfncksnfcksnckjsdnkcnsdjnsdkcnkdnjsckn,nc,anc
-                skdhnckashnxkahnxk
-              </Text>
-              <Divider my={1.5} opacity={0} />
-              <HStack justifyContent={'flex-end'}>
-                <Text>1</Text>
-                <Image
-                  marginLeft={'10%'}
-                  alt="key icon"
-                  tintColor={'#99AAD4'}
-                  style={{transform: [{scale: 0.9}]}}
-                  source={require('../assets/smile_icon.png')}
-                />
-              </HStack>
-              <Divider my={2} opacity={0} />
-            </VStack>
-          </HStack>
-        </ScrollView> */}
 
         <Box
           // height={'auto'}
@@ -230,6 +167,72 @@ const CommentScreen: FunctionComponent<CommentScreenProps> = ({
         </Box>
       </View>
     </KeyboardAvoidingView>
+  );
+};
+
+const CommentCard = ({
+  item,
+}: {
+  item: {
+    id: string;
+    content: string;
+    creator: string;
+    createdAt: Date;
+  };
+}) => {
+  const {data, isLoading} = useGetUserAvatarQuery(item.creator);
+  const [image, setImage] = useState<string | undefined>(undefined);
+  useEffect(() => {
+    if (!isLoading) {
+      console.log('dasiodsa', data);
+      if (data?.avarar === null) {
+        setImage(undefined);
+      } else {
+        setImage(Config.apiBaseUrl + data?.avarar);
+      }
+    }
+  }, [isLoading]);
+  return (
+    <HStack
+      paddingTop={3}
+      borderBottomWidth={1}
+      borderBottomColor={'#D9D9D9'}
+      marginX={'7%'}>
+      <Avatar
+        w={60}
+        h={60}
+        source={
+          image ? {uri: image} : require('../assets/profileGroupPost_icon.png')
+        }
+        borderColor={'#8172F7'}
+        borderWidth={4}
+        borderRadius={'full'}
+      />
+      <VStack flex={1} marginLeft={5} paddingTop={1} paddingRight={'5%'}>
+        <Text fontSize={16} bold color={'#232259'}>
+          {item.creator}
+        </Text>
+        <Text color={'#232259'} fontWeight={'light'} fontSize={14}>
+          {moment(item.createdAt).format('YYYY-MM-DD HH:mm')}
+        </Text>
+        <Divider my={1} opacity={0} />
+        <Text fontSize={16} fontWeight={'normal'} color={'#232259'}>
+          {item.content}
+        </Text>
+        <Divider my={0.3} opacity={0} />
+        <HStack justifyContent={'flex-end'}>
+          <Text>1</Text>
+          <Image
+            marginLeft={'10%'}
+            alt="key icon"
+            tintColor={'#99AAD4'}
+            style={{transform: [{scale: 0.9}]}}
+            source={require('../assets/smile_icon.png')}
+          />
+        </HStack>
+        <Divider my={2} opacity={0} />
+      </VStack>
+    </HStack>
   );
 };
 export default CommentScreen;
