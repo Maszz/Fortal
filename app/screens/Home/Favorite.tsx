@@ -133,24 +133,30 @@ const FavoriteScreen: FunctionComponent<
         {/* this column, activities component is simila to "Activities near me" in home.tsx */}
         {/* Do not forget to add activities component */}
         <ScrollView
-          horizontal={true}
-          height={230}
+          // horizontal={true}
+          w={'100%'}
+          // height={230}
           showsHorizontalScrollIndicator={false}
           scrollEventThrottle={400}
           onScroll={({nativeEvent}) => {
-            const paddingToRight = 40;
-            const width = nativeEvent.layoutMeasurement.width;
-            const contentoffset = nativeEvent.contentOffset.x;
-            const contentSize = nativeEvent.contentSize.width;
+            const paddingToRight = 20;
+            const width = nativeEvent.layoutMeasurement.height;
+            const contentoffset = nativeEvent.contentOffset.y;
+            const contentSize = nativeEvent.contentSize.height;
             // console.log('width', width);
             // console.log('contentoffset', contentoffset);
             // console.log('contentSize', contentSize);
             if (width + contentoffset >= contentSize - paddingToRight) {
               loadMoreCreated();
+              console.log('load more');
             }
           }}
           pagingEnabled={false}>
-          <Box flexDirection={'row'} justifyContent={'space-between'}>
+          <Box
+            flexDirection={'row'}
+            justifyContent={'space-between'}
+            flexWrap={'wrap'}
+            w={'103%'}>
             {createdEvents.map((item, index) => {
               const avarar =
                 item?.creator?.profile?.avarar === null
@@ -189,7 +195,7 @@ const FavoriteScreen: FunctionComponent<
                     description={item.description}
                     colors={[item.eventColors.c1, item.eventColors.c2]}
                     avatarList={[avarar, ...paticipant]}
-                    style={{marginRight: 10}}
+                    style={{marginRight: 10, marginBottom: 10}}
                   />
                 </TouchableOpacity>
               );
