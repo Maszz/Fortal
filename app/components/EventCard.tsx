@@ -44,7 +44,9 @@ const EventCard: FunctionComponent<EventCardProps> = ({
 
   const [height, setHeight] = useState<number>(0);
   const [numOfline, setNumOfline] = useState<number>(1);
-
+  useEffect(() => {
+    console.log('asddas', avatarList);
+  }, []);
   return (
     <Box shadow={5}>
       <TouchableOpacity

@@ -14,6 +14,11 @@ export interface SearchResponse {
   date?: string;
   location?: string;
   avarar?: string;
+  eventData?: {
+    memberLimit: number;
+    memberType: 'LIMIT' | 'UNLIMITED';
+    participantsId: string[];
+  };
 }
 export interface UserProfileResponse {
   username: string;

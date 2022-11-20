@@ -174,6 +174,7 @@ const Home: FunctionComponent<HomeScreenTypes.HomeScreenProps> = ({route}) => {
             return (
               <EventCard
                 onPress={() => {
+                  console.log('press', item.id);
                   SheetManager.show('eventCard-sheet', {
                     payload: {
                       eventId: item.id,

@@ -355,10 +355,16 @@ const SearchItemEvent: FunctionComponent<SearchItemEventProps> = ({item}) => {
                 ellipsizeMode={'tail'}
                 color={'white'}
                 fontSize={14}>
-                location: {item?.location}Hello
+                {item?.location || 'No location Name'}
               </Text>
             </HStack>
-            <Text>people/numbers</Text>
+            <Text>
+              {item?.eventData?.memberType === 'LIMIT'
+                ? `${item.eventData.participantsId.length + 1}/${
+                    item.eventData.memberLimit
+                  }`
+                : 'Unlimit'}
+            </Text>
           </HStack>
         </VStack>
       </HStack>

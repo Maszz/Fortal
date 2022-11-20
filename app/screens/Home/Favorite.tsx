@@ -94,6 +94,8 @@ const FavoriteScreen: FunctionComponent<
                 }
                 return {avatar: Config.apiBaseUrl + item?.profile?.avarar};
               });
+              console.log('paticipant', paticipant);
+              console.log('avarar', avarar);
               return (
                 <TouchableOpacity key={index}>
                   <EventCard
@@ -163,6 +165,10 @@ const FavoriteScreen: FunctionComponent<
                 }
                 return {avatar: Config.apiBaseUrl + item?.profile?.avarar};
               });
+              console.log('paticipant', paticipant);
+              console.log('avarar', avarar);
+              console.log('item', [avarar, ...paticipant]);
+
               return (
                 <TouchableOpacity key={index}>
                   <EventCard

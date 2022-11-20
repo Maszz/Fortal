@@ -82,6 +82,7 @@ const EventCardActionSheetJoined: FunctionComponent<
   }, [data]);
   useEffect(() => {
     if (!isLoading && data) {
+      console.log(data);
       const paticipant = data?.participants.map(item => {
         if (item.profile.avarar === null) {
           return {avarar: undefined};
@@ -89,11 +90,19 @@ const EventCardActionSheetJoined: FunctionComponent<
         return {avarar: Config.apiBaseUrl + item.profile.avarar};
       });
       setPaticipant([
-        {avarar: Config.apiBaseUrl + data.creator.profile.avarar},
+        {
+          avarar:
+            data.creator.profile.avarar === null
+              ? undefined
+              : Config.apiBaseUrl + data.creator.profile.avarar,
+        },
         ...paticipant,
       ]);
     }
   }, [isLoading]);
+  useEffect(() => {
+    console.log('bbddf', paticipant);
+  }, [paticipant]);
   return (
     <ActionSheet
       id={sheetId}
@@ -131,8 +140,8 @@ const EventCardActionSheetJoined: FunctionComponent<
                 stackNavigation.navigate('MapViewForEventCardScreen', {
                   location: data?.location ? data?.location : ({} as Location),
                   locationName: data?.locationName ? data?.locationName : '',
-                  locationDescription: data?.description
-                    ? data?.description
+                  locationDescription: data?.locationDetails
+                    ? data?.locationDetails
                     : '',
                   locationMarker: data?.locationMarker
                     ? data?.locationMarker
