@@ -150,7 +150,10 @@ const EventScreen: FunctionComponent<EventScreenProps> = ({
                     return (
                       <>
                         {item.senderName === user.username ? (
-                          <MyMessage message={item} />
+                          <MyMessage
+                            message={item}
+                            color={data?.eventColors.c2}
+                          />
                         ) : (
                           <OtherMessage message={item} />
                         )}
@@ -252,10 +255,14 @@ const OtherMessage: FunctionComponent<OtherMessageProps> = ({message}) => {
     console.log('data', data);
 
     if (!isLoading) {
-      if (data?.avarar === null) {
-        setImage(undefined);
+      if (data) {
+        if (data?.avarar === null) {
+          setImage(undefined);
+        } else {
+          setImage(Config.apiBaseUrl + data?.avarar);
+        }
       } else {
-        setImage(Config.apiBaseUrl + data?.avarar);
+        setImage(undefined);
       }
     }
   }, [isLoading]);
@@ -298,8 +305,9 @@ const OtherMessage: FunctionComponent<OtherMessageProps> = ({message}) => {
 };
 export interface MyMessageProps {
   message: GetMessagesType;
+  color: string;
 }
-const MyMessage: FunctionComponent<MyMessageProps> = ({message}) => {
+const MyMessage: FunctionComponent<MyMessageProps> = ({message, color}) => {
   const [height, setHeight] = useState<number>(0);
   const [isMounted, setIsMounted] = useState<boolean>(false);
 
@@ -308,7 +316,7 @@ const MyMessage: FunctionComponent<MyMessageProps> = ({message}) => {
       <HStack>
         <VStack maxWidth={'77%'}>
           <VStack w={'100%'}>
-            <Box backgroundColor={'rgba(0,0,0,0.5)'} borderRadius={15}>
+            <Box backgroundColor={color} borderRadius={15}>
               <Text color={'white'} opacity={1} paddingX={2} paddingY={2}>
                 {message?.message}
               </Text>
