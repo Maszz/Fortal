@@ -336,6 +336,21 @@ export const eventApi = createApi({
         };
       },
     }),
+    removeParticipant: builder.mutation<
+      any,
+      {eventId: string; username: string}
+    >({
+      query: params => {
+        return {
+          url: 'removeParticipant',
+          method: 'POST',
+          body: {
+            eventId: params.eventId,
+            username: params.username,
+          },
+        };
+      },
+    }),
   }),
 });
 
@@ -353,4 +368,5 @@ export const {
   useCreateCommentMutation,
   useGetPinedPostQuery,
   useCreatePinPostMutation,
+  useRemoveParticipantMutation,
 } = eventApi;
