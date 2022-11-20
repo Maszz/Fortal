@@ -27,6 +27,35 @@ import {useIsFocused} from '@react-navigation/native';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 const Home: FunctionComponent<HomeScreenTypes.HomeScreenProps> = ({route}) => {
   const {logout, user} = useAuth();
+  const tags = [
+    {name: 'ยิงธนู', image: '../../assets/filter_icon/archer.png'},
+    {name: 'วิทยาศาสตร์', image: '../../assets/filter_icon/atom.png'},
+    {name: 'แบตมินตัน', image: '../../assets/filter_icon/badminton.png'},
+    {name: 'เดินเล่น', image: '../../assets/filter_icon/bird.png'},
+    {name: 'บอร์ดเกม', image: '../../assets/filter_icon/boardGame.png'},
+    {name: 'อ่านหนังสือ', image: '../../assets/filter_icon/books.png'},
+    {name: 'ปั่นจักรยาน', image: '../../assets/filter_icon/cycryng.png'},
+    {name: 'เที่ยวต่างประเทศ', image: '../../assets/filter_icon/earth.png'},
+    {name: 'gallery', image: '../../assets/filter_icon/fibonachi.png'},
+    {name: 'ตกปลา', image: '../../assets/filter_icon/fish.png'},
+    {name: 'game', image: '../../assets/filter_icon/gamePlay.png'},
+    {name: 'music', image: '../../assets/filter_icon/headphone.png'},
+    {name: 'ปีนเขา', image: '../../assets/filter_icon/hiking.png'},
+    {name: 'ธรรมชาติ', image: '../../assets/filter_icon/leave.png'},
+    {name: 'ผีเสื้อราตรี', image: '../../assets/filter_icon/moonAndStar.png'},
+    {name: 'รักสัตว์', image: '../../assets/filter_icon/pet.png'},
+    {name: 'ถ่ายรูป', image: '../../assets/filter_icon/photographer.png'},
+    {name: 'เล่นดนตรี', image: '../../assets/filter_icon/piano.png'},
+    {name: 'ทะเล', image: '../../assets/filter_icon/sea.png'},
+    {name: 'ชอปปิง', image: '../../assets/filter_icon/shopping.png'},
+    {name: 'football', image: '../../assets/filter_icon/socker.png'},
+    {name: 'เรียน', image: '../../assets/filter_icon/study.png'},
+    {name: 'กลางแจ้ง', image: '../../assets/filter_icon/sun.png'},
+    {name: 'ไม่ร้อน', image: '../../assets/filter_icon/sunAndCould.png'},
+    {name: 'ว่ายน้ำ', image: '../../assets/filter_icon/swimming.png'},
+    {name: 'café', image: '../../assets/filter_icon/.png'},
+    {name: 'movie', image: '../../assets/filter_icon/TV.png'},
+  ];
   // const {data, refetch} = useGetEventListQuery({offset: 0, limit: 10});
   const [refreshing, setRefreshing] = useState(false);
   const {
