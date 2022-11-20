@@ -20,12 +20,7 @@ import {useAuth} from '../hooks/useAuth';
 import {GetMessagesType} from '../hooks/useChat';
 import {useEffect} from 'react';
 import {useGetUserAvatarQuery} from '../redux/apis';
-import {
-  Platform,
-  Keyboard,
-  LayoutAnimation,
-  TouchableOpacity,
-} from 'react-native';
+import {Platform, Keyboard, LayoutAnimation} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import {Animated} from 'react-native';
 import {VStack} from 'native-base';
@@ -36,6 +31,7 @@ import {useIsFocused} from '@react-navigation/native';
 import {useFocusEffect} from '@react-navigation/native';
 import {useGetPinedPostQuery} from '../redux/apis';
 import {Config} from '../env';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 const EventScreen: FunctionComponent<EventScreenProps> = ({
   navigation,
   route,
@@ -162,6 +158,7 @@ const EventScreen: FunctionComponent<EventScreenProps> = ({
                   }}
                   keyExtractor={item => item?.id}
                 />
+
                 <HStack
                   mt={2}
                   backgroundColor={'rgba(0,0,0,0.5)'}
@@ -169,6 +166,7 @@ const EventScreen: FunctionComponent<EventScreenProps> = ({
                   alignItems={'flex-start'}
                   alignSelf={'center'}
                   paddingLeft={'5%'}
+                  paddingRight={'3%'}
                   borderRadius={15}
                   w={'90%'}>
                   <Image
@@ -182,8 +180,10 @@ const EventScreen: FunctionComponent<EventScreenProps> = ({
                     textAlign={'left'}
                     my={2}
                     fontSize={14}
-                    fontWeight={400}
-                    color={'white'}>
+                    width={'92%'}
+                    fontWeight={'normal'}
+                    color={'white'}
+                    numberOfLines={1}>
                     {pinedPost?.EventPinedPost
                       ? pinedPost?.EventPinedPost.content
                       : 'No pinned post'}

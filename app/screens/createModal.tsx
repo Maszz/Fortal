@@ -290,15 +290,17 @@ const Home: FunctionComponent<CreateModalProps> = ({route, navigation}) => {
                       opacity={20}
                       borderRadius={'3xl'}
                     />
-                    <Text
+                    <TextArea
+                      placeholder="Event Name"
+                      variant={'unstyled'}
                       fontSize={32}
-                      fontWeight={700}
+                      fontWeight={'bold'}
                       w={'90%'}
                       h={'100%'}
                       numberOfLines={2}
                       ellipsizeMode={'tail'}>
-                      {eventData.eventName}
-                    </Text>
+                      {/* {eventData.eventName} */}
+                    </TextArea>
                   </ZStack>
                 </TouchableOpacity>
               </Box>
@@ -308,14 +310,14 @@ const Home: FunctionComponent<CreateModalProps> = ({route, navigation}) => {
                 About the activity
               </Text>
               <TextArea
-                placeholder="Text Area Placeholder"
+                placeholder="event description"
                 w="100%"
                 alignSelf={'center'}
                 autoCompleteType={'off'}
                 borderRadius={10}
                 multiline={true}
                 numberOfLines={5}
-                value={eventData.eventDescription}
+                // value={eventData.eventDescription}
                 onChangeText={text =>
                   setEventData({...eventData, eventDescription: text})
                 }
