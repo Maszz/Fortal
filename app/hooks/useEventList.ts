@@ -87,15 +87,14 @@ const useGetEventList = (t: EventListType) => {
     fetchMore({offset: 0, limit: 10, u: user.username, t: type})
       .unwrap()
       .then((data: GetEventResponse[]) => {
-        if (data.length > 0) {
-          setEventList(data);
-          setParams({
-            u: user.username,
-            offset: 10,
-            limit: 10,
-            t: type,
-          });
-        }
+        setEventList(data);
+        setParams({
+          u: user.username,
+          offset: 10,
+          limit: 10,
+          t: type,
+        });
+
         dispatch(setLoadingAction(false));
       });
   };
@@ -113,9 +112,7 @@ const useGetEventList = (t: EventListType) => {
     })
       .unwrap()
       .then((data: GetEventResponse[]) => {
-        if (data.length > 0) {
-          setEventList(data);
-        }
+        setEventList(data);
         // dispatch(setLoadingAction(false));
       });
   };

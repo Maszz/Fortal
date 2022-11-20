@@ -32,6 +32,8 @@ export type StackScreenParams = {
   CommentScreen: {postId: string};
   CreatePinPostScreen: {eventChatId: string; eventId: string};
   EventDescriptionScreen: {eventId: string};
+  EventMemberScreen: {eventId: string};
+  EventInfoScreen: {eventId: string};
 };
 
 export type HomeIndexScreenProps = StackScreenProps<
@@ -119,4 +121,12 @@ export type CreatePinPostProps = StackScreenProps<
 export type EventDescriptionScreenProps = StackScreenProps<
   StackScreenParams,
   'EventDescriptionScreen'
+>;
+export type EventMemberScreenProps = StackScreenProps<
+  StackScreenParams,
+  'EventMemberScreen'
+>;
+export type EventInfoScreenProps = StackScreenProps<
+  StackScreenParams,
+  'EventInfoScreen'
 >;

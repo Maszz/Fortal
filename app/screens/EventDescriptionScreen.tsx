@@ -3,10 +3,15 @@ import {FunctionComponent} from 'react';
 import {ProfileSettingScreenProps} from '../types';
 import {TouchableOpacity} from 'react-native';
 import {useAuth} from '../hooks/useAuth';
-const ProfileSettingScreen: FunctionComponent<ProfileSettingScreenProps> = ({
+import {useRemoveParticipantMutation} from '../redux/apis';
+import {EventDescriptionScreenProps} from '../types/App.type';
+const ProfileSettingScreen: FunctionComponent<EventDescriptionScreenProps> = ({
   navigation,
+  route,
 }) => {
   const {logout, user} = useAuth();
+  const {eventId} = route.params;
+  const [removeParticipant] = useRemoveParticipantMutation();
 
   return (
     <View flex={10} backgroundColor={'white'}>
@@ -42,7 +47,7 @@ const ProfileSettingScreen: FunctionComponent<ProfileSettingScreenProps> = ({
         <VStack>
           <TouchableOpacity
             onPress={() => {
-              navigation.navigate('ProfileSettingEditScreen');
+              navigation.navigate('EventInfoScreen', {eventId: eventId});
             }}>
             <Box
               flexDirection={'row'}
@@ -59,23 +64,37 @@ const ProfileSettingScreen: FunctionComponent<ProfileSettingScreenProps> = ({
             </Box>
           </TouchableOpacity>
           <Divider my={2} />
-          <Box
-            flexDirection={'row'}
-            justifyContent={'space-between'}
-            marginTop={5}>
-            <Text fontSize={16} color={'#283952'} fontWeight={'normal'}>
-              member
-            </Text>
-            <Image
-              alignSelf={'center'}
-              alt="key icon"
-              source={require('../assets/user_icon.png')}
-            />
-          </Box>
+
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate('EventMemberScreen', {eventId: eventId});
+            }}>
+            <Box
+              flexDirection={'row'}
+              justifyContent={'space-between'}
+              marginTop={5}>
+              <Text fontSize={16} color={'#283952'} fontWeight={'normal'}>
+                member
+              </Text>
+              <Image
+                alignSelf={'center'}
+                alt="key icon"
+                source={require('../assets/user_icon.png')}
+              />
+            </Box>
+          </TouchableOpacity>
           <Divider my={2} />
           <TouchableOpacity
             onPress={() => {
-              logout();
+              console.log('remove', eventId, user.username);
+              removeParticipant({
+                username: user.username,
+                eventId: eventId,
+              })
+                .unwrap()
+                .then(() => {
+                  navigation.navigate('HomeIndex');
+                });
             }}>
             <Box
               flexDirection={'row'}

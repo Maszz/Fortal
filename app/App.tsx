@@ -84,6 +84,8 @@ import CreatePostScreen from './screens/createPostScreen';
 import CommentScreen from './screens/CommentScreen';
 import CreatePinPostScreen from './screens/createPinPostScreen';
 import EventDescriptipnScreen from './screens/EventDescriptionScreen';
+import EventMember from './screens/EventMember';
+import EventInfoScreen from './screens/EventInfoScreen';
 const Stack = createStackNavigator<StackScreenParams>();
 const defaultScreenOption: StackNavigationOptions = {
   headerShown: false,
@@ -398,6 +400,24 @@ const StackNavigation = () => {
             <Stack.Screen
               name="EventDescriptionScreen"
               component={EventDescriptipnScreen}
+              options={{
+                gestureEnabled: true,
+                headerShown: false,
+                // presentation: 'modal',
+              }}
+            />
+            <Stack.Screen
+              name="EventMemberScreen"
+              component={EventMember}
+              options={{
+                gestureEnabled: true,
+                headerShown: false,
+                // presentation: 'modal',
+              }}
+            />
+            <Stack.Screen
+              name="EventInfoScreen"
+              component={EventInfoScreen}
               options={{
                 gestureEnabled: true,
                 headerShown: false,
