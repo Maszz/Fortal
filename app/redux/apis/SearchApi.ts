@@ -29,6 +29,10 @@ export interface UserProfileResponse {
     isProfilePublic?: boolean;
     eventCount?: number;
     avarar: string;
+    colors: {
+      c1: string;
+      c2: string;
+    };
   };
   categories: string[];
   _count: {

@@ -30,7 +30,7 @@ import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import {Config} from '../env';
 import {useFocusEffect} from '@react-navigation/native';
 import {Platform, Keyboard, LayoutAnimation} from 'react-native';
-
+import {GradientCircleButton} from './createModal';
 export interface UserEditFormInput {
   displayName: string;
   bio: string;
@@ -57,7 +57,8 @@ const ProfileSettingEditScreen: FunctionComponent<
   const [deletedTags, setDeletedTags] = useState<string[]>([]);
   const [image, setImage] = useState<string | undefined>(undefined);
   const [height, setHeight] = useState<number | string>('40%');
-
+  const [modalColorOpen, setModalColorOpen] = useState(false);
+  const [color, setColor] = useState<Array<string>>(['#FFEAE5', '#8C84D4']);
   const [imageBuff, setImageBuff] = useState<
     | {
         uri: string;
@@ -68,6 +69,13 @@ const ProfileSettingEditScreen: FunctionComponent<
   >(undefined);
   const [isMounted, setIsMounted] = useState(false);
   const dispatch = useDispatch();
+  const colorSet = {
+    '#8C84D4': ['#C4C2F0', '#C9B8D9', '#ECC3D7', '#FDDDE0', '#FFEBE2'],
+    '#8172F7': ['#7EB2E1', '#94D1E7', '#A28ACE', '#C291D2', '#E9AED0'],
+    '#6BB79D': ['#7F8D4E', '#C9CDA7', '#CCCB93', '#E5D790', '#DDDFE5'],
+    '#EF8B88': ['#E08437', '#E9A039', '#EBC046', '#EDD181', '#D7D9DE'],
+    '#FFAECB': ['#E2D5F2', '#D1C7F1', '#CCE7F3', '#BCD8F2', '#ADC7F0'],
+  } as any;
   useFocusEffect(
     useCallback(() => {
       const keyboardShowListener = Keyboard.addListener(
@@ -111,6 +119,9 @@ const ProfileSettingEditScreen: FunctionComponent<
           } as UserEditFormInput);
           setTags(res.categories || []);
           console.log('res', res);
+          if (res?.profile?.colors && res.profile?.colors !== null) {
+            setColor([res.profile?.colors.c1, res.profile?.colors.c2]);
+          }
 
           if (res?.profile?.avarar === null) {
             setImage(undefined);
@@ -127,18 +138,30 @@ const ProfileSettingEditScreen: FunctionComponent<
     // console.log('deletedTags: ', deletedTags);
     // console.log('isProfilePublic: ', userFormInput.isProfilePublic);
   }, []);
-
+  useEffect(() => {
+    console.log(data);
+  }, [data]);
   return (
     <View flex={10} backgroundColor={'white'} paddingX={5}>
       <Box height={height} paddingY={5}>
         <ZStack flex={1}>
-          <LinearGradient
-            colors={['#FEDDE0', '#8172F7']}
-            useAngle={true}
-            angle={0}
-            angleCenter={{x: 0.5, y: 0.5}}
-            style={{width: '100%', height: '90%', borderRadius: 20}}
-          />
+          <TouchableOpacity
+            style={{width: '100%', height: '100%'}}
+            onPress={() => {
+              setModalColorOpen(true);
+            }}>
+            <LinearGradient
+              colors={
+                data?.profile?.colors && data?.profile?.colors !== null
+                  ? [data?.profile?.colors.c1, data?.profile?.colors.c2]
+                  : color
+              }
+              useAngle={true}
+              angle={0}
+              angleCenter={{x: 0.5, y: 0.5}}
+              style={{width: '100%', height: '90%', borderRadius: 20}}
+            />
+          </TouchableOpacity>
 
           <Box
             flex={1}
@@ -155,6 +178,10 @@ const ProfileSettingEditScreen: FunctionComponent<
                     displayName: userFormInput.displayName,
                     bio: userFormInput.bio,
                     isProfilePublic: userFormInput.isProfilePublic,
+                    colors: {
+                      c1: color[0],
+                      c2: color[1],
+                    },
                   },
                   newTags: newTags,
                   removeTags: deletedTags,
@@ -464,7 +491,12 @@ const ProfileSettingEditScreen: FunctionComponent<
                   paddingX={2}
                   mb={2}
                   // get input color props
-                  backgroundColor={'salmon'}>
+                  // backgroundColor={
+                  //   data?.profile?.colors && data?.profile?.colors !== null
+                  //     ? colorSet[data?.profile?.colors.c2][index % 5]
+                  //     : colorSet[color[1]][index % 5]
+                  // }
+                  backgroundColor={colorSet[color[1]][index % 5]}>
                   <Text
                     textAlign={'center'}
                     fontSize={10}
@@ -522,6 +554,69 @@ const ProfileSettingEditScreen: FunctionComponent<
           }}
         />
       </Box>
+      <Modal isOpen={modalColorOpen} onClose={() => setModalColorOpen(false)}>
+        <Modal.Content maxWidth="400px">
+          <Modal.CloseButton />
+          <Modal.Header>Choose Color</Modal.Header>
+          <Modal.Body
+            justifyContent={'center'}
+            alignItems={'center'}
+            w={'100%'}>
+            <HStack
+              w={'100%'}
+              justifyContent={'space-between'}
+              // paddingLeft={30}
+              // paddingRight={30}
+            >
+              <GradientCircleButton
+                isSelected={color[0] == '#FEDDE0' && color[1] == '#8C84D4'}
+                colors={['#FEDDE0', '#8C84D4']}
+                angle={300}
+                borderColor={'#8172F7'}
+                onPress={v => {
+                  setColor(v);
+                }}
+              />
+              <GradientCircleButton
+                isSelected={color[0] == '#9FDDFB' && color[1] == '#8172F7'}
+                colors={['#9FDDFB', '#8172F7']}
+                angle={300}
+                borderColor={'#8172F7'}
+                onPress={v => {
+                  setColor(v);
+                }}
+              />
+              <GradientCircleButton
+                isSelected={color[0] == '#FFFDC3' && color[1] == '#6BB79D'}
+                colors={['#FFFDC3', '#6BB79D']}
+                angle={300}
+                borderColor={'#8172F7'}
+                onPress={v => {
+                  setColor(v);
+                }}
+              />
+              <GradientCircleButton
+                isSelected={color[0] == '#F4FF92' && color[1] == '#EF8B88'}
+                colors={['#F4FF92', '#EF8B88']}
+                angle={300}
+                borderColor={'#8172F7'}
+                onPress={v => {
+                  setColor(v);
+                }}
+              />
+              <GradientCircleButton
+                isSelected={color[0] == '#9FDDFB' && color[1] == '#FFAECB'}
+                colors={['#9FDDFB', '#FFAECB']}
+                angle={300}
+                borderColor={'#8172F7'}
+                onPress={v => {
+                  setColor(v);
+                }}
+              />
+            </HStack>
+          </Modal.Body>
+        </Modal.Content>
+      </Modal>
     </View>
   );
 };

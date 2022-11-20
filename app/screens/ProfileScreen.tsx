@@ -32,16 +32,34 @@ const ProfileScreen: FunctionComponent<ProfileScreenProps> = ({
   const [isMounted, setIsMounted] = useState(false);
   const isFocused = useIsFocused();
   const [image, setImage] = useState<string | undefined>(undefined);
-  const colorFormated = [{
-    
-  }]
+  const [color, setColor] = useState<Array<string>>(['#FFEAE5', '#8C84D4']);
+
+  const colorSet = {
+    '#8C84D4': ['#C4C2F0', '#C9B8D9', '#ECC3D7', '#FDDDE0', '#FFEBE2'],
+    '#8172F7': ['#7EB2E1', '#94D1E7', '#A28ACE', '#C291D2', '#E9AED0'],
+    '#6BB79D': ['#7F8D4E', '#C9CDA7', '#CCCB93', '#E5D790', '#DDDFE5'],
+    '#EF8B88': ['#E08437', '#E9A039', '#EBC046', '#EDD181', '#D7D9DE'],
+    '#FFAECB': ['#E2D5F2', '#D1C7F1', '#CCE7F3', '#BCD8F2', '#ADC7F0'],
+  } as any;
   useEffect(() => {
     if (!isMounted) {
-      getData(user.username);
+      getData(user.username)
+        .unwrap()
+        .then(res => {
+          if (res?.profile?.colors && res.profile?.colors !== null) {
+            setColor([res.profile?.colors.c1, res.profile?.colors.c2]);
+          }
+        });
       setIsMounted(true);
     }
     if (isFocused) {
-      getData(user.username);
+      getData(user.username)
+        .unwrap()
+        .then(res => {
+          if (res?.profile?.colors && res.profile?.colors !== null) {
+            setColor([res.profile?.colors.c1, res.profile?.colors.c2]);
+          }
+        });
     }
   }, [isFocused]);
   useEffect(() => {
@@ -61,7 +79,7 @@ const ProfileScreen: FunctionComponent<ProfileScreenProps> = ({
       <Box flex={3} paddingY={5}>
         <ZStack flex={1}>
           <LinearGradient
-            colors={['#FEDDE0', '#8172F7']}
+            colors={color}
             useAngle={true}
             angle={0}
             angleCenter={{x: 0.5, y: 0.5}}
@@ -223,7 +241,7 @@ const ProfileScreen: FunctionComponent<ProfileScreenProps> = ({
                   paddingX={2}
                   mb={2}
                   // get input color props
-                  backgroundColor={'salmon'}>
+                  backgroundColor={colorSet[color[1]][index % 5]}>
                   <Text
                     textAlign={'center'}
                     fontSize={10}
