@@ -28,34 +28,57 @@ import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 const Home: FunctionComponent<HomeScreenTypes.HomeScreenProps> = ({route}) => {
   const {logout, user} = useAuth();
   const tags = [
-    {name: 'ยิงธนู', image: '../../assets/filter_icon/archer.png'},
-    {name: 'วิทยาศาสตร์', image: '../../assets/filter_icon/atom.png'},
-    {name: 'แบตมินตัน', image: '../../assets/filter_icon/badminton.png'},
-    {name: 'เดินเล่น', image: '../../assets/filter_icon/bird.png'},
-    {name: 'บอร์ดเกม', image: '../../assets/filter_icon/boardGame.png'},
-    {name: 'อ่านหนังสือ', image: '../../assets/filter_icon/books.png'},
-    {name: 'ปั่นจักรยาน', image: '../../assets/filter_icon/cycryng.png'},
-    {name: 'เที่ยวต่างประเทศ', image: '../../assets/filter_icon/earth.png'},
-    {name: 'gallery', image: '../../assets/filter_icon/fibonachi.png'},
-    {name: 'ตกปลา', image: '../../assets/filter_icon/fish.png'},
-    {name: 'game', image: '../../assets/filter_icon/gamePlay.png'},
-    {name: 'music', image: '../../assets/filter_icon/headphone.png'},
-    {name: 'ปีนเขา', image: '../../assets/filter_icon/hiking.png'},
-    {name: 'ธรรมชาติ', image: '../../assets/filter_icon/leave.png'},
-    {name: 'ผีเสื้อราตรี', image: '../../assets/filter_icon/moonAndStar.png'},
-    {name: 'รักสัตว์', image: '../../assets/filter_icon/pet.png'},
-    {name: 'ถ่ายรูป', image: '../../assets/filter_icon/photographer.png'},
-    {name: 'เล่นดนตรี', image: '../../assets/filter_icon/piano.png'},
-    {name: 'ทะเล', image: '../../assets/filter_icon/sea.png'},
-    {name: 'ชอปปิง', image: '../../assets/filter_icon/shopping.png'},
-    {name: 'football', image: '../../assets/filter_icon/socker.png'},
-    {name: 'เรียน', image: '../../assets/filter_icon/study.png'},
-    {name: 'กลางแจ้ง', image: '../../assets/filter_icon/sun.png'},
-    {name: 'ไม่ร้อน', image: '../../assets/filter_icon/sunAndCould.png'},
-    {name: 'ว่ายน้ำ', image: '../../assets/filter_icon/swimming.png'},
-    {name: 'café', image: '../../assets/filter_icon/.png'},
-    {name: 'movie', image: '../../assets/filter_icon/TV.png'},
+    {name: 'ยิงธนู', image: require('../../assets/filter_icon/archer.png')},
+    {name: 'วิทยาศาสตร์', image: require('../../assets/filter_icon/atom.png')},
+    {
+      name: 'แบตมินตัน',
+      image: require('../../assets/filter_icon/badminton.png'),
+    },
+    {name: 'เดินเล่น', image: require('../../assets/filter_icon/bird.png')},
+    {
+      name: 'บอร์ดเกม',
+      image: require('../../assets/filter_icon/boardGame.png'),
+    },
+    {name: 'อ่านหนังสือ', image: require('../../assets/filter_icon/books.png')},
+    {
+      name: 'ปั่นจักรยาน',
+      image: require('../../assets/filter_icon/cycryng.png'),
+    },
+    {
+      name: 'เที่ยวต่างประเทศ',
+      image: require('../../assets/filter_icon/earth.png'),
+    },
+    {name: 'gallery', image: require('../../assets/filter_icon/fibonachi.png')},
+    {name: 'ตกปลา', image: require('../../assets/filter_icon/fish.png')},
+    {name: 'game', image: require('../../assets/filter_icon/gamePlay.png')},
+    {name: 'music', image: require('../../assets/filter_icon/headphone.png')},
+    {name: 'ปีนเขา', image: require('../../assets/filter_icon/hiking.png')},
+    {name: 'ธรรมชาติ', image: require('../../assets/filter_icon/leave.png')},
+    {
+      name: 'ผีเสื้อราตรี',
+      image: require('../../assets/filter_icon/moonAndStar.png'),
+    },
+    {name: 'รักสัตว์', image: require('../../assets/filter_icon/pet.png')},
+    {
+      name: 'ถ่ายรูป',
+      image: require('../../assets/filter_icon/photographer.png'),
+    },
+    {name: 'เล่นดนตรี', image: require('../../assets/filter_icon/piano.png')},
+    {name: 'ทะเล', image: require('../../assets/filter_icon/sea.png')},
+    {name: 'ชอปปิง', image: require('../../assets/filter_icon/shopping.png')},
+    {name: 'football', image: require('../../assets/filter_icon/socker.png')},
+    {name: 'เรียน', image: require('../../assets/filter_icon/study.png')},
+    {name: 'กลางแจ้ง', image: require('../../assets/filter_icon/sun.png')},
+    {
+      name: 'ไม่ร้อน',
+      image: require('../../assets/filter_icon/sunAndCould.png'),
+    },
+    {name: 'ว่ายน้ำ', image: require('../../assets/filter_icon/swimming.png')},
+    {name: 'café', image: require('../../assets/filter_icon/tulip.png')},
+    {name: 'movie', image: require('../../assets/filter_icon/TV.png')},
   ];
+  const chunkSize = Math.floor(tags.length / 2);
+
   // const {data, refetch} = useGetEventListQuery({offset: 0, limit: 10});
   const [refreshing, setRefreshing] = useState(false);
   const {
@@ -131,36 +154,54 @@ const Home: FunctionComponent<HomeScreenTypes.HomeScreenProps> = ({route}) => {
           {/* loop this box for manyb tag */}
           <Box flexDirection={'column'}>
             {/* row 1 */}
-            <Box flexDirection={'column'} alignItems={'center'} paddingTop={3}>
-              <Box
-                style={{
-                  borderRadius: 100,
-                  backgroundColor: 'white',
-                  width: 40,
-                  height: 40,
-                  borderWidth: 3,
-                  borderColor: '#8C84D4',
-                }}
-              />
-              <Text fontSize={12} fontWeight={'normal'} color={'black'}>
-                tag1
-              </Text>
+            <Box flexDirection={'row'} paddingTop={3}>
+              {tags.slice(0, chunkSize).map((tag, index) => {
+                return (
+                  <Box justifyContent={'center'} alignItems={'center'} mr={2}>
+                    <Image
+                      source={tag.image}
+                      alt={tag.name}
+                      style={{
+                        borderRadius: 100,
+                        backgroundColor: 'white',
+                        width: 40,
+                        height: 40,
+                        borderWidth: 3,
+                        borderColor: '#8C84D4',
+                        transform: [{scale: 0.8}],
+                      }}
+                    />
+                    <Text fontSize={12} fontWeight={'normal'} color={'black'}>
+                      {tag.name}
+                    </Text>
+                  </Box>
+                );
+              })}
             </Box>
             {/* row 2 */}
-            <Box flexDirection={'column'} alignItems={'center'} paddingTop={3}>
-              <Box
-                style={{
-                  borderRadius: 100,
-                  backgroundColor: 'white',
-                  width: 40,
-                  height: 40,
-                  borderWidth: 3,
-                  borderColor: '#8C84D4',
-                }}
-              />
-              <Text fontSize={12} fontWeight={'normal'} color={'black'}>
-                tag1
-              </Text>
+            <Box flexDirection={'row'} paddingTop={3}>
+              {tags.slice(chunkSize, tags.length).map((tag, index) => {
+                return (
+                  <Box justifyContent={'center'} alignItems={'center'} mr={2}>
+                    <Image
+                      source={tag.image}
+                      alt={tag.name}
+                      style={{
+                        borderRadius: 100,
+                        backgroundColor: 'white',
+                        width: 40,
+                        height: 40,
+                        borderWidth: 3,
+                        borderColor: '#8C84D4',
+                        transform: [{scale: 0.8}],
+                      }}
+                    />
+                    <Text fontSize={12} fontWeight={'normal'} color={'black'}>
+                      {tag.name}
+                    </Text>
+                  </Box>
+                );
+              })}
             </Box>
           </Box>
         </ScrollView>
