@@ -175,7 +175,11 @@ const Home: FunctionComponent<HomeScreenTypes.HomeScreenProps> = ({route}) => {
                         // transform: [{scale: 0.8}],
                       }}
                     />
-                    <Text fontSize={12} fontWeight={'normal'} color={'black'}>
+                    <Text
+                      fontSize={12}
+                      fontWeight={'normal'}
+                      color={'#232259'}
+                      mt={1}>
                       {tag.name}
                     </Text>
                   </Box>
@@ -204,7 +208,11 @@ const Home: FunctionComponent<HomeScreenTypes.HomeScreenProps> = ({route}) => {
                         // transform: [{scale: 0.8}],
                       }}
                     />
-                    <Text fontSize={12} fontWeight={'normal'} color={'black'}>
+                    <Text
+                      fontSize={12}
+                      fontWeight={'normal'}
+                      color={'#232259'}
+                      mt={1}>
                       {tag.name}
                     </Text>
                   </Box>

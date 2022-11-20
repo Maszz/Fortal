@@ -97,7 +97,7 @@ const Home: FunctionComponent<CreateModalProps> = ({route, navigation}) => {
     memberType: 'UNLIMITED',
     isPublic: true,
     eventColors: ['#FEDDE0', '#8C84D4'],
-    eventName: 'Event name',
+    eventName: '',
     eventDescription: 'event description',
   } as CreateEventForm);
   const getStartDateTime = useCallback(() => {
@@ -297,6 +297,10 @@ const Home: FunctionComponent<CreateModalProps> = ({route, navigation}) => {
                       fontWeight={'bold'}
                       w={'90%'}
                       h={'100%'}
+                      onChangeText={text => {
+                        setEventData({...eventData, eventName: text});
+                      }}
+                      value={eventData.eventName}
                       numberOfLines={2}
                       ellipsizeMode={'tail'}>
                       {/* {eventData.eventName} */}
