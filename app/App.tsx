@@ -129,7 +129,7 @@ const StackNavigation = () => {
                 header: (props: StackHeaderProps) => {
                   return (
                     <Box
-                      // backgroundColor={'white'}
+                      backgroundColor={'white'}
                       safeAreaTop
                       paddingBottom={3}
                       marginTop={3}>

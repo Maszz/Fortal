@@ -17,7 +17,7 @@ const RegisterOnBoardGender: FunctionComponent<RegisterOnboardGenderProps> = ({
   const {t} = useTranslation();
   // t('registerActionsSheet:username'
   return (
-    <View style={{flex: 1}}>
+    <View style={{flex: 1, backgroundColor: 'white'}}>
       <Box style={{flex: 0.2}} />
       <Box style={{flex: 0.1}}>
         <Center>

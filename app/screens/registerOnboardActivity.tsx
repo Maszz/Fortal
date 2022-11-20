@@ -124,7 +124,7 @@ const RegisterOnboardActivity: FunctionComponent<
   };
 
   return (
-    <View style={{flex: 1}}>
+    <View style={{flex: 1, backgroundColor: 'white'}}>
       {/* <Box
         style={{
           flex: 0.15,
@@ -145,6 +145,7 @@ const RegisterOnboardActivity: FunctionComponent<
           flex: 0.2,
           justifyContent: 'flex-end',
           alignItems: 'center',
+          backgroundColor: 'white',
         }}>
         <Text fontSize={20} color={'#232259'} fontWeight={'medium'}>
           {t('onboardingActivity:header')}
