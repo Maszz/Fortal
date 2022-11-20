@@ -77,7 +77,7 @@ const Home: FunctionComponent<HomeScreenTypes.HomeScreenProps> = ({route}) => {
     {name: 'café', image: require('../../assets/filter_icon/tulip.png')},
     {name: 'movie', image: require('../../assets/filter_icon/TV.png')},
   ];
-  const chunkSize = Math.floor(tags.length / 2);
+  const chunkSize = Math.ceil(tags.length / 2);
 
   // const {data, refetch} = useGetEventListQuery({offset: 0, limit: 10});
   const [refreshing, setRefreshing] = useState(false);
@@ -157,18 +157,22 @@ const Home: FunctionComponent<HomeScreenTypes.HomeScreenProps> = ({route}) => {
             <Box flexDirection={'row'} paddingTop={3}>
               {tags.slice(0, chunkSize).map((tag, index) => {
                 return (
-                  <Box justifyContent={'center'} alignItems={'center'} mr={2}>
+                  <Box
+                    justifyContent={'center'}
+                    alignItems={'center'}
+                    w={70}
+                    h={60}>
                     <Image
                       source={tag.image}
                       alt={tag.name}
                       style={{
-                        borderRadius: 100,
+                        // borderRadius: 100,
                         backgroundColor: 'white',
-                        width: 40,
-                        height: 40,
-                        borderWidth: 3,
+                        width: 30,
+                        height: 30,
+                        // borderWidth: 3,
                         borderColor: '#8C84D4',
-                        transform: [{scale: 0.8}],
+                        // transform: [{scale: 0.8}],
                       }}
                     />
                     <Text fontSize={12} fontWeight={'normal'} color={'black'}>
@@ -182,18 +186,22 @@ const Home: FunctionComponent<HomeScreenTypes.HomeScreenProps> = ({route}) => {
             <Box flexDirection={'row'} paddingTop={3}>
               {tags.slice(chunkSize, tags.length).map((tag, index) => {
                 return (
-                  <Box justifyContent={'center'} alignItems={'center'} mr={2}>
+                  <Box
+                    justifyContent={'center'}
+                    alignItems={'center'}
+                    w={70}
+                    h={60}>
                     <Image
                       source={tag.image}
                       alt={tag.name}
                       style={{
-                        borderRadius: 100,
+                        // borderRadius: 100,
                         backgroundColor: 'white',
-                        width: 40,
-                        height: 40,
-                        borderWidth: 3,
+                        width: 30,
+                        height: 30,
+                        // borderWidth: 3,
                         borderColor: '#8C84D4',
-                        transform: [{scale: 0.8}],
+                        // transform: [{scale: 0.8}],
                       }}
                     />
                     <Text fontSize={12} fontWeight={'normal'} color={'black'}>
@@ -210,7 +218,7 @@ const Home: FunctionComponent<HomeScreenTypes.HomeScreenProps> = ({route}) => {
       <HStack
         flex={5}
         flexDirection={'column'}
-        paddingTop={30}
+        paddingTop={2}
         // paddingY={20}
         style={{
           // flex: 5,
