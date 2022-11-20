@@ -100,7 +100,7 @@ const EventCard: FunctionComponent<EventCardProps> = ({
                   setNumOfline(e.nativeEvent.lines.length);
                 }}
                 alignContent={'center'}>
-                {title}
+                {title || 'Event'}
               </Text>
             </Box>
             <Box height={15} my={1}>
