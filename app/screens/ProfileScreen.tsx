@@ -198,7 +198,7 @@ const ProfileScreen: FunctionComponent<ProfileScreenProps> = ({
           <Text fontSize={14} fontWeight={'normal'} color={'#8B9093'}>
             {data?.profile?.displayName || 'no nickname set yet.'}
           </Text>
-          <Box flexDirection={'row'}>
+          {/* <Box flexDirection={'row'}>
             <Text fontSize={14} fontWeight={'normal'} color={'#8B9093'}>
               rating
             </Text>
@@ -208,7 +208,7 @@ const ProfileScreen: FunctionComponent<ProfileScreenProps> = ({
               alt="key icon"
               source={require('../assets/star_icon.png')}
             />
-          </Box>
+          </Box> */}
         </Box>
         <Divider my={2} opacity={0} />
         <Text
