@@ -13,6 +13,7 @@ import {
   TextArea,
   Modal,
   Button,
+  KeyboardAvoidingView,
 } from 'native-base';
 import LinearGradient from 'react-native-linear-gradient';
 import {FunctionComponent} from 'react';
@@ -22,11 +23,14 @@ import {useState} from 'react';
 import {useGetSearchItemUserByUsernameMutation} from '../redux/apis';
 import {useAuth} from '../hooks/useAuth';
 import {useUpdateUserProfileMutation, ErrorResponse} from '../redux/apis';
-import {useEffect} from 'react';
+import {useEffect, useCallback} from 'react';
 import {useDispatch} from 'react-redux';
 import {setLoadingAction} from '../redux/reducers/navigation';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import {Config} from '../env';
+import {useFocusEffect} from '@react-navigation/native';
+import {Platform, Keyboard, LayoutAnimation} from 'react-native';
+
 export interface UserEditFormInput {
   displayName: string;
   bio: string;
@@ -52,6 +56,8 @@ const ProfileSettingEditScreen: FunctionComponent<
   const [newTags, setNewTags] = useState<string[]>([]);
   const [deletedTags, setDeletedTags] = useState<string[]>([]);
   const [image, setImage] = useState<string | undefined>(undefined);
+  const [height, setHeight] = useState<number | string>('40%');
+
   const [imageBuff, setImageBuff] = useState<
     | {
         uri: string;
@@ -62,7 +68,31 @@ const ProfileSettingEditScreen: FunctionComponent<
   >(undefined);
   const [isMounted, setIsMounted] = useState(false);
   const dispatch = useDispatch();
+  useFocusEffect(
+    useCallback(() => {
+      const keyboardShowListener = Keyboard.addListener(
+        'keyboardWillShow',
+        e => {
+          LayoutAnimation.easeInEaseOut();
+          setHeight('25%');
+        },
+      );
 
+      const keyboardHideListener = Keyboard.addListener(
+        'keyboardWillHide',
+        e => {
+          console.log('e', e);
+          LayoutAnimation.easeInEaseOut();
+          setHeight('40%');
+        },
+      );
+
+      return () => {
+        keyboardShowListener.remove();
+        keyboardHideListener.remove();
+      };
+    }, []),
+  );
   useEffect(() => {
     console.log(user);
     console.log('data', data);
@@ -100,7 +130,7 @@ const ProfileSettingEditScreen: FunctionComponent<
 
   return (
     <View flex={10} backgroundColor={'white'} paddingX={5}>
-      <Box flex={3} paddingY={5}>
+      <Box height={height} paddingY={5}>
         <ZStack flex={1}>
           <LinearGradient
             colors={['#FEDDE0', '#8172F7']}
@@ -151,7 +181,10 @@ const ProfileSettingEditScreen: FunctionComponent<
                       },
                       body: data,
                     };
-                    fetch('http://localhost:3333/firebase/' + 'upload', config)
+                    fetch(
+                      'http://192.168.1.150:3333/firebase/' + 'upload',
+                      config,
+                    )
                       .then(checkStatusAndGetJSONResponse => {
                         console.log(checkStatusAndGetJSONResponse);
                       })
@@ -192,6 +225,7 @@ const ProfileSettingEditScreen: FunctionComponent<
           </Box>
         </ZStack>
       </Box>
+
       <Box flex={1.5} marginTop={'-30%'} opacity={1} flexDirection={'row'}>
         <TouchableOpacity
           onPress={() => {
@@ -232,9 +266,6 @@ const ProfileSettingEditScreen: FunctionComponent<
             source={
               image ? {uri: image} : require('../assets/wonyoung_icon.png')
             }
-            style={{
-              transform: [{rotate: '-90deg'}],
-            }}
           />
         </TouchableOpacity>
         <HStack
@@ -367,6 +398,7 @@ const ProfileSettingEditScreen: FunctionComponent<
               />
             </Box>
           </TouchableOpacity>
+
           {/* <Box
             marginX={2}
             borderRadius={'full'}

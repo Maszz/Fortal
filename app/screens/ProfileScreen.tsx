@@ -32,7 +32,9 @@ const ProfileScreen: FunctionComponent<ProfileScreenProps> = ({
   const [isMounted, setIsMounted] = useState(false);
   const isFocused = useIsFocused();
   const [image, setImage] = useState<string | undefined>(undefined);
-
+  const colorFormated = [{
+    
+  }]
   useEffect(() => {
     if (!isMounted) {
       getData(user.username);
