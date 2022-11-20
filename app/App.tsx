@@ -401,7 +401,7 @@ const StackNavigation = () => {
               options={{
                 gestureEnabled: true,
                 headerShown: false,
-                presentation: 'modal',
+                // presentation: 'modal',
               }}
             />
           </>

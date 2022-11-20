@@ -108,10 +108,7 @@ const EventNote: FunctionComponent<EventNoteScreenProps> = ({
             onPress={() => {
               navigation.navigate('EventDescriptionScreen', {eventId: eventId});
             }}>
-            <Image
-              alt="key icon"
-              source={require('../assets/paper_icon.png')}
-            />
+            <Image alt="key icon" source={require('../assets/gear_icon.png')} />
           </TouchableOpacity>
         </Box>
       </Box>
