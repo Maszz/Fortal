@@ -48,10 +48,10 @@ const OtherProfileScreen: FunctionComponent<OtherProfileScreenProps> = ({
     }
     if (isSuccess) {
       dispatch(setLoadingAction(false));
-      if (data?.profile?.avarar === null) {
+      if (data?.profile?.avatar === null) {
         setImage(undefined);
       }
-      setImage(Config.apiBaseUrl + data?.profile?.avarar);
+      setImage(Config.apiBaseUrl + data?.profile?.avatar);
     }
   }, [isSuccess]);
   return (

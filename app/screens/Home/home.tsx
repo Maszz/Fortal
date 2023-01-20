@@ -248,14 +248,14 @@ const Home: FunctionComponent<HomeScreenTypes.HomeScreenProps> = ({route}) => {
           w={'100%'}>
           {data?.map((item, index: number) => {
             const avarar =
-              item?.creator?.profile?.avarar === null
+              item?.creator?.profile?.avatar === null
                 ? {avatar: undefined}
-                : {avatar: Config.apiBaseUrl + item?.creator?.profile?.avarar};
+                : {avatar: Config.apiBaseUrl + item?.creator?.profile?.avatar};
             const paticipant = item?.participants.map(item => {
-              if (item?.profile?.avarar === null) {
+              if (item?.profile?.avatar === null) {
                 return {avatar: undefined};
               }
-              return {avatar: Config.apiBaseUrl + item?.profile?.avarar};
+              return {avatar: Config.apiBaseUrl + item?.profile?.avatar};
             });
             return (
               <EventCard

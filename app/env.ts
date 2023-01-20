@@ -18,12 +18,12 @@ const devConfig = {
  * defalut value same as fno debugger attached
  */
 const prodConfig = {
-  graphqlHttp: 'http://192.168.1.150:3333/graphql',
-  graphqlWs: 'ws://192.168.1.150:3333/graphql',
+  graphqlHttp: 'http://192.168.1.195:3333/graphql',
+  graphqlWs: 'ws://192.168.1.195:3333/graphql',
   bypassUser: false,
   bypassRegister: false,
   goOnboard: false,
-  apiBaseUrl: 'http://192.168.1.150:3333',
+  apiBaseUrl: 'http://192.168.1.195:3333',
 };
 
 export const Config = __DEV__ ? devConfig : prodConfig;
