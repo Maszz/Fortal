@@ -68,10 +68,10 @@ const EventNote: FunctionComponent<EventNoteScreenProps> = ({
       getAvatar(pinPostData?.creator.username)
         .unwrap()
         .then(res => {
-          if (res?.avarar === null) {
+          if (res?.avatar === null) {
             setImage(undefined);
           } else {
-            setImage(Config.apiBaseUrl + res?.avarar);
+            setImage(Config.apiBaseUrl + res?.avatar);
           }
         });
     }
@@ -415,10 +415,10 @@ const EventPost: FunctionComponent<EventPostProps> = ({
   const [avatar, setAvatar] = useState<string | undefined>(undefined);
   useEffect(() => {
     if (!isLoading) {
-      if (data?.avarar === null) {
+      if (data?.avatar === null) {
         setAvatar(undefined);
       } else {
-        setAvatar(Config.apiBaseUrl + data?.avarar);
+        setAvatar(Config.apiBaseUrl + data?.avatar);
       }
     }
   }, [data]);

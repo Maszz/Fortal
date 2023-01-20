@@ -209,7 +209,7 @@ const ProfileSettingEditScreen: FunctionComponent<
                         },
                         body: data,
                       };
-                      fetch(Config.apiBaseUrl + '/firebase/' + 'upload', config)
+                      fetch(Config.apiBaseUrl + '/file/' + 'upload', config)
                         .then(checkStatusAndGetJSONResponse => {
                           console.log(checkStatusAndGetJSONResponse);
                         })
