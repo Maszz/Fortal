@@ -12,6 +12,7 @@ import {
   Divider,
   VStack,
   Button,
+  Avatar,
 } from 'native-base';
 import {StyleSheet, TouchableOpacity, Platform} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
@@ -42,6 +43,16 @@ const ProfileScreen: FunctionComponent<ProfileScreenProps> = ({
     '#FFAECB': ['#E2D5F2', '#D1C7F1', '#CCE7F3', '#BCD8F2', '#ADC7F0'],
   } as any;
   useEffect(() => {
+    if (isFocused && isMounted) {
+      console.log('focused');
+      getData(user.username)
+        .unwrap()
+        .then(res => {
+          if (res?.profile?.colors && res.profile?.colors !== null) {
+            setColor([res.profile?.colors.c1, res.profile?.colors.c2]);
+          }
+        });
+    }
     if (!isMounted) {
       getData(user.username)
         .unwrap()
@@ -52,23 +63,15 @@ const ProfileScreen: FunctionComponent<ProfileScreenProps> = ({
         });
       setIsMounted(true);
     }
-    if (isFocused) {
-      getData(user.username)
-        .unwrap()
-        .then(res => {
-          if (res?.profile?.colors && res.profile?.colors !== null) {
-            setColor([res.profile?.colors.c1, res.profile?.colors.c2]);
-          }
-        });
-    }
   }, [isFocused]);
   useEffect(() => {
     if (isSuccess) {
-      console.log(data?.profile?.avarar);
-      if (data?.profile?.avarar === null) {
+      console.log(data?.profile?.avatar);
+      if (data?.profile?.avatar === null) {
         setImage(undefined);
       } else {
-        setImage(Config.apiBaseUrl + data?.profile?.avarar);
+        setImage(Config.apiBaseUrl + data?.profile?.avatar);
+        console.log('set Imageeee');
       }
 
       // setImage(Config.apiBaseUrl + data?.profile?.avarar);
@@ -117,7 +120,7 @@ const ProfileScreen: FunctionComponent<ProfileScreenProps> = ({
         </ZStack>
       </Box>
       <Box flex={1.5} marginTop={'-30%'} opacity={1} flexDirection={'row'}>
-        <Image
+        {/* <Image
           borderColor={'#8172F7'}
           borderWidth={4}
           borderRadius={'full'}
@@ -128,6 +131,14 @@ const ProfileScreen: FunctionComponent<ProfileScreenProps> = ({
           w={120}
           h={120}
           resizeMode={'cover'}
+        /> */}
+        <Avatar
+          // style={{borderColor: 'white', borderWidth: 2}}
+          borderColor={'#8172F7'}
+          borderWidth={4}
+          size={'120'}
+          source={image ? {uri: image} : require('../assets/wonyoung_icon.png')}
+          marginLeft={4}
         />
 
         {/* <Image

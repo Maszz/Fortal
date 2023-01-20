@@ -223,7 +223,7 @@ export const userApi = createApi({
         params: {u: username},
       }),
     }),
-    getUserAvatar: builder.query<{avarar: string}, string>({
+    getUserAvatar: builder.query<{avatar: string}, string>({
       query: username => ({
         url: `getAvatar`,
         method: 'GET',

@@ -54,9 +54,9 @@ const EventCardActionSheetJoined: FunctionComponent<
   const [joinedEvent, {isLoading: isJoiningEvent}] = useJoinedEventMutation();
   const [paticipant, setPaticipant] = useState<
     {
-      avarar: string | undefined;
+      avatar: string | undefined;
     }[]
-  >([] as {avarar: string | undefined}[]);
+  >([] as {avatar: string | undefined}[]);
   useEffect(() => {
     const keyboardDidShowListener = Keyboard.addListener(
       'keyboardDidShow',
@@ -84,17 +84,17 @@ const EventCardActionSheetJoined: FunctionComponent<
     if (!isLoading && data) {
       console.log(data);
       const paticipant = data?.participants.map(item => {
-        if (item.profile.avarar === null) {
-          return {avarar: undefined};
+        if (item.profile.avatar === null) {
+          return {avatar: undefined};
         }
-        return {avarar: Config.apiBaseUrl + item.profile.avarar};
+        return {avatar: Config.apiBaseUrl + item.profile.avatar};
       });
       setPaticipant([
         {
-          avarar:
-            data.creator.profile.avarar === null
+          avatar:
+            data.creator.profile.avatar === null
               ? undefined
-              : Config.apiBaseUrl + data.creator.profile.avarar,
+              : Config.apiBaseUrl + data.creator.profile.avatar,
         },
         ...paticipant,
       ]);
@@ -252,8 +252,8 @@ const EventCardActionSheetJoined: FunctionComponent<
                   return (
                     <Avatar
                       source={
-                        item.avarar
-                          ? {uri: item.avarar}
+                        item.avatar
+                          ? {uri: item.avatar}
                           : require('../assets/profileGroupPost_icon.png')
                       }
                     />

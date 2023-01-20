@@ -82,17 +82,17 @@ const FavoriteScreen: FunctionComponent<
           <Box flexDirection={'row'} justifyContent={'space-between'}>
             {joinedEvents.map((item, index) => {
               const avarar =
-                item?.creator?.profile?.avarar === null
+                item?.creator?.profile?.avatar === null
                   ? {avatar: undefined}
                   : {
                       avatar:
-                        Config.apiBaseUrl + item?.creator?.profile?.avarar,
+                        Config.apiBaseUrl + item?.creator?.profile?.avatar,
                     };
               const paticipant = item?.participants.map(item => {
-                if (item?.profile?.avarar === null) {
+                if (item?.profile?.avatar === null) {
                   return {avatar: undefined};
                 }
-                return {avatar: Config.apiBaseUrl + item?.profile?.avarar};
+                return {avatar: Config.apiBaseUrl + item?.profile?.avatar};
               });
               console.log('paticipant', paticipant);
               console.log('avarar', avarar);
@@ -158,22 +158,22 @@ const FavoriteScreen: FunctionComponent<
             flexWrap={'wrap'}
             w={'103%'}>
             {createdEvents.map((item, index) => {
-              const avarar =
-                item?.creator?.profile?.avarar === null
+              const avatar =
+                item?.creator?.profile?.avatar === null
                   ? {avatar: undefined}
                   : {
                       avatar:
-                        Config.apiBaseUrl + item?.creator?.profile?.avarar,
+                        Config.apiBaseUrl + item?.creator?.profile?.avatar,
                     };
               const paticipant = item?.participants.map(item => {
-                if (item?.profile?.avarar === null) {
+                if (item?.profile?.avatar === null) {
                   return {avatar: undefined};
                 }
-                return {avatar: Config.apiBaseUrl + item?.profile?.avarar};
+                return {avatar: Config.apiBaseUrl + item?.profile?.avatar};
               });
               console.log('paticipant', paticipant);
-              console.log('avarar', avarar);
-              console.log('item', [avarar, ...paticipant]);
+              console.log('avarar', avatar);
+              console.log('item', [avatar, ...paticipant]);
 
               return (
                 <TouchableOpacity key={index}>
@@ -194,7 +194,7 @@ const FavoriteScreen: FunctionComponent<
                     date={item.startDate}
                     description={item.description}
                     colors={[item.eventColors.c1, item.eventColors.c2]}
-                    avatarList={[avarar, ...paticipant]}
+                    avatarList={[avatar, ...paticipant]}
                     style={{marginRight: 10, marginBottom: 10}}
                   />
                 </TouchableOpacity>

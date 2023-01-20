@@ -87,12 +87,12 @@ export interface GetEventResponse {
   };
   participants: Array<{
     profile: {
-      avarar: string;
+      avatar: string;
     };
   }>;
   creator: {
     profile: {
-      avarar: string;
+      avatar: string;
     };
   };
 }
@@ -119,12 +119,12 @@ export interface GetEventByIdResponse {
   };
   participants: Array<{
     profile: {
-      avarar: string;
+      avatar: string;
     };
   }>;
   creator: {
     profile: {
-      avarar: string;
+      avatar: string;
     };
   };
 }
@@ -176,22 +176,6 @@ export const eventApi = createApi({
         };
       },
     }),
-    // getEventUserList: builder.query<
-    //   GetEventResponse[],
-    //   getEventUserListPayload
-    // >({
-    //   query: params => {
-    //     return {
-    //       url: 'getEventUserList',
-    //       params: {
-    //         offset: params.offset,
-    //         limit: params.limit,
-    //         u: params.u,
-    //         t: params.t,
-    //       },
-    //     };
-    //   },
-    // }),
 
     getEventById: builder.query<GetEventByIdResponse, string>({
       query: eventId => {

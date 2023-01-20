@@ -123,10 +123,10 @@ const ProfileSettingEditScreen: FunctionComponent<
             setColor([res.profile?.colors.c1, res.profile?.colors.c2]);
           }
 
-          if (res?.profile?.avarar === null) {
+          if (res?.profile?.avatar === null) {
             setImage(undefined);
           } else {
-            setImage(Config.apiBaseUrl + res?.profile?.avarar);
+            setImage(Config.apiBaseUrl + res?.profile?.avatar);
           }
           console.log(data);
           dispatch(setLoadingAction(false));
@@ -192,32 +192,31 @@ const ProfileSettingEditScreen: FunctionComponent<
                     console.log('update success');
                     console.log(v);
                     const data = new FormData();
-                    data.append('userId', user.username);
+                    data.append('userId', user.id);
                     if (imageBuff) {
+                      console.log('should not enter when dont change image');
                       data.append('fileData', {
                         uri: imageBuff?.uri || '',
                         type: imageBuff?.type || '',
                         name: imageBuff?.name || '',
                       });
+
+                      const config = {
+                        method: 'POST',
+                        headers: {
+                          Accept: 'application/json',
+                          'Content-Type': 'multipart/form-data',
+                        },
+                        body: data,
+                      };
+                      fetch(Config.apiBaseUrl + '/firebase/' + 'upload', config)
+                        .then(checkStatusAndGetJSONResponse => {
+                          console.log(checkStatusAndGetJSONResponse);
+                        })
+                        .catch(err => {
+                          console.log(err);
+                        });
                     }
-                    const config = {
-                      method: 'POST',
-                      headers: {
-                        Accept: 'application/json',
-                        'Content-Type': 'multipart/form-data',
-                      },
-                      body: data,
-                    };
-                    fetch(
-                      'http://192.168.1.150:3333/firebase/' + 'upload',
-                      config,
-                    )
-                      .then(checkStatusAndGetJSONResponse => {
-                        console.log(checkStatusAndGetJSONResponse);
-                      })
-                      .catch(err => {
-                        console.log(err);
-                      });
 
                     if (v.updateUsername) {
                       console.log('update username success');

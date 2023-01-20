@@ -83,17 +83,17 @@ const EventCardActionSheet: FunctionComponent<EventCardActionsSheetProps> = ({
   useEffect(() => {
     if (!isLoading && data) {
       const paticipant = data?.participants.map(item => {
-        if (item.profile.avarar === null) {
+        if (item.profile.avatar === null) {
           return {avarar: undefined};
         }
-        return {avarar: Config.apiBaseUrl + item.profile.avarar};
+        return {avarar: Config.apiBaseUrl + item.profile.avatar};
       });
       setPaticipant([
         {
           avarar:
-            data.creator.profile.avarar === null
+            data.creator.profile.avatar === null
               ? undefined
-              : Config.apiBaseUrl + data.creator.profile.avarar,
+              : Config.apiBaseUrl + data.creator.profile.avatar,
         },
         ...paticipant,
       ]);

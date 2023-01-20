@@ -256,10 +256,10 @@ const OtherMessage: FunctionComponent<OtherMessageProps> = ({message}) => {
 
     if (!isLoading) {
       if (data) {
-        if (data?.avarar === null) {
+        if (data?.avatar === null) {
           setImage(undefined);
         } else {
-          setImage(Config.apiBaseUrl + data?.avarar);
+          setImage(Config.apiBaseUrl + data?.avatar);
         }
       } else {
         setImage(undefined);

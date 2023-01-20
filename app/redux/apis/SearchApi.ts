@@ -28,7 +28,7 @@ export interface UserProfileResponse {
     displayName?: string;
     isProfilePublic?: boolean;
     eventCount?: number;
-    avarar: string;
+    avatar: string;
     colors: {
       c1: string;
       c2: string;
