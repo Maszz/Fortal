@@ -58,6 +58,39 @@ export interface CountRes {
   following: number;
   followingRequestBy: number;
 }
+
+export interface FollowingByIdPayload {
+  userId: string;
+  followingUserId: string;
+}
+export interface FollowingRequestPayload {
+  followerId: string;
+  followingId: string;
+}
+
+export interface FollowingRequestFromResponse {
+  username: string;
+  displayName: string;
+  id: string;
+}
+export interface HandleFollowingRequestPayload {
+  requestId: string;
+  status: string;
+}
+export interface unFollowingByIdPayload {
+  followerId: string;
+  unfollowingId: string;
+}
+export interface removeFollowerByIdPayload {
+  userId: string;
+  followerId: string;
+}
+export interface getNotificationsResponse {
+  creator: {
+    username: string;
+  };
+  message: string;
+}
 export const userApi = createApi({
   reducerPath: 'userApi',
   baseQuery: fetchBaseQuery({baseUrl: `${Config.apiBaseUrl}/user/`}),
@@ -120,13 +153,7 @@ export const userApi = createApi({
         params: {u: username},
       }),
     }),
-    followingByid: builder.mutation<
-      any,
-      {
-        userId: string;
-        followingUserId: string;
-      }
-    >({
+    followingByid: builder.mutation<any, FollowingByIdPayload>({
       query: body => ({
         url: `followingUserByid`,
         method: 'POST',
@@ -140,13 +167,7 @@ export const userApi = createApi({
         params: {u: username},
       }),
     }),
-    followingRequest: builder.mutation<
-      any,
-      {
-        followerId: string;
-        followingId: string;
-      }
-    >({
+    followingRequest: builder.mutation<any, FollowingRequestPayload>({
       query: body => ({
         url: `followingRequest`,
         method: 'POST',
@@ -161,11 +182,7 @@ export const userApi = createApi({
       }),
     }),
     getFollowingRequestFrom: builder.mutation<
-      {
-        username: string;
-        displayName: string;
-        id: string;
-      }[],
+      FollowingRequestFromResponse[],
       string
     >({
       query: username => ({
@@ -176,7 +193,7 @@ export const userApi = createApi({
     }),
     handleFollowingRequest: builder.mutation<
       any,
-      {requestId: string; status: string}
+      HandleFollowingRequestPayload
     >({
       query: body => ({
         url: `handleFollowingRequest`,
@@ -185,38 +202,21 @@ export const userApi = createApi({
       }),
     }),
 
-    unFollowingById: builder.mutation<
-      any,
-      {
-        followerId: string;
-        unfollowingId: string;
-      }
-    >({
+    unFollowingById: builder.mutation<any, unFollowingByIdPayload>({
       query: body => ({
         url: `unFollowingById`,
         method: 'POST',
         body: {followerId: body.followerId, unfollowingId: body.unfollowingId},
       }),
     }),
-    removeFollowerById: builder.mutation<
-      any,
-      {userId: string; followerId: string}
-    >({
+    removeFollowerById: builder.mutation<any, removeFollowerByIdPayload>({
       query: body => ({
         url: `removeFollowerById`,
         method: 'POST',
         body: {userId: body.userId, followerId: body.followerId},
       }),
     }),
-    getNotifications: builder.mutation<
-      {
-        creator: {
-          username: string;
-        };
-        message: string;
-      }[],
-      string
-    >({
+    getNotifications: builder.mutation<getNotificationsResponse[], string>({
       query: username => ({
         url: `getNotifications`,
         method: 'GET',

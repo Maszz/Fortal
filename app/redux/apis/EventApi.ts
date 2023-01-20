@@ -136,6 +136,67 @@ export interface getEventListPayload {
   t: EventListType;
 }
 
+export interface JoinedEventPayload {
+  eventId: string;
+  userName: string;
+}
+export interface CreatePostPayload {
+  eventId: string;
+  content: string;
+  creatorUsername: string;
+}
+export interface GetPostListPayload {
+  eventId: string;
+  offset: number;
+  limit: number;
+}
+
+export interface GetPostListResponse {
+  id: string;
+  content: string;
+  creator: string;
+  createdAt: Date;
+}
+
+export interface GetCommentListPayload {
+  offset: number;
+  limit: number;
+  postId: string;
+}
+export interface GetCommentListResponse {
+  id: string;
+  content: string;
+  creator: string;
+  createdAt: Date;
+}
+export interface CreateCommentPayload {
+  postId: string;
+  content: string;
+  creatorUsername: string;
+}
+
+export interface GetPinedPostPayload {
+  eventId: string;
+}
+export interface GetPinedPostResponse {
+  creator: {
+    username: string;
+  };
+  EventPinedPost: {
+    id: string;
+    createdAt: Date;
+    content: string;
+  };
+}
+export interface CreatePinedPostPayload {
+  eventId: string;
+  creatorUsername: string;
+  content: string;
+}
+export interface removeParticipantPayload {
+  eventId: string;
+  username: string;
+}
 export const eventApi = createApi({
   reducerPath: 'eventApi',
   baseQuery: fetchBaseQuery({baseUrl: `${Config.apiBaseUrl}/event/`}),
@@ -185,10 +246,7 @@ export const eventApi = createApi({
         };
       },
     }),
-    joinedEvent: builder.mutation<
-      GetEventByIdResponse,
-      {eventId: string; userName: string}
-    >({
+    joinedEvent: builder.mutation<GetEventByIdResponse, JoinedEventPayload>({
       query: params => {
         return {
           url: 'addParticipant',
@@ -197,14 +255,7 @@ export const eventApi = createApi({
         };
       },
     }),
-    createPost: builder.mutation<
-      any,
-      {
-        eventId: string;
-        content: string;
-        creatorUsername: string;
-      }
-    >({
+    createPost: builder.mutation<any, CreatePostPayload>({
       query: params => {
         return {
           url: 'createPost',
@@ -217,15 +268,7 @@ export const eventApi = createApi({
         };
       },
     }),
-    getPostList: builder.query<
-      {
-        id: string;
-        content: string;
-        creator: string;
-        createdAt: Date;
-      }[],
-      {eventId: string; offset: number; limit: number}
-    >({
+    getPostList: builder.query<GetPostListResponse[], GetPostListPayload>({
       query: params => {
         return {
           url: 'getEventPostList',
@@ -238,13 +281,8 @@ export const eventApi = createApi({
       },
     }),
     getCommentList: builder.query<
-      {
-        id: string;
-        content: string;
-        creator: string;
-        createdAt: Date;
-      }[],
-      {offset: number; limit: number; postId: string}
+      GetCommentListResponse[],
+      GetCommentListPayload
     >({
       query: params => {
         return {
@@ -257,14 +295,7 @@ export const eventApi = createApi({
         };
       },
     }),
-    createComment: builder.mutation<
-      any,
-      {
-        postId: string;
-        content: string;
-        creatorUsername: string;
-      }
-    >({
+    createComment: builder.mutation<any, CreateCommentPayload>({
       query: params => {
         return {
           url: 'createComment',
@@ -277,19 +308,7 @@ export const eventApi = createApi({
         };
       },
     }),
-    getPinedPost: builder.query<
-      {
-        creator: {
-          username: string;
-        };
-        EventPinedPost: {
-          id: string;
-          createdAt: Date;
-          content: string;
-        };
-      },
-      {eventId: string}
-    >({
+    getPinedPost: builder.query<GetPinedPostResponse, GetPinedPostPayload>({
       query: params => {
         return {
           method: 'GET',
@@ -300,14 +319,7 @@ export const eventApi = createApi({
         };
       },
     }),
-    createPinPost: builder.mutation<
-      any,
-      {
-        eventId: string;
-        creatorUsername: string;
-        content: string;
-      }
-    >({
+    createPinPost: builder.mutation<any, CreatePinedPostPayload>({
       query: params => {
         return {
           url: 'createPinPost',
@@ -320,10 +332,7 @@ export const eventApi = createApi({
         };
       },
     }),
-    removeParticipant: builder.mutation<
-      any,
-      {eventId: string; username: string}
-    >({
+    removeParticipant: builder.mutation<any, removeParticipantPayload>({
       query: params => {
         return {
           url: 'removeParticipant',

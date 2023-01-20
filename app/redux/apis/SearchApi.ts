@@ -49,6 +49,10 @@ export interface LocationSearchResponse {
   place: string;
   flag: string;
 }
+export interface GetSearchItemPayload {
+  term: string;
+  u: string;
+}
 
 export interface getUserByUserNameResponse {}
 export const searchApi = createApi({
@@ -58,7 +62,7 @@ export const searchApi = createApi({
   refetchOnMountOrArgChange: 10,
 
   endpoints: builder => ({
-    getSearchItem: builder.query<SearchResponse[], {term: string; u: string}>({
+    getSearchItem: builder.query<SearchResponse[], GetSearchItemPayload>({
       query: params => {
         return {
           url: `search/keyword`,
