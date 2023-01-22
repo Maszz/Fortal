@@ -15,6 +15,7 @@ import {
   Stack,
   Center,
   Divider,
+  Avatar,
 } from 'native-base';
 import {OtherProfileScreenProps} from '../types';
 import {FunctionComponent, useEffect, useState} from 'react';
@@ -48,10 +49,13 @@ const OtherProfileScreen: FunctionComponent<OtherProfileScreenProps> = ({
     }
     if (isSuccess) {
       dispatch(setLoadingAction(false));
+      console.log('Other Profile : ', data?.profile);
       if (data?.profile?.avatar === null) {
+        console.log('No Image');
         setImage(undefined);
+      } else {
+        setImage(Config.apiBaseUrl + data?.profile?.avatar);
       }
-      setImage(Config.apiBaseUrl + data?.profile?.avatar);
     }
   }, [isSuccess]);
   return (
@@ -86,7 +90,7 @@ const OtherProfileScreen: FunctionComponent<OtherProfileScreenProps> = ({
         </ZStack>
       </Box>
       <Box flex={1.5} marginTop={'-30%'} opacity={1} flexDirection={'row'}>
-        <Image
+        {/* <Avatar
           borderColor={'#8172F7'}
           borderWidth={4}
           borderRadius={'full'}
@@ -97,6 +101,14 @@ const OtherProfileScreen: FunctionComponent<OtherProfileScreenProps> = ({
           w={120}
           h={120}
           resizeMode={'cover'}
+        /> */}
+        <Avatar
+          // style={{borderColor: 'white', borderWidth: 2}}
+          borderColor={'#8172F7'}
+          borderWidth={4}
+          size={'120'}
+          source={image ? {uri: image} : require('../assets/wonyoung_icon.png')}
+          marginLeft={4}
         />
       </Box>
       <Box

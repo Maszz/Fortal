@@ -13,7 +13,7 @@ export interface SearchResponse {
   bio?: string;
   date?: string;
   location?: string;
-  avarar?: string;
+  avatar?: string;
   eventData?: {
     memberLimit: number;
     memberType: 'LIMIT' | 'UNLIMITED';

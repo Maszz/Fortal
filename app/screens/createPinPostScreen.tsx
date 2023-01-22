@@ -9,6 +9,7 @@ import {
   Spacer,
   Divider,
   KeyboardAvoidingView,
+  Avatar,
 } from 'native-base';
 import {FunctionComponent, useState} from 'react';
 import {CreatePostScreenProps} from '../types';
@@ -22,15 +23,18 @@ import {useAuth} from '../hooks/useAuth';
 import {useCreatePostMutation} from '../redux/apis';
 import {CreatePinPostProps} from '../types/App.type';
 import {useCreatePinPostMutation} from '../redux/apis';
+import {useGetUserAvatarQuery} from '../redux/apis';
+
 const CreatePinPostScreen: FunctionComponent<CreatePinPostProps> = ({
   navigation,
   route,
 }) => {
   const {user} = useAuth();
-  const {eventId, eventChatId} = route.params;
+  const {eventId, eventChatId, creatorImage} = route.params;
   const [userInput, setUserInput] = useState<string>('');
   const [createPinPost] = useCreatePinPostMutation();
 
+  console.log('creatorImage', creatorImage);
   return (
     <View flex={1} backgroundColor={'white'}>
       <Box
@@ -62,11 +66,16 @@ const CreatePinPostScreen: FunctionComponent<CreatePinPostProps> = ({
         </Box>
       </Box>
       <HStack paddingX={'7%'} paddingTop={5}>
-        <Image
-          source={require('../assets/profileGroupPost_icon.png')}
+        <Avatar
+          style={{borderColor: '#8172F7', borderWidth: 3}}
+          size={'lg'}
+          source={
+            creatorImage
+              ? {uri: creatorImage}
+              : require('../assets/groupAlert_icon.png')
+          }
           // borderWidth={3}
-          alt={'group alert'}
-          borderColor={'#8172F7'}
+          // alt={'group alert'}
         />
         <VStack width={'100%'} marginX={5}>
           <Text fontSize={16} color={'#232259'} fontWeight={'bold'}>

@@ -30,7 +30,11 @@ export type StackScreenParams = {
   EventNoteScreen: {eventChatId: string; eventId: string};
   CreatePostScreen: {eventChatId: string; eventId: string};
   CommentScreen: {postId: string};
-  CreatePinPostScreen: {eventChatId: string; eventId: string};
+  CreatePinPostScreen: {
+    eventChatId: string;
+    eventId: string;
+    creatorImage: string | undefined;
+  };
   EventDescriptionScreen: {eventId: string};
   EventMemberScreen: {eventId: string};
   EventInfoScreen: {eventId: string};

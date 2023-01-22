@@ -68,6 +68,7 @@ const EventNote: FunctionComponent<EventNoteScreenProps> = ({
       getAvatar(pinPostData?.creator.username)
         .unwrap()
         .then(res => {
+          console.log('res Of Group Note', res);
           if (res?.avatar === null) {
             setImage(undefined);
           } else {
@@ -255,6 +256,7 @@ const EventNote: FunctionComponent<EventNoteScreenProps> = ({
                   navigation.navigate('CreatePinPostScreen', {
                     eventChatId: eventChatId,
                     eventId: eventId,
+                    creatorImage: image,
                   });
                 }}
                 style={{

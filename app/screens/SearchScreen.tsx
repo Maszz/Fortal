@@ -190,11 +190,9 @@ const SearchItemUser: FunctionComponent<SearchItemProps> = ({
             borderWidth={2}
             size="70px"
             source={
-              item.avarar === null
-                ? require('../assets/wonyoung_icon.png')
-                : {
-                    uri: Config.apiBaseUrl + item.avarar,
-                  }
+              item.avatar
+                ? {uri: Config.apiBaseUrl + item.avatar}
+                : require('../assets/wonyoung_icon.png')
             }
           />
         </VStack>
