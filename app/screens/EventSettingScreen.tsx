@@ -4,8 +4,8 @@ import {ProfileSettingScreenProps} from '../types';
 import {TouchableOpacity} from 'react-native';
 import {useAuth} from '../hooks/useAuth';
 import {useRemoveParticipantMutation} from '../redux/apis';
-import {EventDescriptionScreenProps} from '../types/App.type';
-const ProfileSettingScreen: FunctionComponent<EventDescriptionScreenProps> = ({
+import {EventSettingScreenProps} from '../types/App.type';
+const EventSettingScreen: FunctionComponent<EventSettingScreenProps> = ({
   navigation,
   route,
 }) => {
@@ -116,4 +116,4 @@ const ProfileSettingScreen: FunctionComponent<EventDescriptionScreenProps> = ({
     </View>
   );
 };
-export default ProfileSettingScreen;
+export default EventSettingScreen;

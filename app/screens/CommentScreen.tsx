@@ -185,10 +185,10 @@ const CommentCard = ({
   useEffect(() => {
     if (!isLoading) {
       console.log('dasiodsa', data);
-      if (data?.avarar === null) {
+      if (data?.avatar === null) {
         setImage(undefined);
       } else {
-        setImage(Config.apiBaseUrl + data?.avarar);
+        setImage(Config.apiBaseUrl + data?.avatar);
       }
     }
   }, [isLoading]);

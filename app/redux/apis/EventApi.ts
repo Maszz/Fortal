@@ -197,6 +197,19 @@ export interface removeParticipantPayload {
   eventId: string;
   username: string;
 }
+
+export interface GetEventMembersByIdPayload {
+  eventId: string;
+}
+
+export interface GetEventMembersByIdResponse {
+  id: string;
+  username: string;
+  avatar: string;
+  bio: string;
+  displayName: string;
+}
+
 export const eventApi = createApi({
   reducerPath: 'eventApi',
   baseQuery: fetchBaseQuery({baseUrl: `${Config.apiBaseUrl}/event/`}),
@@ -344,6 +357,17 @@ export const eventApi = createApi({
         };
       },
     }),
+    getEventMemberById: builder.query<
+      GetEventMembersByIdResponse[],
+      GetEventMembersByIdPayload
+    >({
+      query: params => {
+        return {
+          url: 'getEventMemberById',
+          params: {id: params.eventId},
+        };
+      },
+    }),
   }),
 });
 
@@ -362,4 +386,5 @@ export const {
   useGetPinedPostQuery,
   useCreatePinPostMutation,
   useRemoveParticipantMutation,
+  useGetEventMemberByIdQuery,
 } = eventApi;

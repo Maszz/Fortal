@@ -97,7 +97,7 @@ const FavoriteScreen: FunctionComponent<
               console.log('paticipant', paticipant);
               console.log('avarar', avarar);
               return (
-                <TouchableOpacity key={index}>
+                <TouchableOpacity key={`${index}-${item.id}`}>
                   <EventCard
                     onPress={() => {
                       // stackNavigation.navigate('EventScreen', {
@@ -176,7 +176,7 @@ const FavoriteScreen: FunctionComponent<
               console.log('item', [avatar, ...paticipant]);
 
               return (
-                <TouchableOpacity key={index}>
+                <TouchableOpacity key={`${index}-${item.id}`}>
                   <EventCard
                     onPress={() => {
                       // stackNavigation.navigate('EventScreen', {

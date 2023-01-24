@@ -35,7 +35,7 @@ export type StackScreenParams = {
     eventId: string;
     creatorImage: string | undefined;
   };
-  EventDescriptionScreen: {eventId: string};
+  EventSettingScreen: {eventId: string};
   EventMemberScreen: {eventId: string};
   EventInfoScreen: {eventId: string};
 };
@@ -122,9 +122,9 @@ export type CreatePinPostProps = StackScreenProps<
   StackScreenParams,
   'CreatePinPostScreen'
 >;
-export type EventDescriptionScreenProps = StackScreenProps<
+export type EventSettingScreenProps = StackScreenProps<
   StackScreenParams,
-  'EventDescriptionScreen'
+  'EventSettingScreen'
 >;
 export type EventMemberScreenProps = StackScreenProps<
   StackScreenParams,

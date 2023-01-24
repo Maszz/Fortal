@@ -251,6 +251,7 @@ const EventCardActionSheetJoined: FunctionComponent<
                 {paticipant?.map((item, index) => {
                   return (
                     <Avatar
+                      key={`avatar-${index}-${item.avatar}`}
                       source={
                         item.avatar
                           ? {uri: item.avatar}
