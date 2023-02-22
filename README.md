@@ -70,3 +70,7 @@ Notification            |  Group Chat | Group Note
 Login Screen            |  Register | Login
 :-------------------------:|:-------------------------:|:-------------------------:
 ![150x300](images/fortal_image10.png)  |  ![150x300](images/fortal_image8.png) | ![150x300](images/fortal_image9.png)
+
+## Authors
+
+- [Maszz](https://github.com/Maszz)
