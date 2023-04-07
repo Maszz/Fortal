@@ -1,6 +1,6 @@
 # Fortal
 > Fortal is a Social media platform focus on find friend to do activities and hobbies Build with React Native
->> Backend of Fortal [here](https://github.com/Fortal-Backend) (Private In repo have and real api key)
+>> Backend of Fortal [here](https://github.com/FortalBackend) (Private In repo have and real api key)
 
 > this repository is no longer maintained 
 
