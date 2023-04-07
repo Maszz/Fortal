@@ -1,8 +1,9 @@
 # Fortal
 > Fortal is a Social media platform focus on find friend to do activities and hobbies Build with React Native
->> Backend of Fortal [here](https://github.com)
->> this repository is no longer maintained 
->
+>> Backend of Fortal [here](https://github.com/Fortal-Backend) (Private In repo have and real api key)
+
+> this repository is no longer maintained 
+
 ## Painpoint
 	- No friend doing activities together.
 	- Wat to have a activities, but don't know what activities should do.
